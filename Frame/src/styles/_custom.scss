@@ -1,0 +1,296 @@
+// Here you can add other styles
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+$sizes: (
+  25: 25%,
+  50: 50%,
+  75: 75%,
+  100: 100%,
+);
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @each $size, $length in $sizes {
+    @include media-breakpoint-up($breakpoint) {
+      .w-#{$breakpoint}-#{$size} {
+        width: $length !important;
+      }
+    }
+  }
+}
+.modal-vue {
+  position: relative;
+}
+.modal-vue .settings-modal {
+  position: fixed;
+  top: 10%;
+  left: 25%;
+  right: 25%;
+  bottom: 10%;
+  z-index: 9999;
+  margin: 0 auto;
+  background-color: #fff;
+  transition: 0.5s;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.modal-vue .overlay-settings {
+  z-index: 9998;
+}
+.form-group-custom {
+  position: relative;
+  .form-label {
+    position: absolute;
+    top: 15px;
+    left: 30px;
+    transition: 0.3s;
+    color: gray;
+  }
+  .form-control:focus {
+    outline: 1px solid black;
+    box-shadow: none;
+  }
+  .form-label-active {
+    position: absolute;
+    top: -5px;
+    left: 30px;
+    color: black;
+  }
+}
+.accept-agreement {
+  .custom-label {
+    font-family: system-ui, sans-serif;
+    font-weight: bold;
+    line-height: 1.1;
+    display: grid;
+    grid-template-columns: 1em auto;
+    gap: 0.5em;
+  }
+  .custom-input {
+    appearance: none;
+    background-color: #fff;
+    margin: 0;
+    font: inherit;
+    color: currentColor;
+    width: 1.15em;
+    height: 1.15em;
+    border: 2px solid currentColor;
+    border-radius: 0.15em;
+    transform: translateY(-0.075em);
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+  }
+
+  .custom-input::before {
+    content: '';
+    width: 0.65em;
+    height: 0.65em;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em var(--form-control-color);
+    background-color: CanvasText;
+    transform-origin: bottom left;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  }
+
+  .custom-input:checked::before {
+    transform: scale(1);
+  }
+}
+.overlay-gallery-menu {
+  z-index: 9990;
+}
+.dune-rise {
+  font-family: dune-rise;
+}
+.munich {
+  font-family: munich;
+}
+.roboto-thin {
+  font-family: roboto-thin;
+}
+.roboto-regular {
+  font-family: roboto-regular;
+}
+.roboto-bold {
+  font-family: roboto-bold;
+}
+$dark: #041721;
+$darkgreen: #1b4645;
+$green: #276967;
+$yellow: #f9bd24;
+$orange: #f68800;
+a {
+  text-decoration: none;
+  color: #212529;
+}
+.landing-page {
+  .landing-carousel {
+    .landing-carousel-item {
+      position: relative;
+      border: 1px solid black;
+      .top-carousel-text-div {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        .carousel-buy-btn {
+          border: 1px solid white;
+          font-size: 1rem;
+          padding: 8px;
+          position: relative;
+          z-index: 1;
+          transition: 0.3s;
+          overflow: hidden;
+          &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -20%;
+            height: 100%;
+            width: 0%;
+            transition: 0.3s;
+            z-index: -1;
+            background-color: white;
+            transform: skewX(-45deg);
+          }
+          &:hover:before {
+            width: 140%;
+          }
+          &:hover {
+            transform: scale(1.1);
+            color: black;
+          }
+        }
+      }
+      .carousel-text-div {
+        text-align: center;
+        filter: opacity(0);
+        transition: 0.5s;
+        position: absolute;
+        visibility: hidden;
+        top: 15%;
+        bottom: 15%;
+        left: 25%;
+        right: 25%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    .landing-carousel-item:hover {
+      cursor: pointer;
+      .carousel-text-div {
+        filter: opacity(1);
+        visibility: visible;
+      }
+    }
+    .swiper-button-prev,
+    .swiper-button-next {
+      color: white;
+    }
+  }
+}
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.2s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+$dark: #041721;
+$darkgreen: #1b4645;
+$green: #276967;
+$yellow: #f9bd24;
+$orange: #f68800;
+.Heart-Animation {
+  background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/66955/web_heart_animation.png');
+  background-repeat: no-repeat;
+  background-size: 2900%;
+  background-position: left;
+  margin: 0 auto;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+}
+.heart-animation-active {
+  animation: heart-burst 0.8s steps(28) forwards;
+}
+@keyframes heart-burst {
+  0% {
+    background-position: left;
+  }
+  100% {
+    background-position: right;
+  }
+}
+.gallery-header {
+  font-family: munich;
+}
+.gallery-filter-element {
+  font-family: dune-rise;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.gallery-filter-element:hover {
+  transform: scale(1.1);
+  transform-origin: center;
+  color: $yellow;
+}
+.category-menu-icon {
+  transition: 0.3s;
+  cursor: pointer;
+  color: $green;
+}
+.category-menu-icon:hover {
+  transform: scale(1.1);
+}
+.category-menu-sm-active {
+  z-index: 9999;
+  transition: 0.3s;
+  position: absolute;
+  background-color: $green;
+  top: 0px;
+  left: 60px;
+  width: calc(100% - 45px);
+  border-top-right-radius: 20%;
+  border-bottom-right-radius: 50%;
+  border-bottom-left-radius: 50%;
+  transform: scale(1);
+}
+.category-menu-sm-passive {
+  z-index: 1;
+  z-index: 9999;
+  transition: 0.2s;
+  position: absolute;
+  top: 0px;
+  left: 60px;
+  width: calc(100% - 45px);
+  background-color: $green;
+  border-radius: 50%;
+  transform: scale(0);
+  overflow: hidden;
+  transform-origin: left top;
+}

@@ -1,0 +1,258 @@
+import { h, resolveComponent } from 'vue'
+import { createRouter, createWebHashHistory } from 'vue-router'
+
+import DefaultLayout from '@/layouts/DefaultLayout'
+import AdminLayout from '@/layouts/AdminLayout'
+const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: DefaultLayout,
+    redirect: '/index',
+    meta: {
+      authRequired: 'false',
+      adminRequired: 'false',
+    },
+    children: [
+      {
+        path: '/index',
+        name: 'Index',
+        component: () => import('@/views/main/Index.vue'),
+        meta: {
+          authRequired: 'false',
+          adminRequired: 'false',
+        },
+      },
+      {
+        path: '/gallery',
+        name: 'Gallery',
+        component: () => import('../views/main/Gallery.vue'),
+        meta: {
+          authRequired: 'false',
+          adminRequired: 'false',
+        },
+      },
+      {
+        path: '/checkout',
+        name: 'Checkout',
+        component: () => import('../views/main/Checkout.vue'),
+        meta: {
+          authRequired: 'false',
+          adminRequired: 'false',
+        },
+      },
+      {
+        path: '/favourites',
+        name: 'Favourites',
+        component: () => import('../views/main/Favourites.vue'),
+        meta: {
+          authRequired: 'false',
+          adminRequired: 'false',
+        },
+      },
+      {
+        path: '/TermsAndConditions',
+        name: 'TermsAndConditions',
+        component: () => import('../views/main/TermsAndConditions.vue'),
+        meta: {
+          authRequired: 'false',
+          adminRequired: 'false',
+        },
+      },
+      {
+        path: '/gallery/item/:id',
+        name: 'GalleryItem',
+        component: () => import('../views/main/GalleryItem.vue'),
+        meta: {
+          authRequired: 'false',
+          adminRequired: 'false',
+        },
+      },
+      {
+        path: '/collections',
+        name: 'Collections',
+        component: () => import('../views/main/Collections.vue'),
+        meta: {
+          authRequired: 'false',
+          adminRequired: 'false',
+        },
+      },
+      {
+        path: '/collections/collection/:id',
+        name: 'Collection',
+        component: () => import('../views/main/Collection.vue'),
+        meta: {
+          authRequired: 'false',
+          adminRequired: 'false',
+        },
+      },
+      {
+        path: '/contact',
+        name: 'Contact',
+        component: () => import('../views/main/Contact.vue'),
+        meta: {
+          authRequired: 'false',
+          adminRequired: 'false',
+        },
+      },
+      {
+        path: '/career',
+        name: 'Career',
+        component: () => import('../views/main/Career.vue'),
+        meta: {
+          authRequired: 'false',
+          adminRequired: 'false',
+        },
+      },
+      {
+        path: '/partnership',
+        name: 'Partnership',
+        component: () => import('../views/main/Partnership.vue'),
+        meta: {
+          authRequired: 'false',
+          adminRequired: 'false',
+        },
+      },
+      {
+        path: '/about',
+        name: 'About',
+        component: () => import('../views/main/About.vue'),
+        meta: {
+          authRequired: 'false',
+          adminRequired: 'false',
+        },
+      },
+    ],
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: AdminLayout,
+    redirect: '/admin/index',
+    meta: {
+      authRequired: 'true',
+      adminRequired: 'true',
+    },
+    children: [
+      {
+        path: '/admin/index',
+        name: 'AdminIndex',
+        component: () => import('@/views/admin/Index.vue'),
+        meta: {
+          authRequired: 'true',
+          adminRequired: 'true',
+        },
+      },
+      {
+        path: '/admin/orders',
+        name: 'Orders',
+        component: () => import('@/views/admin/Orders.vue'),
+        meta: {
+          authRequired: 'true',
+          adminRequired: 'true',
+        },
+      },
+      {
+        path: '/admin/orders/order/:id',
+        name: 'Order',
+        component: () => import('@/views/admin/Order.vue'),
+        meta: {
+          authRequired: 'true',
+          adminRequired: 'true',
+        },
+      },
+    ],
+  },
+  {
+    path: '/pages',
+    redirect: '/pages/404',
+    name: 'Pages',
+    component: {
+      render() {
+        return h(resolveComponent('router-view'))
+      },
+    },
+    meta: {
+      authRequired: 'false',
+      adminRequired: 'false',
+    },
+    children: [
+      {
+        path: '404',
+        name: 'Page404',
+        component: () => import('@/views/pages/Page404'),
+        meta: {
+          authRequired: 'false',
+          adminRequired: 'false',
+        },
+      },
+      {
+        path: '500',
+        name: 'Page500',
+        component: () => import('@/views/pages/Page500'),
+        meta: {
+          authRequired: 'false',
+          adminRequired: 'false',
+        },
+      },
+      {
+        path: 'login',
+        name: 'Login',
+        component: () => import('@/views/pages/Login'),
+        meta: {
+          authRequired: 'false',
+          adminRequired: 'false',
+        },
+      },
+      {
+        path: 'register',
+        name: 'Register',
+        component: () => import('@/views/pages/Register'),
+        meta: {
+          authRequired: 'false',
+          adminRequired: 'false',
+        },
+      },
+    ],
+  },
+]
+
+const router = createRouter({
+  history: createWebHashHistory(process.env.BASE_URL),
+  routes,
+  scrollBehavior() {
+    // always scroll to top
+    return { top: 0 }
+  },
+})
+router.beforeEach((to, from, next) => {
+  console.log('hello')
+  //check page is protected or not
+  console.log('authRequired', to.meta.authRequired)
+  console.log('adminRequired', to.meta.adminRequired)
+
+  if (to.meta.authRequired == 'true') {
+    const role = localStorage.getItem('role')
+    if (role == 'user' || role == 'admin') {
+      if (to.meta.adminRequired == 'true') {
+        if (role == 'admin') {
+          return next()
+        } else {
+          alert('Sorry , you need an admin permission for that...')
+          router.push({
+            name: 'Index',
+          })
+        }
+      } else {
+        return next()
+      }
+    } else {
+      router.push({
+        name: 'Login',
+      })
+    }
+  } else {
+    return next()
+  }
+})
+export default router
