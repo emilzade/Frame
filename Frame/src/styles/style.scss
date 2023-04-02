@@ -7,7 +7,7 @@ $enable-rtl: true;
 // Import styles
 @import '//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome.css';
 @import '~@coreui/coreui/scss/coreui';
-
+@import '../styles/adminStyle';
 // Import Chart.js Tooltips
 @import '~@coreui/chartjs/scss/tooltips';
 

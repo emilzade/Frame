@@ -115,5 +115,8 @@ export default {
       this.getAverageRGB(el.target)
     },
   },
+  beforeMount() {
+    //dbData will be edited here
+  },
 }
 </script>

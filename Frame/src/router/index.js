@@ -161,6 +161,42 @@ const routes = [
           adminRequired: 'true',
         },
       },
+      {
+        path: '/admin/messages',
+        name: 'Messages',
+        component: () => import('@/views/admin/Messages.vue'),
+        meta: {
+          authRequired: 'true',
+          adminRequired: 'true',
+        },
+      },
+      {
+        path: '/admin/message/:id',
+        name: 'Message',
+        component: () => import('@/views/admin/Message.vue'),
+        meta: {
+          authRequired: 'true',
+          adminRequired: 'true',
+        },
+      },
+      {
+        path: '/admin/notifications',
+        name: 'Notifications',
+        component: () => import('@/views/admin/Notifications.vue'),
+        meta: {
+          authRequired: 'true',
+          adminRequired: 'true',
+        },
+      },
+      {
+        path: '/admin/notification/:id',
+        name: 'Notification',
+        component: () => import('@/views/admin/Notification.vue'),
+        meta: {
+          authRequired: 'true',
+          adminRequired: 'true',
+        },
+      },
     ],
   },
   {

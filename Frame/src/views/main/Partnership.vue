@@ -111,9 +111,13 @@
           <CFormLabel for="message" class="bg-light form-label"
             >Your Message
           </CFormLabel>
-          <div @click="sendRequest" class="btn btn-dark w-100 my-2">
-            SEND REQUEST
-          </div>
+          <Button
+            text="Send Request"
+            alterText="Submit"
+            color="dark"
+            class="w-100 mt-3 rounded"
+            @click="sendRequest"
+          ></Button>
           <p class="text-secondary">
             *Lorem ipsum dolor sit amet consectetur
             <a target="_blank" href="mailto:careers@rassmin.com"
@@ -151,9 +155,11 @@
 import { ref } from 'vue'
 import VueMultiselect from 'vue-multiselect'
 import 'vue-multiselect/dist/vue-multiselect.css'
+import Button from '../../components/Button.vue'
 export default {
   components: {
     VueMultiselect,
+    Button,
   },
   data() {
     const requestInformation = {

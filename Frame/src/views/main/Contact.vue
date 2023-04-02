@@ -15,7 +15,20 @@
     <CRow class="py-5">
       <CCol
         class="col-sm-6 col-12 p-4 border rounded d-flex justify-content-center align-items-center"
-        >map here</CCol
+      >
+        <div class="mapouter">
+          <div class="gmap_canvas">
+            <iframe
+              class="gmap_iframe"
+              frameborder="0"
+              scrolling="no"
+              marginheight="0"
+              marginwidth="0"
+              src="https://maps.google.com/maps?width=300&amp;height=400&amp;hl=en&amp;q=azerbaijan technical uni&amp;t=p&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+            ></iframe
+            ><a href="https://piratebay-proxys.com/">Piratebay</a>
+          </div>
+        </div></CCol
       >
       <CCol class="col-sm-4 col-12 p-4">
         <div class="d-flex align-items-center justify-content-end py-3">
@@ -127,7 +140,24 @@
     </div>
   </div>
 </template>
+
 <style lang="scss">
+.mapouter {
+  position: relative;
+  text-align: right;
+  width: 100%;
+  height: 100%;
+}
+.gmap_canvas {
+  overflow: hidden;
+  background: none !important;
+  width: 100%;
+  height: 100%;
+}
+.gmap_iframe {
+  width: 100% !important;
+  height: 100% !important;
+}
 .form-group-custom {
   position: relative;
   .form-label {

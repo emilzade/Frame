@@ -95,11 +95,11 @@
             /></swiper-slide>
           </swiper>
         </CCol>
-        <CCol class="col-md-8 col-12 py-3 px-5">
+        <CCol class="col-md-8 col-12 py-3 px-5" v-if="dbData.data[0]">
           <h1 class="roboto-regular">
-            {{ dbData.name }}
+            {{ dbData.data[0].itemName }}
           </h1>
-          <h3 class="roboto-thin">{{ dbData.overview }}</h3>
+          <h3 class="roboto-thin">{{ dbData.data[0].description }}</h3>
           <CRow class="py-5">
             <CCol class="col-2 fs-4 roboto-thin">
               <p>Price</p>
@@ -107,20 +107,20 @@
               <p>Quantity</p>
             </CCol>
             <CCol class="col-10 fs-4 roboto-thin">
-              <p>{{ dbData.price }} ₼</p>
+              <p v-if="selectedSize">{{ selectedSize.price }} ₼</p>
               <div>
                 <VueMultiselect
                   v-model="selectedSize"
-                  :options="dbData.sizes"
+                  :options="currentItem.prices"
                   :limit="1"
                   :multiple="false"
                   :close-on-select="true"
                   :clear-on-select="false"
                   :preserve-search="true"
-                  label="name"
+                  label="sizeId"
                   :placeholder="'Select Size'"
-                  track-by="name"
-                  @select="addSize"
+                  track-by="sizeId"
+                  @select="selectSize"
                   @remove="dbData.selectedSize = null"
                   class="w-75"
                 />
@@ -243,11 +243,31 @@ export default {
     LastViewed,
   },
   data() {
-    const dbData = {}
+    const dbData = {
+      data: [],
+      date: '',
+      length: 1,
+      pageNumber: null,
+      pageSize: null,
+      sort: 'asc',
+      success: true,
+    }
+    const dbSize = {
+      data: [],
+      date: '',
+      length: 1,
+      pageNumber: null,
+      pageSize: null,
+      sort: null,
+      success: true,
+    }
+    const currentItem = ref()
     const thumbsSwiper = null
-    const selectedSize = ref(null)
+    const selectedSize = ref()
     return {
       dbData,
+      dbSize,
+      currentItem,
       thumbsSwiper,
       modules: [FreeMode, Thumbs],
       cilPlus,
@@ -277,8 +297,8 @@ export default {
     setThumbsSwiper: function (swiper) {
       this.thumbsSwiper = swiper
     },
-    addSize: function (size) {
-      this.dbData.selectedSize = size
+    selectSize: function (size) {
+      this.selectedSize = size
       console.log(size)
     },
     minusQuantity: function () {
@@ -299,29 +319,25 @@ export default {
     },
   },
   beforeMount() {
-    this.dbData = {
-      id: this.$route.params.id,
-      name: `Winter Portrait${this.$route.params.id}`,
-      overview:
-        'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab, voluptatem',
-      price: 19.9,
-      sizes: [
-        {
-          id: 1,
-          name: '35x60',
-        },
-        {
-          id: 2,
-          name: '50x50',
-        },
-        {
-          id: 3,
-          name: '80x120',
-        },
-      ],
-      quantity: 1,
-    }
-    this.createNewModel()
+    fetch(
+      `http://upgradesolutions-001-site3.dtempurl.com/api/Item?id=${this.$route.params.id}&sort=asc`,
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        this.dbData = data
+        if (data.length > 0) {
+          this.currentItem = data.data[0]
+          this.selectedSize = data.data[0].prices[0]
+        }
+      })
+    fetch(`http://upgradesolutions-001-site3.dtempurl.com/api/Size?id=1`)
+      .then((response) => response.json())
+      .then((data) => {
+        this.dbSize = data
+        console.log(data)
+      })
+    //this.createNewModel()
   },
 }
 </script>

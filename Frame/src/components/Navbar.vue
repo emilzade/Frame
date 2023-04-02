@@ -77,14 +77,13 @@
   </div>
 </template>
 <style lang="scss">
-$dark: #041721;
+$dark: #181d31;
 $darkgreen: #1b4645;
-$green: #276967;
-$yellow: #f9bd24;
-$orange: #f68800;
+$green: #678983;
+$yellow: #f0e9d2;
+$orange: #e6ddc4;
 
 .navbar-container {
-  background-color: $green;
   display: flex;
   position: fixed;
   width: 100%;
@@ -102,7 +101,7 @@ $orange: #f68800;
 }
 .navbar-search-item {
   z-index: 1;
-  color: black;
+  color: $yellow;
   font-family: munich;
   transition: 0.2s;
 }
@@ -110,7 +109,7 @@ $orange: #f68800;
   padding: 5px;
   z-index: 1;
   position: relative;
-  color: black;
+  color: $green;
   font-family: munich;
   transition: 0.2s;
   font-size: 1.1rem;

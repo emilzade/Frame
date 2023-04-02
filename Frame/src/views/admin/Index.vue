@@ -1,3 +1,3 @@
 <template>
-  <div>ADMIN INDEX</div>
+  <div class="border border-dark">ADMIN INDEX</div>
 </template>

@@ -19,15 +19,20 @@
       <div
         class="px-4 text-light d-flex justify-content-center align-items-center gap-2"
       >
-        <CIcon :content="cilMediaPlay" />
-        <div>SEE MORE</div>
+        <Button
+          text="See More"
+          color="noneToLight"
+          alterText="See More"
+        ></Button>
       </div>
     </router-link>
   </div>
 </template>
 <script>
 import { cilMediaPlay } from '@coreui/icons'
+import Button from './Button.vue'
 export default {
+  components: { Button },
   data() {
     return {
       cilMediaPlay,

@@ -1,6 +1,5 @@
 <template>
   <div class="py-5">
-    <p>{{ message }}</p>
     <CRow class="w-75 m-auto">
       <CCol
         v-for="item in dbData"
@@ -28,14 +27,10 @@
   </div>
 </template>
 <script>
-import { inject } from 'vue'
 import { cilStar } from '@coreui/icons'
 export default {
   setup() {
-    const message = inject('someKey')
-    return {
-      message,
-    }
+    return {}
   },
   data() {
     const dbData = [

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="border border-danger">
     <Navbar></Navbar>
     <div class="d-flex flex-column bg-light w-100">
       <router-view />
