@@ -45,8 +45,8 @@
             class="d-flex justify-content-between align-items-center w-100 px-3 py-1"
           >
             <VueMultiselect
-              v-model="selectedSize"
-              :options="data.sizes"
+              v-model="data.selectedSize"
+              :options="data.prices"
               :limit="1"
               :multiple="false"
               :close-on-select="true"
@@ -59,7 +59,7 @@
               @remove="favouriteItems.selectedSize = null"
               class="w-75"
             />
-            <div>{{ data.price }} ₼</div>
+            <div>{{ data.selectedSize.price }} ₼</div>
           </div>
           <CIcon
             @click="addToBasket(data.id)"
@@ -73,6 +73,7 @@
   </div>
 </template>
 <script>
+import { ref } from 'vue'
 import img from '../../assets/images/carousel-2.jpg'
 import VueMultiselect from 'vue-multiselect'
 import 'vue-multiselect/dist/vue-multiselect.css'
@@ -81,7 +82,7 @@ export default {
   components: { VueMultiselect },
   data() {
     const favouriteItems = null
-    const selectedSize = null
+    const selectedSize = ref()
     return {
       favouriteItems,
       img,
@@ -133,22 +134,8 @@ export default {
     this.favouriteItems = this.favouriteItems.map((obj) => ({
       ...obj,
       quantity: 1,
-      sizes: [
-        {
-          id: 1,
-          name: '35x60',
-        },
-        {
-          id: 2,
-          name: '50x50',
-        },
-        {
-          id: 3,
-          name: '80x120',
-        },
-      ],
+      selectedSize: obj.prices[0],
     }))
-
     console.log(this.favouriteItems)
   },
 }

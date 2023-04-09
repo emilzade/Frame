@@ -96,37 +96,37 @@
           </swiper>
         </CCol>
         <CCol class="col-md-8 col-12 py-3 px-5" v-if="dbData.data[0]">
-          <h1 class="roboto-regular">
+          <h1 class="">
             {{ dbData.data[0].itemName }}
           </h1>
-          <h3 class="roboto-thin">{{ dbData.data[0].description }}</h3>
+          <h3 class="">{{ dbData.data[0].description }}</h3>
           <CRow class="py-5">
-            <CCol class="col-2 fs-4 roboto-thin">
+            <CCol class="col-2 fs-4">
               <p>Price</p>
               <p>Size</p>
               <p>Quantity</p>
             </CCol>
-            <CCol class="col-10 fs-4 roboto-thin">
+            <CCol class="col-10 fs-4">
               <p v-if="selectedSize">{{ selectedSize.price }} ₼</p>
               <div>
                 <VueMultiselect
                   v-model="selectedSize"
-                  :options="currentItem.prices"
+                  :options="dbData.data[0].prices"
                   :limit="1"
                   :multiple="false"
                   :close-on-select="true"
                   :clear-on-select="false"
                   :preserve-search="true"
-                  label="sizeId"
+                  :allow-empty="false"
                   :placeholder="'Select Size'"
-                  track-by="sizeId"
-                  @select="selectSize"
-                  @remove="dbData.selectedSize = null"
-                  class="w-75"
+                  label="name"
+                  track-by="price"
+                  @select="this.selectedSize = size"
+                  class="w-50"
                 />
               </div>
               <div class="d-flex py-2 gap-1">
-                <CFormInput class="w-75 border-0" :value="dbData.quantity" />
+                <CFormInput class="w-50 border-0" :value="quantity" />
                 <div class="d-flex w-25">
                   <div @click="minusQuantity" class="btn btn-light w-50">
                     <CIcon :content="cilMinus" />
@@ -137,16 +137,8 @@
                 </div>
               </div>
               <div
-                v-if="dbData.selectedSize"
                 @click="addToBasket"
-                class="btn btn-dark w-75 my-2 p-1 text-center"
-              >
-                Add To Basket
-              </div>
-              <div
-                v-else
-                @click="addToBasket"
-                class="btn btn-dark disabled w-75 my-2 p-1 text-center"
+                class="btn btn-dark w-50 my-2 p-1 text-center"
               >
                 Add To Basket
               </div>
@@ -244,30 +236,55 @@ export default {
   },
   data() {
     const dbData = {
-      data: [],
+      success: false,
       date: '',
-      length: 1,
-      pageNumber: null,
-      pageSize: null,
-      sort: 'asc',
-      success: true,
+      pageNumber: 0,
+      pageSize: 0,
+      length: 0,
+      sort: '',
+      error: {
+        code: 0,
+        message: '',
+      },
+      data: [
+        {
+          id: 0,
+          itemName: '',
+          description: '',
+          tags: [''],
+          images: [''],
+          prices: [
+            {
+              id: 0,
+              itemId: 0,
+              sizeId: 0,
+              price: 0,
+              status: 0,
+            },
+          ],
+          status: {
+            id: 0,
+            name: '',
+          },
+        },
+      ],
     }
     const dbSize = {
-      data: [],
+      success: false,
       date: '',
-      length: 1,
       pageNumber: null,
       pageSize: null,
+      length: 0,
       sort: null,
-      success: true,
+      data: [],
     }
-    const currentItem = ref()
+    const quantity = 1
     const thumbsSwiper = null
     const selectedSize = ref()
     return {
       dbData,
       dbSize,
-      currentItem,
+      quantity,
       thumbsSwiper,
       modules: [FreeMode, Thumbs],
       cilPlus,
@@ -282,15 +299,7 @@ export default {
       if (galleryItems == null) {
         galleryItems = []
       }
-      if (galleryItems.some((x) => x.id == this.dbData.id)) {
-        galleryItems.filter((x) => x.id == this.dbData.id)[0].quantity =
-          this.dbData.quantity +
-          galleryItems.filter((x) => x.id == this.dbData.id)[0].quantity
-        localStorage.setItem('GalleryItems', JSON.stringify(galleryItems))
-      } else {
-        galleryItems.push(this.dbData)
-        localStorage.setItem('GalleryItems', JSON.stringify(galleryItems))
-      }
+      //addtobasket endpoint here
       console.log(this.dbData)
       this.$store.commit('setTotalQuantityInBasket')
     },
@@ -298,44 +307,28 @@ export default {
       this.thumbsSwiper = swiper
     },
     selectSize: function (size) {
-      this.selectedSize = size
       console.log(size)
     },
     minusQuantity: function () {
-      if (this.dbData.quantity > 1) {
-        this.dbData.quantity--
+      if (this.quantity > 1) {
+        this.quantity--
       }
     },
     plusQuantity: function () {
-      if (this.dbData.quantity < 5) {
-        this.dbData.quantity++
-      }
-    },
-    createNewModel: function () {
-      this.dbData = {
-        ...this.dbData,
-        selectedSize: null,
+      if (this.quantity < 5) {
+        this.quantity++
       }
     },
   },
-  beforeMount() {
-    fetch(
+  async beforeMount() {
+    await fetch(
       `http://upgradesolutions-001-site3.dtempurl.com/api/Item?id=${this.$route.params.id}&sort=asc`,
     )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data)
+      .then(async (response) => await response.json())
+      .then(async (data) => {
         this.dbData = data
-        if (data.length > 0) {
-          this.currentItem = data.data[0]
-          this.selectedSize = data.data[0].prices[0]
-        }
-      })
-    fetch(`http://upgradesolutions-001-site3.dtempurl.com/api/Size?id=1`)
-      .then((response) => response.json())
-      .then((data) => {
-        this.dbSize = data
-        console.log(data)
+        console.log(this.dbData)
+        this.selectedSize = this.dbData.data[0].prices[0]
       })
     //this.createNewModel()
   },

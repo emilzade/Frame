@@ -47,6 +47,7 @@
 </template>
 
 <script>
+//this page is not completed. for test , set username as 'admin'
 import router from '@/router'
 
 export default {

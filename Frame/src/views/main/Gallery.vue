@@ -7,7 +7,7 @@
       <Transition>
         <div
           style="left: 25%; right: 25%"
-          class="display-2 w-100 m-auto position-absolute w-sm-50 w-75 bottom-0"
+          class="display-2 m-auto position-absolute w-50 bottom-0"
         >
           <CFormInput placeholder="Search here..." />
         </div>
@@ -74,7 +74,7 @@
       <CCol class="col-md-10 col-12 p-5">
         <CRow>
           <div
-            v-for="data in dbData"
+            v-for="data in dbData.data"
             :key="data.id"
             class="col-md-3 col-sm-4 col-6 p-2 d-flex flex-column align-items-center rounded single-gallery-item"
           >
@@ -104,9 +104,9 @@
                   id: data.id,
                 },
               }"
-              ><p>{{ data.name }}</p></router-link
+              ><p>{{ data.itemName }}</p></router-link
             >
-            <p>{{ data.price }} ₼</p>
+            <p>{{ data.prices[0].price }} ₼</p>
           </div>
         </CRow>
       </CCol>
@@ -131,58 +131,7 @@ export default {
   components: { LastViewed },
   data() {
     const isCategoriesExpanded = ref(false)
-    const dbData = [
-      {
-        id: 1,
-        name: 'Yenə o bağ olaydı1',
-        price: 11,
-      },
-      {
-        id: 2,
-        name: 'Yenə o bağ olaydı2',
-        price: 24,
-      },
-      {
-        id: 3,
-        name: 'Yenə o bağ olaydı3',
-        price: 37,
-      },
-      {
-        id: 4,
-        name: 'Yenə o bağ olaydı4',
-        price: 41,
-      },
-      {
-        id: 5,
-        name: 'Yenə o bağ olaydı5',
-        price: 54,
-      },
-      {
-        id: 6,
-        name: 'Yenə o bağ olaydı6',
-        price: 64,
-      },
-      {
-        id: 7,
-        name: 'Yenə o bağ olaydı7',
-        price: 74,
-      },
-      {
-        id: 8,
-        name: 'Yenə o bağ olaydı8',
-        price: 84,
-      },
-      {
-        id: 9,
-        name: 'Yenə o bağ olaydı9',
-        price: 94,
-      },
-      {
-        id: 10,
-        name: 'Yenə o bağ olaydı10',
-        price: 104,
-      },
-    ]
+    const dbData = []
     const favouriteItems = JSON.parse(localStorage.getItem('FavouriteItems'))
     return {
       img,
@@ -199,7 +148,7 @@ export default {
         this.favouriteItems = []
       }
       if (this.favouriteItems.some((element) => element.id == id)) {
-        this.dbData.filter((x) => x.id == id)[0].isFav = false
+        this.dbData.data.filter((x) => x.id == id)[0].isFav = false
         this.favouriteItems.splice(
           this.favouriteItems.findIndex((el) => el.id == id),
           1,
@@ -209,38 +158,42 @@ export default {
           JSON.stringify(this.favouriteItems),
         )
       } else {
-        this.dbData.filter((x) => x.id == id)[0].isFav = true
-        this.favouriteItems.push(this.dbData.filter((x) => x.id == id)[0])
+        this.dbData.data.filter((x) => x.id == id)[0].isFav = true
+        this.favouriteItems.push(this.dbData.data.filter((x) => x.id == id)[0])
         localStorage.setItem(
           'FavouriteItems',
           JSON.stringify(this.favouriteItems),
         )
       }
     },
-    createNewModelArray: function () {
-      this.dbData = this.dbData.map((obj) => ({
-        ...obj,
-        isFav: false,
-      }))
-    },
   },
   beforeMount() {
-    this.createNewModelArray()
+    fetch(
+      `http://upgradesolutions-001-site3.dtempurl.com/api/Item?pageNumber=1&pageSize=12&sort=asc`,
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        this.dbData = data
+        this.dbData.data = data.data.map((obj) => ({
+          ...obj,
+          isFav: false,
+        }))
+        let tempFavItems = []
+        if (this.favouriteItems == null) {
+          this.favouriteItems = []
+        }
+        console.log(this.favouriteItems)
+        console.log(this.dbData)
+        for (let i = 0; i < this.favouriteItems.length; i++) {
+          tempFavItems.push(this.dbData.data[0])
+          tempFavItems[i].isFav = true
+        }
+      })
   },
   mounted() {
-    let tempFavItems = []
-    if (this.favouriteItems == null) {
-      this.favouriteItems = []
-    }
-    for (let i = 0; i < this.favouriteItems.length; i++) {
-      tempFavItems.push(
-        this.dbData.find((element) => element.id == this.favouriteItems[i].id),
-      )
-      tempFavItems[i].isFav = true
-    }
-    console.log(this.favouriteItems)
-    console.log(this.dbData)
-    console.log(tempFavItems)
+    // console.log(this.favouriteItems)
+    // console.log(this.dbData)
+    // console.log(tempFavItems)
   },
 }
 </script>

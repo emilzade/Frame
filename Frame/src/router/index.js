@@ -262,10 +262,10 @@ const router = createRouter({
   },
 })
 router.beforeEach((to, from, next) => {
-  console.log('hello')
-  //check page is protected or not
-  console.log('authRequired', to.meta.authRequired)
-  console.log('adminRequired', to.meta.adminRequired)
+  // console.log('hello')
+  // //check page is protected or not
+  // console.log('authRequired', to.meta.authRequired)
+  // console.log('adminRequired', to.meta.adminRequired)
 
   if (to.meta.authRequired == 'true') {
     const role = localStorage.getItem('role')

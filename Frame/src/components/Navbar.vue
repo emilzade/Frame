@@ -90,6 +90,7 @@ $orange: #e6ddc4;
   left: 0;
   right: 0;
   z-index: 100;
+  //background-color: rgba(0, 0, 0, 0.084);
   transition: 0.5s;
 }
 .navbar-container-hidden {
@@ -102,7 +103,6 @@ $orange: #e6ddc4;
 .navbar-search-item {
   z-index: 1;
   color: $yellow;
-  font-family: munich;
   transition: 0.2s;
 }
 .navbar-item {
@@ -110,12 +110,11 @@ $orange: #e6ddc4;
   z-index: 1;
   position: relative;
   color: $green;
-  font-family: munich;
   transition: 0.2s;
   font-size: 1.1rem;
 }
 .navbar-item::before {
-  background: $yellow;
+  background: $darkgreen;
   content: '';
   position: absolute;
   bottom: 0;
@@ -133,7 +132,7 @@ $orange: #e6ddc4;
   transform-origin: left;
 }
 .navbar-item:hover {
-  color: $yellow;
+  color: $darkgreen;
 }
 .logo-div {
   width: 100px;
