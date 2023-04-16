@@ -26,7 +26,9 @@
           <p class="display-1 w-100 text-center">
             {{ item.name }}
           </p>
-          <div class="d-flex flex-column align-items-centerjustify-content-end">
+          <div
+            class="d-flex flex-column align-items-center justify-content-end"
+          >
             <h6 class="w-50 munich text-center">
               {{ item.overview }}
             </h6>

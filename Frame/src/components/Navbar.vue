@@ -1,6 +1,89 @@
 <template>
-  <div
-    class="w-100 align-items-center justify-content-between px-5 navbar-container"
+  <MDBNavbar
+    expand="lg"
+    style="z-index: 100; box-shadow: 0 0 0 0"
+    class="navbar-container d-flex"
+    :class="{
+      'navbar-container-hidden': isScrolled,
+      'navbar-container-visible': !isScrolled,
+    }"
+    container
+  >
+    <MDBNavbarBrand href="#" class="">
+      <router-link
+        :to="{
+          name: 'Index',
+        }"
+        ><div class="logo-div">
+          <img class="w-100" :src="logo" />
+        </div>
+      </router-link>
+    </MDBNavbarBrand>
+    <MDBNavbarToggler
+      class=""
+      @click="isNavbarCollapse = !isNavbarCollapse"
+      target="#navbarSupportedContent"
+    ></MDBNavbarToggler>
+    <MDBCollapse
+      class="d-flex justify-content-end align-items-center"
+      v-model="isNavbarCollapse"
+      id="navbarSupportedContent"
+    >
+      <MDBNavbarNav
+        class="mb-2 mb-lg-0 p-3 align-items-center px-5"
+        style="margin: 0px !important"
+      >
+        <MDBNavbarItem to="#" active>
+          <router-link
+            class="text-decoration-none navbar-item"
+            :to="{
+              name: 'Gallery',
+            }"
+          >
+            <span>Gallery</span>
+          </router-link>
+        </MDBNavbarItem>
+        <MDBNavbarItem href="#">
+          <router-link
+            class="text-decoration-none navbar-item"
+            :to="{
+              name: 'Collections',
+            }"
+          >
+            <span>Collections</span>
+          </router-link>
+        </MDBNavbarItem>
+        <MDBNavbarItem href="#">
+          <router-link
+            class="text-decoration-none navbar-item"
+            :to="{
+              name: 'Favourites',
+            }"
+          >
+            <CIcon :content="cilHeart" />
+          </router-link>
+        </MDBNavbarItem>
+        <MDBNavbarItem href="#">
+          <router-link
+            class="text-decoration-none navbar-item"
+            :to="{
+              name: 'Checkout',
+            }"
+          >
+            <div v-if="$store.state.elementCountInBasket == 0">
+              <CIcon :content="cilBasket" />
+            </div>
+            <div v-else>
+              <CIcon class="text-success" :content="cilBasket" />
+            </div>
+          </router-link>
+        </MDBNavbarItem>
+      </MDBNavbarNav>
+      <!-- Search form -->
+    </MDBCollapse>
+  </MDBNavbar>
+  <!-- <div
+    class="w-100 align-items-center justify-content-between px-5 navbar-container border border-dark"
     :class="{
       'navbar-container-hidden': isScrolled,
       'navbar-container-visible': !isScrolled,
@@ -74,7 +157,7 @@
         <CIcon :content="cilUser" />
       </router-link>
     </div>
-  </div>
+  </div> -->
 </template>
 <style lang="scss">
 $dark: #181d31;
@@ -85,10 +168,7 @@ $orange: #e6ddc4;
 
 .navbar-container {
   display: flex;
-  position: fixed;
   width: 100%;
-  left: 0;
-  right: 0;
   z-index: 100;
   //background-color: rgba(0, 0, 0, 0.084);
   transition: 0.5s;
@@ -106,7 +186,6 @@ $orange: #e6ddc4;
   transition: 0.2s;
 }
 .navbar-item {
-  padding: 5px;
   z-index: 1;
   position: relative;
   color: $green;
@@ -137,19 +216,55 @@ $orange: #e6ddc4;
 .logo-div {
   width: 100px;
 }
+@media screen and (max-width: 1000px) {
+  .navbar-container {
+    background-color: white;
+    position: static;
+  }
+}
+@media screen and (min-width: 1000px) {
+  .navbar-container {
+    position: fixed;
+    left: 0;
+    right: 0;
+    //background-color: rgba(0, 0, 0, 0.084);
+    transition: 0.5s;
+    background-color: transparent;
+  }
+}
 </style>
 <script>
 import logo from '../assets/images/logo.png'
+//import ref from 'vue'
 import { cilHeart, cilBasket, cilUser, cilSearch } from '@coreui/icons'
+import 'mdb-vue-ui-kit/css/mdb.min.css'
+import {
+  MDBNavbar,
+  MDBNavbarToggler,
+  MDBNavbarBrand,
+  MDBNavbarNav,
+  MDBNavbarItem,
+  MDBCollapse,
+} from 'mdb-vue-ui-kit'
 export default {
   name: 'Navbar',
-  components: {},
+  components: {
+    MDBNavbar,
+    MDBNavbarToggler,
+    MDBNavbarBrand,
+    MDBNavbarNav,
+    MDBNavbarItem,
+    MDBCollapse,
+  },
   data() {
     const role = localStorage.getItem('role')
     const isBasketHasItem = false
     const limitPosition = 100
     const isScrolled = false
     const lastPosition = 0
+
+    const isNavbarCollapse = false
+    const isDropdownActive = false
     return {
       logo,
       cilHeart,
@@ -161,6 +276,8 @@ export default {
       limitPosition,
       isScrolled,
       lastPosition,
+      isNavbarCollapse,
+      isDropdownActive,
     }
   },
   watch: {

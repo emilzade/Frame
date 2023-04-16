@@ -1,12 +1,12 @@
 <template>
   <div
-    class="dune-rise d-flex justify-content-center align-items-center my-3 py-3 px-5 gap-5 bg-dark text-light"
+    class="dune-rise d-flex flex-wrap justify-content-center align-items-center my-3 py-3 px-5 bg-dark text-light"
   >
     <div
-      class="d-flex align-items-center justify-content-center align-items-center text-center px-4"
+      class="d-flex flex-column align-items-center justify-content-center text-center gap-2 w-75"
     >
-      <div class="w-50 display-5">Sale 30%</div>
-      <div class="w-50">FOR NATURE PHOTOS</div>
+      <div class="display-5">Sale 30%</div>
+      <div class="">FOR NATURE PHOTOS</div>
     </div>
     <router-link
       :to="{
