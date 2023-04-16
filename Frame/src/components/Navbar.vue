@@ -229,13 +229,13 @@ $orange: #e6ddc4;
 .logo-div {
   width: 100px;
 }
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1024px) {
   .navbar-container {
-    background-color: white;
+    background-color: #f8f9fa;
     position: static;
   }
 }
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1024px) {
   .navbar-container {
     position: fixed;
     left: 0;

@@ -111,6 +111,17 @@
         </CRow>
       </CCol>
     </CRow>
+    <div
+      class="d-flex flex-column justify-content-center align-items-center w-50 m-auto gap-2 text-center pt-3"
+    >
+      <pagination
+        v-model="page"
+        :records="totalElementCount"
+        :per-page="pageSize"
+        @paginate="pageSelected"
+        :options="{ chunk: 8 }"
+      />
+    </div>
     <LastViewed />
   </div>
 </template>
@@ -127,12 +138,18 @@ import { ref } from 'vue'
 import img from '../../assets/images/carousel-2.jpg'
 import { cilHeart, cilMenu } from '@coreui/icons'
 import LastViewed from '../../components/LastViewed.vue'
+import Pagination from 'v-pagination-3'
+
 export default {
-  components: { LastViewed },
+  components: { LastViewed, Pagination },
   data() {
     const isCategoriesExpanded = ref(false)
-    const dbData = []
+    const dbData = {}
     const favouriteItems = JSON.parse(localStorage.getItem('FavouriteItems'))
+
+    const page = 1
+    const totalElementCount = 0
+    const pageSize = 0
     return {
       img,
       cilHeart,
@@ -140,6 +157,9 @@ export default {
       isCategoriesExpanded,
       dbData,
       favouriteItems,
+      page,
+      totalElementCount,
+      pageSize,
     }
   },
   methods: {
@@ -166,29 +186,244 @@ export default {
         )
       }
     },
+    pageSelected: function (pageId) {
+      this.page = pageId
+    },
   },
   beforeMount() {
-    fetch(
-      `http://upgradesolutions-001-site3.dtempurl.com/api/Item?pageNumber=1&pageSize=12&sort=asc`,
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        this.dbData = data
-        this.dbData.data = data.data.map((obj) => ({
-          ...obj,
-          isFav: false,
-        }))
-        let tempFavItems = []
-        if (this.favouriteItems == null) {
-          this.favouriteItems = []
-        }
-        console.log(this.favouriteItems)
-        console.log(this.dbData)
-        for (let i = 0; i < this.favouriteItems.length; i++) {
-          tempFavItems.push(this.dbData.data[0])
-          tempFavItems[i].isFav = true
-        }
-      })
+    this.dbData = {
+      success: true,
+      date: '2023-04-16T10:55:44.264Z',
+      pageNumber: 0,
+      pageSize: 0,
+      length: 0,
+      sort: 'string',
+      error: {
+        code: 0,
+        message: 'string',
+      },
+      data: [
+        {
+          id: 1,
+          itemName: 'string',
+          description: 'string',
+          tags: ['string'],
+          images: ['string'],
+          prices: [
+            {
+              id: 0,
+              itemId: 0,
+              sizeId: 0,
+              name: 'string',
+              description: 'string',
+              sizes: {
+                id: 0,
+                name: 'string',
+                description: 'string',
+                enabled: true,
+              },
+              price: 0,
+              status: 0,
+            },
+          ],
+          status: {
+            id: 0,
+            name: 'string',
+          },
+        },
+        {
+          id: 2,
+          itemName: 'string',
+          description: 'string',
+          tags: ['string'],
+          images: ['string'],
+          prices: [
+            {
+              id: 0,
+              itemId: 0,
+              sizeId: 0,
+              name: 'string',
+              description: 'string',
+              sizes: {
+                id: 0,
+                name: 'string',
+                description: 'string',
+                enabled: true,
+              },
+              price: 0,
+              status: 0,
+            },
+          ],
+          status: {
+            id: 0,
+            name: 'string',
+          },
+        },
+        {
+          id: 3,
+          itemName: 'string',
+          description: 'string',
+          tags: ['string'],
+          images: ['string'],
+          prices: [
+            {
+              id: 0,
+              itemId: 0,
+              sizeId: 0,
+              name: 'string',
+              description: 'string',
+              sizes: {
+                id: 0,
+                name: 'string',
+                description: 'string',
+                enabled: true,
+              },
+              price: 0,
+              status: 0,
+            },
+          ],
+          status: {
+            id: 0,
+            name: 'string',
+          },
+        },
+        {
+          id: 4,
+          itemName: 'string',
+          description: 'string',
+          tags: ['string'],
+          images: ['string'],
+          prices: [
+            {
+              id: 0,
+              itemId: 0,
+              sizeId: 0,
+              name: 'string',
+              description: 'string',
+              sizes: {
+                id: 0,
+                name: 'string',
+                description: 'string',
+                enabled: true,
+              },
+              price: 0,
+              status: 0,
+            },
+          ],
+          status: {
+            id: 0,
+            name: 'string',
+          },
+        },
+        {
+          id: 5,
+          itemName: 'string',
+          description: 'string',
+          tags: ['string'],
+          images: ['string'],
+          prices: [
+            {
+              id: 0,
+              itemId: 0,
+              sizeId: 0,
+              name: 'string',
+              description: 'string',
+              sizes: {
+                id: 0,
+                name: 'string',
+                description: 'string',
+                enabled: true,
+              },
+              price: 0,
+              status: 0,
+            },
+          ],
+          status: {
+            id: 0,
+            name: 'string',
+          },
+        },
+        {
+          id: 6,
+          itemName: 'string',
+          description: 'string',
+          tags: ['string'],
+          images: ['string'],
+          prices: [
+            {
+              id: 0,
+              itemId: 0,
+              sizeId: 0,
+              name: 'string',
+              description: 'string',
+              sizes: {
+                id: 0,
+                name: 'string',
+                description: 'string',
+                enabled: true,
+              },
+              price: 0,
+              status: 0,
+            },
+          ],
+          status: {
+            id: 0,
+            name: 'string',
+          },
+        },
+        {
+          id: 7,
+          itemName: 'string',
+          description: 'string',
+          tags: ['string'],
+          images: ['string'],
+          prices: [
+            {
+              id: 0,
+              itemId: 0,
+              sizeId: 0,
+              name: 'string',
+              description: 'string',
+              sizes: {
+                id: 0,
+                name: 'string',
+                description: 'string',
+                enabled: true,
+              },
+              price: 0,
+              status: 0,
+            },
+          ],
+          status: {
+            id: 0,
+            name: 'string',
+          },
+        },
+      ],
+    }
+    this.pageSize = 10
+    this.totalElementCount = 100
+    // fetch(
+    //   `http://upgradesolutions-001-site3.dtempurl.com/api/Item?pageNumber=1&pageSize=12&sort=asc`,
+    // )
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     this.dbData = data
+    //     this.dbData.data = data.data.map((obj) => ({
+    //       ...obj,
+    //       isFav: false,
+    //     }))
+    //     let tempFavItems = []
+    //     if (this.favouriteItems == null) {
+    //       this.favouriteItems = []
+    //     }
+    //     console.log(this.favouriteItems)
+    //     console.log(this.dbData)
+    //     for (let i = 0; i < this.favouriteItems.length; i++) {
+    //       tempFavItems.push(this.dbData.data[0])
+    //       tempFavItems[i].isFav = true
+    //     }
+    //   })
   },
   mounted() {
     // console.log(this.favouriteItems)

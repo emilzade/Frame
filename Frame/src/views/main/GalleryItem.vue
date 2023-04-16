@@ -101,13 +101,12 @@
           </h1>
           <h3 class="">{{ dbData.data[0].description }}</h3>
           <CRow class="py-5">
-            <CCol class="col-2 fs-4">
-              <p>Price</p>
-              <p>Size</p>
-              <p>Quantity</p>
+            <CCol class="col-sm-3 col-4 fs-4 pt-1">Price </CCol>
+            <CCol class="col-sm-9 col-8 fs-4 pb-1"
+              >{{ selectedSize.price }} ₼
             </CCol>
-            <CCol class="col-10 fs-4">
-              <p v-if="selectedSize">{{ selectedSize.price }} ₼</p>
+            <CCol class="col-sm-3 col-4 fs-4 pt-1">Size </CCol>
+            <CCol class="col-sm-9 col-8 fs-4 pb-1">
               <div>
                 <VueMultiselect
                   v-model="selectedSize"
@@ -125,8 +124,14 @@
                   class="w-50"
                 />
               </div>
-              <div class="d-flex py-2 gap-1">
-                <CFormInput class="w-50 border-0" :value="quantity" />
+            </CCol>
+            <CCol class="col-sm-3 col-4 fs-4 pt-1">Quantity</CCol>
+            <CCol class="col-sm-9 col-8 fs-4 pb-1"
+              ><div class="d-flex py-2 gap-1">
+                <CFormInput
+                  class="w-50 border border-secondary"
+                  :value="quantity"
+                />
                 <div class="d-flex w-25">
                   <div @click="minusQuantity" class="btn btn-light w-50">
                     <CIcon :content="cilMinus" />
@@ -134,11 +139,12 @@
                   <div @click="plusQuantity" class="btn btn-light w-50">
                     <CIcon :content="cilPlus" />
                   </div>
-                </div>
-              </div>
+                </div></div
+            ></CCol>
+            <CCol class="col-12 d-flex align-items-center">
               <div
                 @click="addToBasket"
-                class="btn btn-dark w-50 my-2 p-1 text-center"
+                class="btn btn-dark my-2 py-2 px-3 text-center"
               >
                 Add To Basket
               </div>
@@ -235,40 +241,7 @@ export default {
     LastViewed,
   },
   data() {
-    const dbData = {
-      success: false,
-      date: '',
-      pageNumber: 0,
-      pageSize: 0,
-      length: 0,
-      sort: '',
-      error: {
-        code: 0,
-        message: '',
-      },
-      data: [
-        {
-          id: 0,
-          itemName: '',
-          description: '',
-          tags: [''],
-          images: [''],
-          prices: [
-            {
-              id: 0,
-              itemId: 0,
-              sizeId: 0,
-              price: 0,
-              status: 0,
-            },
-          ],
-          status: {
-            id: 0,
-            name: '',
-          },
-        },
-      ],
-    }
+    const dbData = {}
     const dbSize = {
       success: false,
       date: '',
@@ -294,14 +267,13 @@ export default {
   },
   methods: {
     addToBasket: function () {
-      //let id = this.dbData.id
-      let galleryItems = JSON.parse(localStorage.getItem('GalleryItems'))
-      if (galleryItems == null) {
-        galleryItems = []
+      var payload = {
+        userId: 1,
+        itemId: this.dbData.data[0].id,
+        sizeId: this.selectedSize.sizeId,
+        quantity: this.quantity,
       }
-      //addtobasket endpoint here
-      console.log(this.dbData)
-      this.$store.commit('setTotalQuantityInBasket')
+      console.log(payload)
     },
     setThumbsSwiper: function (swiper) {
       this.thumbsSwiper = swiper
@@ -320,16 +292,74 @@ export default {
       }
     },
   },
-  async beforeMount() {
-    await fetch(
-      `http://upgradesolutions-001-site3.dtempurl.com/api/Item?id=${this.$route.params.id}&sort=asc`,
-    )
-      .then(async (response) => await response.json())
-      .then(async (data) => {
-        this.dbData = data
-        console.log(this.dbData)
-        this.selectedSize = this.dbData.data[0].prices[0]
-      })
+  beforeMount() {
+    this.dbData = {
+      success: true,
+      date: '2023-04-16T11:12:48.876Z',
+      pageNumber: 0,
+      pageSize: 0,
+      length: 0,
+      sort: 'string',
+      error: {
+        code: 0,
+        message: 'string',
+      },
+      data: [
+        {
+          id: 1,
+          itemName: 'string',
+          description: 'string',
+          tags: ['string'],
+          images: ['string'],
+          prices: [
+            {
+              id: 1,
+              itemId: 2,
+              sizeId: 5,
+              name: 'pricename',
+              description: 'pricedesc',
+              sizes: {
+                id: 5,
+                name: 'sizename',
+                description: 'sicedesc',
+                enabled: true,
+              },
+              price: 5,
+              status: 0,
+            },
+            {
+              id: 1,
+              itemId: 2,
+              sizeId: 6,
+              name: 'pricename',
+              description: 'pricedesc',
+              sizes: {
+                id: 6,
+                name: 'sizename',
+                description: 'sicedesc',
+                enabled: true,
+              },
+              price: 10,
+              status: 0,
+            },
+          ],
+          status: {
+            id: 0,
+            name: 'string',
+          },
+        },
+      ],
+    }
+    this.selectedSize = this.dbData.data[0].prices[0]
+    // await fetch(
+    //   `http://upgradesolutions-001-site3.dtempurl.com/api/Item?id=${this.$route.params.id}&sort=asc`,
+    // )
+    //   .then(async (response) => await response.json())
+    //   .then(async (data) => {
+    //     this.dbData = data
+    //     console.log(this.dbData)
+    //     this.selectedSize = this.dbData.data[0].prices[0]
+    //   })
     //this.createNewModel()
   },
 }
