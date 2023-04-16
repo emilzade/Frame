@@ -30,7 +30,7 @@
       id="navbarSupportedContent"
     >
       <MDBNavbarNav
-        class="mb-2 mb-lg-0 p-3 align-items-center px-5"
+        class="mb-2 mb-lg-0 p-3 align-items-center px-5 gap-2"
         style="margin: 0px !important"
       >
         <MDBNavbarItem to="#" active>
@@ -76,6 +76,19 @@
             <div v-else>
               <CIcon class="text-success" :content="cilBasket" />
             </div>
+          </router-link>
+        </MDBNavbarItem>
+        <MDBNavbarItem href="#">
+          <router-link
+            class="text-decoration-none navbar-item"
+            :to="{
+              name: 'Gallery',
+            }"
+          >
+            <CIcon
+              @click="this.$store.commit('changeSearchActiveState')"
+              :content="cilSearch"
+            />
           </router-link>
         </MDBNavbarItem>
       </MDBNavbarNav>
