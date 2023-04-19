@@ -6,6 +6,7 @@
     :class="{
       'navbar-container-hidden': isScrolled,
       'navbar-container-visible': !isScrolled,
+      'navbar-container-bg-dark': lastPosition > 200,
     }"
     container
   >
@@ -189,6 +190,9 @@ $orange: #e6ddc4;
 .navbar-container-hidden {
   top: -100%;
 }
+.navbar-container-bg-dark {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+}
 .navbar-container-visible {
   display: flex;
   top: 0;
@@ -272,7 +276,7 @@ export default {
   data() {
     const role = localStorage.getItem('role')
     const isBasketHasItem = false
-    const limitPosition = 100
+    const limitPosition = 200
     const isScrolled = false
     const lastPosition = 0
 

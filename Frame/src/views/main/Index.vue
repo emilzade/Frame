@@ -61,7 +61,7 @@
         </router-link>
       </div>
       <swiper
-        class="landing-carousel"
+        class="landing-carousel landing-carousel-sm border border-dark"
         :modules="modules"
         :space-between="30"
         :loop="true"
@@ -85,7 +85,7 @@
         <swiper-slide
           v-for="item in newGalleryItems.data"
           :key="item.id"
-          class="landing-carousel-item"
+          class="landing-carousel-item landing-carousel-item-sm border border-dark"
         >
           <router-link
             :to="{
@@ -119,7 +119,7 @@
         </router-link>
       </div>
       <swiper
-        class="landing-carousel"
+        class="landing-carousel landing-carousel-sm"
         :modules="modules"
         :space-between="30"
         :loop="true"
@@ -143,7 +143,7 @@
         <swiper-slide
           v-for="item in popularGalleryItems"
           :key="item.id"
-          class="landing-carousel-item"
+          class="landing-carousel-item landing-carousel-item-sm"
         >
           <router-link
             :to="{

@@ -134,10 +134,21 @@ a {
   color: #212529;
 }
 .landing-page {
+  .landing-carousel-sm {
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+    .landing-carousel-item-sm {
+      position: relative;
+      transition: 0.3s;
+      border: 1px solid black;
+    }
+    .landing-carousel-item-sm:hover {
+      z-index: 9999;
+      transform: translate(0px, -5px);
+    }
+  }
   .landing-carousel {
     .landing-carousel-item {
-      position: relative;
-      border: 1px solid black;
       .top-carousel-text-div {
         position: absolute;
         top: 0;
@@ -186,6 +197,7 @@ a {
         display: flex;
         justify-content: center;
         align-items: center;
+        color: black;
       }
     }
     .landing-carousel-item:hover {
