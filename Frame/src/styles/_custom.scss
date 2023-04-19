@@ -224,6 +224,9 @@ $darkgreen: #1b4645;
 $green: #276967;
 $yellow: #f9bd24;
 $orange: #f68800;
+.transition-05 {
+  transition: 0.5s !important;
+}
 .Heart-Animation {
   background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/66955/web_heart_animation.png');
   background-repeat: no-repeat;

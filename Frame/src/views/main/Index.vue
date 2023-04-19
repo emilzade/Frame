@@ -1,5 +1,5 @@
 <template>
-  <div class="landing-page">
+  <div class="landing-page transition-05">
     <!--big slider start-->
     <swiper
       class="landing-carousel dune-rise bg-light"
@@ -426,7 +426,7 @@ export default {
     },
   },
   beforeMount() {
-    fetch('http://upgradesolutions-001-site3.dtempurl.com/api/Item?sort=asc', {
+    fetch('https://rassmin.com/api/Item?sort=asc', {
       mode: 'cors',
     })
       .then((response) => response.json())

@@ -1,10 +1,14 @@
 <template>
   <div class="pt-5">
+    <h1
+      class="text-center pt-5 pb-5 gallery-header display-2 position-relative"
+    >
+      Favourites
+    </h1>
     <div
       v-if="favouriteItems.length == 0"
       class="text-center pt-5 pb-5 gallery-header"
     >
-      <h1 class="display-2">Favourites</h1>
       <p class="text-muted">
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reprehenderit,
         perspiciatis?
@@ -32,7 +36,7 @@
               id: data.id,
             },
           }"
-          >{{ data.name }}</router-link
+          >{{ data.itemName }}</router-link
         >
         <div
           @click="removeFromFavourites($event, data.id)"

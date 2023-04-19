@@ -241,16 +241,17 @@ export default {
     LastViewed,
   },
   data() {
-    const dbData = {}
-    const dbSize = {
+    const dbData = {
       success: false,
       date: '',
       pageNumber: null,
+      pageCount: null,
       pageSize: null,
       length: 0,
       sort: null,
       data: [],
     }
+    const dbSize = {}
     const quantity = 1
     const thumbsSwiper = null
     const selectedSize = ref()
@@ -293,73 +294,13 @@ export default {
     },
   },
   beforeMount() {
-    this.dbData = {
-      success: true,
-      date: '2023-04-16T11:12:48.876Z',
-      pageNumber: 0,
-      pageSize: 0,
-      length: 0,
-      sort: 'string',
-      error: {
-        code: 0,
-        message: 'string',
-      },
-      data: [
-        {
-          id: 1,
-          itemName: 'string',
-          description: 'string',
-          tags: ['string'],
-          images: ['string'],
-          prices: [
-            {
-              id: 1,
-              itemId: 2,
-              sizeId: 5,
-              name: 'pricename',
-              description: 'pricedesc',
-              sizes: {
-                id: 5,
-                name: 'sizename',
-                description: 'sicedesc',
-                enabled: true,
-              },
-              price: 5,
-              status: 0,
-            },
-            {
-              id: 1,
-              itemId: 2,
-              sizeId: 6,
-              name: 'pricename',
-              description: 'pricedesc',
-              sizes: {
-                id: 6,
-                name: 'sizename',
-                description: 'sicedesc',
-                enabled: true,
-              },
-              price: 10,
-              status: 0,
-            },
-          ],
-          status: {
-            id: 0,
-            name: 'string',
-          },
-        },
-      ],
-    }
-    this.selectedSize = this.dbData.data[0].prices[0]
-    // await fetch(
-    //   `http://upgradesolutions-001-site3.dtempurl.com/api/Item?id=${this.$route.params.id}&sort=asc`,
-    // )
-    //   .then(async (response) => await response.json())
-    //   .then(async (data) => {
-    //     this.dbData = data
-    //     console.log(this.dbData)
-    //     this.selectedSize = this.dbData.data[0].prices[0]
-    //   })
+    fetch(`https://rassmin.com/api/Item?id=${this.$route.params.id}&sort=asc`)
+      .then(async (response) => await response.json())
+      .then(async (data) => {
+        this.dbData = data
+        console.log(this.dbData)
+        this.selectedSize = this.dbData.data[0].prices[0]
+      })
     //this.createNewModel()
   },
 }
