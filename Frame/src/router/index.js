@@ -214,7 +214,7 @@ const routes = [
     },
     children: [
       {
-        path: '404',
+        path: '/404',
         name: 'Page404',
         component: () => import('@/views/pages/Page404'),
         meta: {
@@ -223,7 +223,7 @@ const routes = [
         },
       },
       {
-        path: '500',
+        path: '/500',
         name: 'Page500',
         component: () => import('@/views/pages/Page500'),
         meta: {
@@ -232,7 +232,7 @@ const routes = [
         },
       },
       {
-        path: 'login',
+        path: '/login',
         name: 'Login',
         component: () => import('@/views/pages/Login'),
         meta: {
@@ -241,7 +241,7 @@ const routes = [
         },
       },
       {
-        path: 'register',
+        path: '/register',
         name: 'Register',
         component: () => import('@/views/pages/Register'),
         meta: {

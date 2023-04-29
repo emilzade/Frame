@@ -41,7 +41,7 @@
               name: 'Gallery',
             }"
           >
-            <span>Gallery</span>
+            <span class="p-2 rounded">Gallery</span>
           </router-link>
         </MDBNavbarItem>
         <MDBNavbarItem href="#">
@@ -205,9 +205,9 @@ $orange: #e6ddc4;
 .navbar-item {
   z-index: 1;
   position: relative;
-  color: $green;
   transition: 0.2s;
   font-size: 1.1rem;
+  color: $green;
 }
 .navbar-item::before {
   background: $darkgreen;
@@ -282,7 +282,13 @@ export default {
 
     const isNavbarCollapse = false
     const isDropdownActive = false
+
+    // const navbarItemStyle = {
+    //   bgColor: '',
+    //   textColor: '',
+    // }
     return {
+      //navbarItemStyle,
       logo,
       cilHeart,
       cilBasket,
@@ -303,6 +309,94 @@ export default {
     },
   },
   methods: {
+    // componentToHex: function (c) {
+    //   var hex = c.toString(16)
+    //   return hex.length == 1 ? '0' + hex : hex
+    // },
+
+    // rgbToHex: function (r, g, b) {
+    //   return (
+    //     '#' +
+    //     this.componentToHex(r) +
+    //     this.componentToHex(g) +
+    //     this.componentToHex(b)
+    //   )
+    // },
+
+    // invert: function (rgb) {
+    //   rgb = [].slice
+    //     .call(arguments)
+    //     .join(',')
+    //     .replace(/rgb\(|\)|rgba\(|\)|\s/gi, '')
+    //     .split(',')
+    //   for (var i = 0; i < rgb.length; i++) rgb[i] = (i === 3 ? 1 : 255) - rgb[i]
+    //   return this.rgbToHex(rgb[0], rgb[1], rgb[2])
+    // },
+    // setAverageBgColorFromSwiper(bgColor) {
+    //   this.navbarItemStyle.bgColor = this.invert(bgColor)
+    //   this.navbarItemStyle.textColor = bgColor
+    //   console.log(bgColor)
+    //   console.log(this.invert(bgColor))
+    // },
+    // // roll: function () {
+    // //   const bgColor = generateRandomColor()
+
+    // //   const button = document.querySelector('button')
+
+    // //   const textColor = getTextColor(bgColor)
+
+    // //   document.body.style.backgroundColor = bgColor
+    // //   button.style.backgroundColor = textColor
+    // //   button.style.color = bgColor
+    // //   document.body.style.color = textColor
+    // // },
+    // getAverageRGB: function (imgEl) {
+    //   var blockSize = 5, // only visit every 5 pixels
+    //     defaultRGB = { r: 0, g: 0, b: 0 }, // for non-supporting envs
+    //     canvas = document.createElement('canvas'),
+    //     context = canvas.getContext && canvas.getContext('2d'),
+    //     data,
+    //     width,
+    //     height,
+    //     i = -4,
+    //     length,
+    //     rgb = { r: 0, g: 0, b: 0 },
+    //     count = 0
+
+    //   if (!context) {
+    //     return defaultRGB
+    //   }
+
+    //   height = canvas.height =
+    //     imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height
+    //   width = canvas.width =
+    //     imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width
+
+    //   context.drawImage(imgEl, 0, 0)
+
+    //   try {
+    //     data = context.getImageData(0, 0, width, height)
+    //   } catch (e) {
+    //     /* security error, img on diff domain */
+    //     return defaultRGB
+    //   }
+
+    //   length = data.data.length
+
+    //   while ((i += blockSize * 4) < length) {
+    //     ++count
+    //     rgb.r += data.data[i]
+    //     rgb.g += data.data[i + 1]
+    //     rgb.b += data.data[i + 2]
+    //   }
+
+    //   // ~~ used to floor values
+    //   rgb.r = ~~(rgb.r / count)
+    //   rgb.g = ~~(rgb.g / count)
+    //   rgb.b = ~~(rgb.b / count)
+
+    //   this.dynamicBgColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`
+    // },
     handleScroll() {
       if (
         this.lastPosition < window.scrollY &&
@@ -326,11 +420,11 @@ export default {
   },
   beforeMount() {
     this.$store.commit('setTotalQuantityInBasket')
-    window.addEventListener('scroll', this.handleScroll)
-    //console.log(this.$store.state.elementCountInBasket)
+    //window.addEventListener('scroll', this.handleScroll)
+    console.log(this.$store.state.elementCountInBasket)
   },
   beforeUnmount() {
-    window.removeEventListener('scroll', this.handleScroll)
+    //window.removeEventListener('scroll', this.handleScroll)
   },
 }
 </script>

@@ -101,13 +101,13 @@
           </h1>
           <h3 class="">{{ dbData.data[0].description }}</h3>
           <CRow class="py-5">
-            <CCol class="col-sm-3 col-4 fs-4 pt-1">Price </CCol>
+            <CCol class="col-sm-3 col-4 fs-4 pt-1 fs-5">Price </CCol>
             <CCol class="col-sm-9 col-8 fs-4 pb-1"
               >{{ selectedSize.price }} ₼
             </CCol>
-            <CCol class="col-sm-3 col-4 fs-4 pt-1">Size </CCol>
-            <CCol class="col-sm-9 col-8 fs-4 pb-1">
-              <div>
+            <CCol class="col-sm-3 col-12 fs-4 pt-1 fs-5">Size </CCol>
+            <CCol class="col-sm-9 col-12 fs-4 pb-1">
+              <div class="">
                 <VueMultiselect
                   v-model="selectedSize"
                   :options="dbData.data[0].prices"
@@ -121,22 +121,19 @@
                   label="name"
                   track-by="price"
                   @select="this.selectedSize = size"
-                  class="w-50"
+                  class="w-100"
                 />
               </div>
             </CCol>
-            <CCol class="col-sm-3 col-4 fs-4 pt-1">Quantity</CCol>
-            <CCol class="col-sm-9 col-8 fs-4 pb-1"
+            <CCol class="col-sm-3 col-12 fs-4 pt-1 fs-5">Quantity</CCol>
+            <CCol class="col-sm-9 col-12 fs-4 pb-1"
               ><div class="d-flex py-2 gap-1">
-                <CFormInput
-                  class="w-50 border border-secondary"
-                  :value="quantity"
-                />
-                <div class="d-flex w-25">
-                  <div @click="minusQuantity" class="btn btn-light w-50">
+                <CFormInput class="w-50 border" :value="quantity" />
+                <div class="d-flex w-50">
+                  <div @click="minusQuantity" class="btn btn-light border w-50">
                     <CIcon :content="cilMinus" />
                   </div>
-                  <div @click="plusQuantity" class="btn btn-light w-50">
+                  <div @click="plusQuantity" class="btn btn-light border w-50">
                     <CIcon :content="cilPlus" />
                   </div>
                 </div></div

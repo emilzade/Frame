@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <Navbar></Navbar>
+    <Navbar ref="navbarComponent"></Navbar>
     <div class="d-flex flex-column bg-light w-100">
       <router-view />
     </div>
@@ -8,6 +8,7 @@
   </div>
 </template>
 <script>
+import { ref } from 'vue'
 import Navbar from '../components/Navbar.vue'
 import Footer from '../components/Footer.vue'
 export default {
@@ -15,6 +16,19 @@ export default {
   components: {
     Navbar,
     Footer,
+  },
+  data() {
+    const navbarComponent = ref(null)
+    return {
+      navbarComponent,
+    }
+  },
+  methods: {
+    // PassAverageBgColorToNavbar: function (averageBgOfCurrentSlide) {
+    //   this.$refs.navbarComponent.setAverageBgColorFromSwiper(
+    //     averageBgOfCurrentSlide,
+    //   )
+    // },
   },
 }
 </script>

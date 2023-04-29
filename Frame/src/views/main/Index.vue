@@ -9,6 +9,7 @@
       :loop="true"
       :draggable="true"
       :navigation="true"
+      @slide-change="PassAverageBgColorToNavbar"
       :autoplay="{
         delay: 4000,
         disableOnInteraction: false,
@@ -61,7 +62,7 @@
         </router-link>
       </div>
       <swiper
-        class="landing-carousel landing-carousel-sm border border-dark"
+        class="landing-carousel landing-carousel-sm"
         :modules="modules"
         :space-between="30"
         :loop="true"
@@ -368,10 +369,19 @@ export default {
       dynamicBgColor,
       newItemsBg,
       popularItemsBg,
+      lastPosition: 0,
     }
   },
   computed: {},
   methods: {
+    PassAverageBgColorToNavbar: function (swiper) {
+      var averageBgOfCurrentSlide = this.getAverageRGB(
+        swiper.imagesToLoad[swiper.activeIndex],
+      )
+      if (this.lastPosition < 200) {
+        this.$emit('PassAverageBgColorToNavbar', averageBgOfCurrentSlide)
+      }
+    },
     getAverageRGB: function (imgEl) {
       var blockSize = 5, // only visit every 5 pixels
         defaultRGB = { r: 0, g: 0, b: 0 }, // for non-supporting envs
@@ -424,16 +434,28 @@ export default {
     setPopularItemsBg: function (el) {
       this.popularItemsBg = this.getAverageRGB(el.target)
     },
+    handleScroll: function () {
+      this.lastPosition = window.scrollY
+    },
   },
   beforeMount() {
-    fetch('https://rassmin.com/api/Item?sort=asc', {
-      mode: 'cors',
+    fetch('https://rassmin.com/api/Items/GetItem?sort=asc', {
+      method: 'Get',
+      headers: {
+        'Content-type': 'application/json;charset=UTF-8',
+        Authorization: `Token A8F606D09E8F77011C411C990E4F8CABEEF38F0AE2B33A3EDBEE3DF36264FC2B`,
+      },
     })
       .then((response) => response.json())
       .then((data) => {
         this.newGalleryItems = data
         console.log(this.newGalleryItems)
       })
+
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
   },
 }
 </script>
