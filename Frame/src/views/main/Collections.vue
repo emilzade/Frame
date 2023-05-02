@@ -1,142 +1,144 @@
 <template>
-  <div class="pt-5 collections-container">
-    <div class="py-5 display-3 text-center collections-header dune-rise">
-      Collections
+  <div>
+    <div class="pt-5 collections-container">
+      <div class="py-5 display-3 text-center collections-header dune-rise">
+        Collections
+      </div>
+      <p class="w-75 m-auto py-3 lh-lg text-secondary">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, eveniet
+        voluptas minus obcaecati magni velit a odit suscipit voluptate magnam
+        adipisci corporis optio? Lorem ipsum dolor sit, amet consectetur
+        adipisicing elit. Vero sapiente nesciunt repellat accusamus, laborum
+        consequuntur nostrum. Corporis quisquam ab iusto! Accusamus neque sequi
+        animi repudiandae, quidem eveniet quod aliquid doloremque quam
+        possimus?Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt
+        iusto odio distinctio doloribus nostrum blanditiis labore pariatur
+        excepturi laboriosam natus!
+      </p>
     </div>
-    <p class="w-75 m-auto py-3 lh-lg text-secondary">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, eveniet
-      voluptas minus obcaecati magni velit a odit suscipit voluptate magnam
-      adipisci corporis optio? Lorem ipsum dolor sit, amet consectetur
-      adipisicing elit. Vero sapiente nesciunt repellat accusamus, laborum
-      consequuntur nostrum. Corporis quisquam ab iusto! Accusamus neque sequi
-      animi repudiandae, quidem eveniet quod aliquid doloremque quam
-      possimus?Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt
-      iusto odio distinctio doloribus nostrum blanditiis labore pariatur
-      excepturi laboriosam natus!
-    </p>
+    <CRow class="w-75 m-auto">
+      <CCol class="col-md-6 col-12 p-4">
+        <router-link
+          :to="{
+            name: 'Collection',
+            params: {
+              id: 1,
+            },
+          }"
+        >
+          <div
+            class="border rounded w-100 h-100 collection-item position-relative"
+          >
+            <img class="w-100" src="../../assets/images/mercedes.png" />
+            <h1 class="munich position-absolute top-0 start-0 p-4">
+              I Love winter
+            </h1>
+            <div
+              class="collection-hovered-label rounded position-absolute p-4 d-flex flex-column justify-content-between"
+            >
+              <h1 class="munich">I Love winter</h1>
+              <div class="pb-5 w-75">
+                <p class="munich">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Beatae, ipsa! Lorem ipsum dolor sit amet.
+                </p>
+                <router-link
+                  :to="{
+                    name: 'Collection',
+                    params: {
+                      id: 1,
+                    },
+                  }"
+                >
+                  <p class="munich btn btn-light">Buy Now!</p>
+                </router-link>
+              </div>
+            </div>
+          </div>
+        </router-link>
+      </CCol>
+      <CCol class="col-md-6 col-12 p-4">
+        <router-link
+          :to="{
+            name: 'Collection',
+            params: {
+              id: 2,
+            },
+          }"
+        >
+          <div
+            class="border rounded w-100 h-100 collection-item position-relative"
+          >
+            <img class="w-100" src="../../assets/images/mercedes.png" />
+            <h1 class="munich position-absolute top-0 start-0 p-4">
+              I Love winter
+            </h1>
+            <div
+              class="collection-hovered-label rounded position-absolute p-4 d-flex flex-column justify-content-between"
+            >
+              <h1 class="munich">I Love winter</h1>
+              <div class="pb-5 w-75">
+                <p class="munich">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Beatae, ipsa! Lorem ipsum dolor sit amet.
+                </p>
+                <router-link
+                  :to="{
+                    name: 'Collection',
+                    params: {
+                      id: 2,
+                    },
+                  }"
+                >
+                  <p class="munich btn btn-light">Buy Now!</p>
+                </router-link>
+              </div>
+            </div>
+          </div>
+        </router-link>
+      </CCol>
+      <CCol class="col-md-6 col-12 p-4">
+        <router-link
+          :to="{
+            name: 'Collection',
+            params: {
+              id: 3,
+            },
+          }"
+        >
+          <div
+            class="border rounded w-100 h-100 collection-item position-relative"
+          >
+            <img class="w-100" src="../../assets/images/mercedes.png" />
+            <h1 class="munich position-absolute top-0 start-0 p-4">
+              I Love winter
+            </h1>
+            <div
+              class="collection-hovered-label rounded position-absolute p-4 d-flex flex-column justify-content-between"
+            >
+              <h1 class="munich">I Love winter</h1>
+              <div class="pb-5 w-75">
+                <p class="munich">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Beatae, ipsa! Lorem ipsum dolor sit amet.
+                </p>
+                <router-link
+                  :to="{
+                    name: 'Collection',
+                    params: {
+                      id: 3,
+                    },
+                  }"
+                >
+                  <p class="munich btn btn-light">Buy Now!</p>
+                </router-link>
+              </div>
+            </div>
+          </div>
+        </router-link>
+      </CCol>
+    </CRow>
   </div>
-  <CRow class="w-75 m-auto">
-    <CCol class="col-md-6 col-12 p-4">
-      <router-link
-        :to="{
-          name: 'Collection',
-          params: {
-            id: 1,
-          },
-        }"
-      >
-        <div
-          class="border rounded w-100 h-100 collection-item position-relative"
-        >
-          <img class="w-100" src="../../assets/images/mercedes.png" />
-          <h1 class="munich position-absolute top-0 start-0 p-4">
-            I Love winter
-          </h1>
-          <div
-            class="collection-hovered-label rounded position-absolute p-4 d-flex flex-column justify-content-between"
-          >
-            <h1 class="munich">I Love winter</h1>
-            <div class="pb-5 w-75">
-              <p class="munich">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Beatae, ipsa! Lorem ipsum dolor sit amet.
-              </p>
-              <router-link
-                :to="{
-                  name: 'Collection',
-                  params: {
-                    id: 1,
-                  },
-                }"
-              >
-                <p class="munich btn btn-light">Buy Now!</p>
-              </router-link>
-            </div>
-          </div>
-        </div>
-      </router-link>
-    </CCol>
-    <CCol class="col-md-6 col-12 p-4">
-      <router-link
-        :to="{
-          name: 'Collection',
-          params: {
-            id: 2,
-          },
-        }"
-      >
-        <div
-          class="border rounded w-100 h-100 collection-item position-relative"
-        >
-          <img class="w-100" src="../../assets/images/mercedes.png" />
-          <h1 class="munich position-absolute top-0 start-0 p-4">
-            I Love winter
-          </h1>
-          <div
-            class="collection-hovered-label rounded position-absolute p-4 d-flex flex-column justify-content-between"
-          >
-            <h1 class="munich">I Love winter</h1>
-            <div class="pb-5 w-75">
-              <p class="munich">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Beatae, ipsa! Lorem ipsum dolor sit amet.
-              </p>
-              <router-link
-                :to="{
-                  name: 'Collection',
-                  params: {
-                    id: 2,
-                  },
-                }"
-              >
-                <p class="munich btn btn-light">Buy Now!</p>
-              </router-link>
-            </div>
-          </div>
-        </div>
-      </router-link>
-    </CCol>
-    <CCol class="col-md-6 col-12 p-4">
-      <router-link
-        :to="{
-          name: 'Collection',
-          params: {
-            id: 3,
-          },
-        }"
-      >
-        <div
-          class="border rounded w-100 h-100 collection-item position-relative"
-        >
-          <img class="w-100" src="../../assets/images/mercedes.png" />
-          <h1 class="munich position-absolute top-0 start-0 p-4">
-            I Love winter
-          </h1>
-          <div
-            class="collection-hovered-label rounded position-absolute p-4 d-flex flex-column justify-content-between"
-          >
-            <h1 class="munich">I Love winter</h1>
-            <div class="pb-5 w-75">
-              <p class="munich">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Beatae, ipsa! Lorem ipsum dolor sit amet.
-              </p>
-              <router-link
-                :to="{
-                  name: 'Collection',
-                  params: {
-                    id: 3,
-                  },
-                }"
-              >
-                <p class="munich btn btn-light">Buy Now!</p>
-              </router-link>
-            </div>
-          </div>
-        </div>
-      </router-link>
-    </CCol>
-  </CRow>
 </template>
 <style lang="scss">
 a {

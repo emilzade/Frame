@@ -14,65 +14,11 @@
       </Transition>
     </div>
     <CRow class="pt-2 w-100 mx-0 align-items-start position-relative">
-      <CCol class="col-md-2 col-12 pt-5 position-sticky top-0">
-        <!--for phone or tablet-->
-        <div class="d-md-none position-relative">
-          <CIcon
-            @click="isCategoriesExpanded = !isCategoriesExpanded"
-            :content="cilMenu"
-            style="width: 60px; height: 60px"
-            class="border rounded fs-3 display-1 category-menu-icon"
-          />
-          <div
-            class="text-center text-light"
-            :class="{
-              'category-menu-sm-passive': !isCategoriesExpanded,
-              'category-menu-sm-active': isCategoriesExpanded,
-            }"
-          >
-            <div class="pt-5">
-              <p class="gallery-filter-element">Popular</p>
-              <p class="gallery-filter-element">On Sale</p>
-              <p class="gallery-filter-element">Newly Added</p>
-            </div>
-            <div>
-              <p class="gallery-filter-element"><b>Categories</b></p>
-              <p class="gallery-filter-element">Abstract</p>
-              <p class="gallery-filter-element">Abstract</p>
-              <p class="gallery-filter-element">Abstract</p>
-              <p class="gallery-filter-element">Abstract</p>
-              <p class="gallery-filter-element">Abstract</p>
-              <p class="gallery-filter-element">Abstract</p>
-              <p class="gallery-filter-element">Abstract</p>
-            </div>
-          </div>
-        </div>
-        <!--for pc-->
-        <div class="d-none d-md-block text-center">
-          <div class="pt-5">
-            <p class="gallery-filter-element">Popular</p>
-            <p class="gallery-filter-element">On Sale</p>
-            <p class="gallery-filter-element">Newly Added</p>
-          </div>
-          <div>
-            <p class="gallery-filter-element"><b>Categories</b></p>
-            <p class="gallery-filter-element">Abstract</p>
-            <p class="gallery-filter-element">Abstract</p>
-            <p class="gallery-filter-element">Abstract</p>
-            <p class="gallery-filter-element">Abstract</p>
-            <p class="gallery-filter-element">Abstract</p>
-            <p class="gallery-filter-element">Abstract</p>
-            <p class="gallery-filter-element">Abstract</p>
-          </div>
-        </div>
-        <div
-          class="d-md-none overlay overlay-gallery-menu"
-          v-if="isCategoriesExpanded"
-          @click="isCategoriesExpanded = !isCategoriesExpanded"
-        ></div>
+      <CCol class="col-md-2 col-12 pt-5 top-0 p-0"
+        ><GallerySideBar></GallerySideBar>
       </CCol>
       <CCol class="col-md-10 col-12 p-5">
-        <CRow>
+        <CRow class="">
           <div
             v-for="data in dbData.data"
             :key="data.id"
@@ -137,12 +83,13 @@
     <LastViewed />
   </div>
 </template>
-<style lang="scss">
-.single-gallery-item {
-  transition: 0.4s;
-  &:hover {
-    background-color: #dadada;
-  }
+<style>
+.slide-leave-active {
+  transition: all 0.5s ease;
+}
+
+.slide-leave-to {
+  transform: translateY(100%);
 }
 </style>
 <script>
@@ -151,9 +98,9 @@ import img from '../../assets/images/carousel-2.jpg'
 import { cilHeart, cilMenu } from '@coreui/icons'
 import LastViewed from '../../components/LastViewed.vue'
 import Pagination from 'v-pagination-3'
-
+import GallerySideBar from '@/components/GallerySideBar.vue'
 export default {
-  components: { LastViewed, Pagination },
+  components: { LastViewed, Pagination, GallerySideBar },
   data() {
     const isCategoriesExpanded = ref(false)
     const dbData = {
@@ -185,6 +132,7 @@ export default {
       page,
       totalElementCount,
       pageSize,
+      isPreLoaderActive: false,
       //pageCount: 10,
     }
   },
@@ -215,7 +163,7 @@ export default {
     pageSelected: function (pageId) {
       this.page = pageId
       fetch(
-        `https://rassmin.com/api/Item?pageNumber=${pageId}&pageSize=${this.pageSize}&sort=asc`,
+        `https://rassmin.com/api/Item/GetItems?pageNumber=${pageId}&pageSize=${this.pageSize}&sort=asc`,
       )
         .then((response) => response.json())
         .then((data) => {
@@ -239,7 +187,7 @@ export default {
   },
   beforeMount() {
     fetch(
-      `https://rassmin.com/api/Item?pageNumber=1&pageSize=${this.pageSize}&sort=asc`,
+      `https://rassmin.com/api/Item/GetItems?pageNumber=${this.page}&pageSize=${this.pageSize}&sort=asc`,
     )
       .then((response) => response.json())
       .then((data) => {

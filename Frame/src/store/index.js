@@ -16,9 +16,6 @@ export default createStore({
         }, 0)
       }
     },
-    changeSearchActiveState(state) {
-      state.isSearchActive = !state.isSearchActive
-    },
   },
   actions: {},
   modules: { auth: authModule },

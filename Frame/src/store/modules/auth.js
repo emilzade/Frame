@@ -9,6 +9,7 @@ const state = () => ({
     email: '',
     phone: '',
   },
+  isAuthenticated: false,
   logOut: false,
   token: '',
 })
@@ -35,20 +36,20 @@ const actions = {
         password: data.password,
       }),
     }
-    await fetch('https://rassmin.com/api/Users/Login', configObject)
+    await fetch('https://rassmin.com/api/User/Login', configObject)
       .then((response) => response.json())
       .then((data) => {
         console.log(data)
         if (data.success == true) {
           commit('setLoginApiStatus', 'success')
           commit('setToken', data.data.token)
-          localStorage.setItem('isAuthenticated', 'true')
+          localStorage.setItem('isAuthenticated', true)
           localStorage.setItem('role', 'admin')
           localStorage.setItem('token', data.data.token)
         } else {
           commit('setLoginApiStatus', 'failed')
           commit('setToken', '')
-          localStorage.setItem('isAuthenticated', 'false')
+          localStorage.setItem('isAuthenticated', false)
           localStorage.setItem('role', '')
           localStorage.setItem('token', '')
         }
@@ -77,10 +78,20 @@ const actions = {
     }
     commit('setUserProfile', customUser)
   },
-  async userLogout({ commit }) {
+  async userLogout({ commit }, token) {
+    fetch('https://rassmin.com/api/User/Logout', {
+      method: 'Get',
+      headers: {
+        'Content-type': 'application/json;charset=UTF-8',
+        Authorization: `Token ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
     commit('setLogout', true)
     localStorage.setItem('isAuthenticated', 'false')
     localStorage.setItem('role', '')
+    localStorage.setItem('token', '')
   },
 }
 

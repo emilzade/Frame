@@ -1,5 +1,4 @@
 <template>
-  <!-- <p>Check all form inputs filled accept agreement checkout</p> -->
   <div class="pt-5">
     <div v-if="galleryItems.length == 0" class="pt-5">
       <div
@@ -374,11 +373,11 @@ export default {
     },
   },
   beforeMount() {
-    this.setCheckoutElements()
-    this.calculateTotalAmount()
-    if (localStorage.getItem('GalleryItems') == null) {
-      this.galleryItems = []
-    }
+    // this.setCheckoutElements()
+    // this.calculateTotalAmount()
+    // if (localStorage.getItem('GalleryItems') == null) {
+    //   this.galleryItems = []
+    // }
   },
 }
 </script>

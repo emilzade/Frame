@@ -439,11 +439,10 @@ export default {
     },
   },
   beforeMount() {
-    fetch('https://rassmin.com/api/Items/GetItem?sort=asc', {
+    fetch('https://rassmin.com/api/Item/GetItems?sort=asc', {
       method: 'Get',
       headers: {
         'Content-type': 'application/json;charset=UTF-8',
-        Authorization: `Token A8F606D09E8F77011C411C990E4F8CABEEF38F0AE2B33A3EDBEE3DF36264FC2B`,
       },
     })
       .then((response) => response.json())

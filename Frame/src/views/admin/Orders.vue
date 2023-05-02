@@ -1,23 +1,37 @@
 <template>
   <div>
     <div class="display-3 dune-rise text-center">Orders</div>
-    <CRow class="w-50 m-auto">
+    <div class="d-flex justify-content-between px-5">
+      <CButton color="secondary">
+        <CIcon :content="cilArrowLeft" />
+      </CButton>
+      <CButton color="success">Create</CButton>
+    </div>
+    <CRow class="w-50 m-auto pt-4">
       <CCol
-        class="border border-dark col-12 py-3"
+        class="border rounded col-12 py-3 my-1 d-flex justify-content-between"
         v-for="order in dbData"
         :key="order.id"
       >
         <div>{{ order.name }}</div>
+        <EditButtonGroup />
       </CCol>
     </CRow>
   </div>
 </template>
 <script>
+import EditButtonGroup from '@/components/EditButtonGroup.vue'
+import { cilArrowLeft } from '@coreui/icons'
 export default {
+  name: 'Orders',
+  components: {
+    EditButtonGroup,
+  },
   data() {
     const dbData = []
     return {
       dbData,
+      cilArrowLeft,
     }
   },
   methods: {

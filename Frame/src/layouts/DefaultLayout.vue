@@ -1,34 +1,42 @@
 <template>
   <div class="">
-    <Navbar ref="navbarComponent"></Navbar>
+    <Transition name="slide">
+      <PreLoader v-if="isPreLoaderActive" />
+    </Transition>
+    <Navbar></Navbar>
     <div class="d-flex flex-column bg-light w-100">
-      <router-view />
+      <RouterView v-slot="{ Component }">
+        <transition name="slide-fade" mode="out-in">
+          <component :key="$route.path" :is="Component" />
+        </transition>
+      </RouterView>
     </div>
     <Footer></Footer>
   </div>
 </template>
 <script>
-import { ref } from 'vue'
 import Navbar from '../components/Navbar.vue'
 import Footer from '../components/Footer.vue'
+import PreLoader from '@/components/PreLoader2.vue'
 export default {
   name: 'DefaultLayout',
   components: {
     Navbar,
     Footer,
+    PreLoader,
   },
   data() {
-    const navbarComponent = ref(null)
+    const isPreLoaderActive = false
     return {
-      navbarComponent,
+      isPreLoaderActive,
     }
   },
-  methods: {
-    // PassAverageBgColorToNavbar: function (averageBgOfCurrentSlide) {
-    //   this.$refs.navbarComponent.setAverageBgColorFromSwiper(
-    //     averageBgOfCurrentSlide,
-    //   )
-    // },
+  methods: {},
+  mounted() {
+    this.isPreLoaderActive = true
+    setTimeout(() => {
+      this.isPreLoaderActive = false
+    }, 100)
   },
 }
 </script>

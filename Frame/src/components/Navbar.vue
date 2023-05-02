@@ -31,10 +31,10 @@
       id="navbarSupportedContent"
     >
       <MDBNavbarNav
-        class="mb-2 mb-lg-0 p-3 align-items-center px-5 gap-2"
+        class="mb-2 mb-lg-0 p-3 align-items-center px-5 gap-3"
         style="margin: 0px !important"
       >
-        <MDBNavbarItem to="#" active>
+        <MDBNavbarItem active>
           <router-link
             class="text-decoration-none navbar-item"
             :to="{
@@ -44,7 +44,7 @@
             <span class="p-2 rounded">Gallery</span>
           </router-link>
         </MDBNavbarItem>
-        <MDBNavbarItem href="#">
+        <MDBNavbarItem>
           <router-link
             class="text-decoration-none navbar-item"
             :to="{
@@ -54,7 +54,7 @@
             <span>Collections</span>
           </router-link>
         </MDBNavbarItem>
-        <MDBNavbarItem href="#">
+        <MDBNavbarItem>
           <router-link
             class="text-decoration-none navbar-item"
             :to="{
@@ -64,7 +64,7 @@
             <CIcon :content="cilHeart" />
           </router-link>
         </MDBNavbarItem>
-        <MDBNavbarItem href="#">
+        <MDBNavbarItem>
           <router-link
             class="text-decoration-none navbar-item"
             :to="{
@@ -79,19 +79,63 @@
             </div>
           </router-link>
         </MDBNavbarItem>
-        <MDBNavbarItem href="#">
+        <MDBNavbarItem>
           <router-link
             class="text-decoration-none navbar-item"
             :to="{
               name: 'Gallery',
             }"
           >
-            <CIcon
-              @click="this.$store.commit('changeSearchActiveState')"
-              :content="cilSearch"
-            />
+            <CIcon :content="cilSearch" />
           </router-link>
         </MDBNavbarItem>
+        <MDBNavbarItem
+          v-if="isAuthenticated == 'true' || getLoginApiStatus == 'success'"
+        >
+          <CDropdown
+            color="secondary"
+            class="shadow-none p-0"
+            direction="center"
+          >
+            <CDropdownToggle class="p-0"
+              ><CIcon :content="cilUser"
+            /></CDropdownToggle>
+            <CDropdownMenu class="transition-0 m-0">
+              <CDropdownItem disabled>Profile</CDropdownItem>
+              <CDropdownItem v-if="role == 'admin'"
+                ><router-link :to="{ name: 'Admin' }"
+                  >Admin Panel</router-link
+                ></CDropdownItem
+              >
+              <CDropdownItem disabled>Events</CDropdownItem>
+              <CDropdownItem class="cursor-pointer" @click="logOut"
+                >Log out</CDropdownItem
+              >
+            </CDropdownMenu>
+          </CDropdown>
+        </MDBNavbarItem>
+        <template v-else>
+          <MDBNavbarItem>
+            <router-link
+              class="text-decoration-none navbar-item"
+              :to="{
+                name: 'Login',
+              }"
+            >
+              Login
+            </router-link>
+          </MDBNavbarItem>
+          <MDBNavbarItem>
+            <router-link
+              class="text-decoration-none navbar-item"
+              :to="{
+                name: 'Login',
+              }"
+            >
+              Register
+            </router-link>
+          </MDBNavbarItem>
+        </template>
       </MDBNavbarNav>
       <!-- Search form -->
     </MDBCollapse>
@@ -252,6 +296,8 @@ $orange: #e6ddc4;
 </style>
 <script>
 import logo from '../assets/images/logo.png'
+import { mapActions, mapGetters } from 'vuex'
+//import router from '@/router'
 //import ref from 'vue'
 import { cilHeart, cilBasket, cilUser, cilSearch } from '@coreui/icons'
 import 'mdb-vue-ui-kit/css/mdb.min.css'
@@ -273,6 +319,7 @@ export default {
     MDBNavbarItem,
     MDBCollapse,
   },
+
   data() {
     const role = localStorage.getItem('role')
     const isBasketHasItem = false
@@ -303,12 +350,22 @@ export default {
       isDropdownActive,
     }
   },
-  watch: {
-    $route() {
-      this.$store.commit('changeSearchActiveState')
+  computed: {
+    isAuthenticated: function () {
+      return this.$store.state.auth.isAuthenticated
     },
+    ...mapGetters('auth', {
+      getLoginApiStatus: 'getLoginApiStatus',
+    }),
   },
   methods: {
+    ...mapActions('auth', {
+      actionLogOut: 'userLogout',
+    }),
+    logOut: async function () {
+      await this.actionLogOut()
+      location.reload()
+    },
     // componentToHex: function (c) {
     //   var hex = c.toString(16)
     //   return hex.length == 1 ? '0' + hex : hex

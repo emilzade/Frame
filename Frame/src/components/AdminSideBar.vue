@@ -66,12 +66,18 @@ export default {
       },
       {
         id: 2,
+        title: 'Items',
+        routeName: 'Items',
+        isActive: false,
+      },
+      {
+        id: 3,
         title: 'Orders',
         routeName: 'Orders',
         isActive: false,
       },
       {
-        id: 3,
+        id: 4,
         title: 'Messages',
         routeName: 'Messages',
         isActive: false,

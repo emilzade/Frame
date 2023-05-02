@@ -125,15 +125,15 @@
                 />
               </div>
             </CCol>
-            <CCol class="col-sm-3 col-12 fs-4 pt-1 fs-5">Quantity</CCol>
+            <CCol class="col-sm-3 col-12 fs-4 pt-1 fs-5">Count</CCol>
             <CCol class="col-sm-9 col-12 fs-4 pb-1"
               ><div class="d-flex py-2 gap-1">
-                <CFormInput class="w-50 border" :value="quantity" />
+                <CFormInput class="w-50 border" :value="count" />
                 <div class="d-flex w-50">
-                  <div @click="minusQuantity" class="btn btn-light border w-50">
+                  <div @click="minusCount" class="btn btn-light border w-50">
                     <CIcon :content="cilMinus" />
                   </div>
-                  <div @click="plusQuantity" class="btn btn-light border w-50">
+                  <div @click="plusCount" class="btn btn-light border w-50">
                     <CIcon :content="cilPlus" />
                   </div>
                 </div></div
@@ -249,13 +249,13 @@ export default {
       data: [],
     }
     const dbSize = {}
-    const quantity = 1
+    const count = 1
     const thumbsSwiper = null
     const selectedSize = ref()
     return {
       dbData,
       dbSize,
-      quantity,
+      count,
       thumbsSwiper,
       modules: [FreeMode, Thumbs],
       cilPlus,
@@ -268,8 +268,12 @@ export default {
       var payload = {
         userId: 1,
         itemId: this.dbData.data[0].id,
+        description: this.dbData.data[0].description,
+        itemName: this.dbData.data[0].itemName,
+        imagePath: this.dbData.data[0].images[0],
         sizeId: this.selectedSize.sizeId,
-        quantity: this.quantity,
+        statusId: this.dbData.data[0].statusId,
+        count: this.count,
       }
       console.log(payload)
     },
@@ -279,19 +283,21 @@ export default {
     selectSize: function (size) {
       console.log(size)
     },
-    minusQuantity: function () {
-      if (this.quantity > 1) {
-        this.quantity--
+    minusCount: function () {
+      if (this.count > 1) {
+        this.count--
       }
     },
-    plusQuantity: function () {
-      if (this.quantity < 5) {
-        this.quantity++
+    plusCount: function () {
+      if (this.count < 5) {
+        this.count++
       }
     },
   },
   beforeMount() {
-    fetch(`https://rassmin.com/api/Item?id=${this.$route.params.id}&sort=asc`)
+    fetch(
+      `https://rassmin.com/api/Item/GetItems?id=${this.$route.params.id}&sort=asc`,
+    )
       .then(async (response) => await response.json())
       .then(async (data) => {
         this.dbData = data

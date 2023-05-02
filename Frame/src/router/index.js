@@ -1,5 +1,5 @@
 import { h, resolveComponent } from 'vue'
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
 import DefaultLayout from '@/layouts/DefaultLayout'
 import AdminLayout from '@/layouts/AdminLayout'
@@ -17,7 +17,7 @@ const routes = [
       {
         path: '/index',
         name: 'Index',
-        component: () => import('@/views/main/Index.vue'),
+        component: () => import('@/views/main/Gallery.vue'),
         meta: {
           authRequired: 'false',
           adminRequired: 'false',
@@ -144,6 +144,24 @@ const routes = [
         },
       },
       {
+        path: '/admin/items',
+        name: 'Items',
+        component: () => import('@/views/admin/Items.vue'),
+        meta: {
+          authRequired: 'true',
+          adminRequired: 'true',
+        },
+      },
+      {
+        path: '/admin/items/item/:id',
+        name: 'Item',
+        component: () => import('@/views/admin/Item.vue'),
+        meta: {
+          authRequired: 'true',
+          adminRequired: 'true',
+        },
+      },
+      {
         path: '/admin/orders',
         name: 'Orders',
         component: () => import('@/views/admin/Orders.vue'),
@@ -254,7 +272,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(process.env.BASE_URL),
+  history: createWebHistory(),
   routes,
   scrollBehavior() {
     // always scroll to top

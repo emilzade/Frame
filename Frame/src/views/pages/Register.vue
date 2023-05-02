@@ -17,6 +17,56 @@
                   </CInputGroupText>
                   <CFormInput
                     class="border border-light"
+                    placeholder="Name"
+                    autocomplete="name"
+                  />
+                </CInputGroup>
+                <CInputGroup class="mb-3">
+                  <CInputGroupText class="border border-light">
+                    <CIcon icon="cil-user" />
+                  </CInputGroupText>
+                  <CFormInput
+                    class="border border-light"
+                    placeholder="Username"
+                    autocomplete="username"
+                  />
+                </CInputGroup>
+                <CInputGroup class="mb-3">
+                  <CInputGroupText class="border border-light">
+                    <CIcon icon="cil-user" />
+                  </CInputGroupText>
+                  <CFormInput
+                    class="border border-light"
+                    placeholder="Username"
+                    autocomplete="username"
+                  />
+                </CInputGroup>
+                <CInputGroup class="mb-3">
+                  <CInputGroupText class="border border-light">
+                    <CIcon icon="cil-user" />
+                  </CInputGroupText>
+                  <CFormInput
+                    class="border border-light"
+                    placeholder="Username"
+                    autocomplete="username"
+                  />
+                </CInputGroup>
+                <CInputGroup class="mb-3">
+                  <CInputGroupText class="border border-light">
+                    <CIcon icon="cil-user" />
+                  </CInputGroupText>
+                  <CFormInput
+                    class="border border-light"
+                    placeholder="Username"
+                    autocomplete="username"
+                  />
+                </CInputGroup>
+                <CInputGroup class="mb-3">
+                  <CInputGroupText class="border border-light">
+                    <CIcon icon="cil-user" />
+                  </CInputGroupText>
+                  <CFormInput
+                    class="border border-light"
                     placeholder="Username"
                     autocomplete="username"
                   />
@@ -74,8 +124,25 @@ import registerBg from '@/assets/images/loginbg.jpg'
 export default {
   name: 'Register',
   data() {
+    const userData = {
+      id: 0,
+      name: '',
+      surname: '',
+      email: '',
+      password: '',
+      address: '',
+      phone: '',
+      profileImage: '',
+      roleId: 0,
+      roleName: '',
+      active: 0,
+      pageNumber: 0,
+      pageSize: 0,
+      sort: '',
+    }
     return {
       registerBg,
+      userData,
     }
   },
 }
