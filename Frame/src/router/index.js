@@ -189,6 +189,24 @@ const routes = [
         },
       },
       {
+        path: '/admin/sizes',
+        name: 'Sizes',
+        component: () => import('@/views/admin/Sizes.vue'),
+        meta: {
+          authRequired: 'true',
+          adminRequired: 'true',
+        },
+      },
+      {
+        path: '/admin/size/:id',
+        name: 'Size',
+        component: () => import('@/views/admin/Size.vue'),
+        meta: {
+          authRequired: 'true',
+          adminRequired: 'true',
+        },
+      },
+      {
         path: '/admin/message/:id',
         name: 'Message',
         component: () => import('@/views/admin/Message.vue'),

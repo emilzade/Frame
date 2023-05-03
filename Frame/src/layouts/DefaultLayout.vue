@@ -36,7 +36,7 @@ export default {
     this.isPreLoaderActive = true
     setTimeout(() => {
       this.isPreLoaderActive = false
-    }, 100)
+    }, 3600)
   },
 }
 </script>

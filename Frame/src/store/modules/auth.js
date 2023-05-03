@@ -11,7 +11,7 @@ const state = () => ({
   },
   isAuthenticated: false,
   logOut: false,
-  token: '',
+  token: localStorage.getItem('token'),
 })
 
 const getters = {

@@ -81,7 +81,7 @@
             alt=""
             style="width: 40px; height: 40px"
           />
-          <span class="d-none d-lg-inline-flex">John Doe</span>
+          <span class="d-none d-lg-inline-flex">Admin Name</span>
         </a>
         <div
           class="dropdown-menu dropdown-menu-end bg-light border border-secondary rounded-0 rounded-bottom m-0"
@@ -111,15 +111,15 @@ export default {
     const messages = [
       {
         id: 1,
-        message: 'John send you a message',
+        message: 'User 3 send you a message',
       },
       {
         id: 2,
-        message: 'John send another message',
+        message: 'User 1 send another message',
       },
       {
         id: 3,
-        message: 'John send you a message',
+        message: 'User 2 send you a message',
       },
       {
         id: 4,

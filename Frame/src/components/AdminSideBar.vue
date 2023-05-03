@@ -20,7 +20,7 @@
           ></div>
         </div>
         <div class="ms-3">
-          <h6 class="mb-0 text-dark">Jhon Doe</h6>
+          <h6 class="mb-0 text-dark">Name Here</h6>
           <span class="text-dark">Admin</span>
         </div>
       </div>
@@ -72,12 +72,18 @@ export default {
       },
       {
         id: 3,
+        title: 'Sizes',
+        routeName: 'Sizes',
+        isActive: false,
+      },
+      {
+        id: 4,
         title: 'Orders',
         routeName: 'Orders',
         isActive: false,
       },
       {
-        id: 4,
+        id: 5,
         title: 'Messages',
         routeName: 'Messages',
         isActive: false,
