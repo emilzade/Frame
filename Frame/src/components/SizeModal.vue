@@ -1,7 +1,10 @@
 <template>
   <CModal alignment="center" :visible="isVisible" @close="closeModal">
     <CModalHeader>
-      <CModalTitle>Create New Item</CModalTitle>
+      <CModalTitle
+        ><span v-if="this.data != ''">Update</span
+        ><span v-else>Create New</span> Size</CModalTitle
+      >
     </CModalHeader>
     <CModalBody>
       <CInputGroup class="mb-3">
@@ -22,6 +25,16 @@
           aria-describedby="basic-addon2"
         />
       </CInputGroup>
+      <div v-if="this.data != ''">
+        <CFormLabel>Is Active ?</CFormLabel> <br />
+        <switches
+          :value="enabled"
+          theme="bootstrap"
+          color="info"
+          @click="triggerIsActive"
+          type-bold="true"
+        ></switches>
+      </div>
     </CModalBody>
     <CModalFooter>
       <CButton color="secondary" @click="closeModal"> Close </CButton>
@@ -30,8 +43,11 @@
   </CModal>
 </template>
 <script>
+import { CInputGroup } from '@coreui/vue'
+import Switches from 'vue-switches'
 export default {
   props: ['isVisible', 'data'],
+  components: { Switches, CInputGroup },
   data() {
     const model = {
       name: '',
@@ -39,11 +55,14 @@ export default {
     }
     return {
       model,
+      enabled: false,
     }
   },
   computed: {
     passedData() {
-      return this.data != '' ? this.data : this.model
+      return this.data != ''
+        ? { ...this.data, enabled: this.enabled == false ? 0 : 1 }
+        : this.model
     },
   },
   methods: {
@@ -51,8 +70,12 @@ export default {
       this.$emit('closeModal')
     },
     saveChanges: function () {
-      console.log(this.model)
-      this.$emit('create', this.model)
+      this.data != ''
+        ? this.$emit('update', this.passedData)
+        : this.$emit('create', this.passedData)
+    },
+    triggerIsActive: function (a) {
+      this.enabled = a.target.checked
     },
   },
   mounted() {},

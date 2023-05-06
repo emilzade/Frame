@@ -4,14 +4,22 @@
     <SizeModal
       :isVisible="isSizeModalActive"
       :data="passedSizeData"
-      @create="submitCreateSize"
+      @create="createSize"
+      @update="updateSize"
       @closeModal="closeCreateModal"
     ></SizeModal>
+    <Transition name="fade">
+      <CheckSuccessElement
+        v-if="isActionSuccess"
+        :itemName="'Size'"
+        :actionName="actionName"
+      ></CheckSuccessElement>
+    </Transition>
     <div class="d-flex justify-content-between px-5">
       <CButton color="secondary">
         <CIcon :content="cilArrowLeft" />
       </CButton>
-      <CButton @click="createSize" color="success">Create</CButton>
+      <CButton @click="openCreateSizeModal" color="success">Create</CButton>
     </div>
     <div>
       <CFormInput class="w-75 m-auto" placeholder="Search Here" type="search" />
@@ -36,7 +44,7 @@
               <CIcon :content="cilInfo" />
             </CButton>
           </router-link>
-          <CButton @click="updateSize(size)" color="info">
+          <CButton @click="openUpdateSizeModal(size)" color="info">
             <CIcon :content="cilSettings" />
           </CButton>
           <CButton color="danger">
@@ -52,11 +60,13 @@
 //import EditButtonGroup from '@/components/EditButtonGroup.vue'
 import SizeModal from '@/components/SizeModal.vue'
 import { cilArrowLeft, cilInfo, cilTrash, cilSettings } from '@coreui/icons'
+import CheckSuccessElement from '@/components/CheckSuccessElement.vue'
 export default {
   name: 'Sizes',
   components: {
     //EditButtonGroup,
     SizeModal,
+    CheckSuccessElement,
   },
   data() {
     const dbData = {
@@ -67,6 +77,8 @@ export default {
     }
     const isSizeModalActive = false
     const passedSizeData = ''
+    const actionName = ''
+    const isActionSuccess = false
     return {
       dbData,
       cilArrowLeft,
@@ -75,6 +87,8 @@ export default {
       cilSettings,
       isSizeModalActive,
       passedSizeData,
+      actionName,
+      isActionSuccess,
     }
   },
   computed: {
@@ -91,11 +105,11 @@ export default {
           this.dbData = data
         })
     },
-    createSize: function () {
+    openCreateSizeModal: function () {
       this.isSizeModalActive = true
       this.passedSizeData = ''
     },
-    updateSize: function (size) {
+    openUpdateSizeModal: function (size) {
       console.log(size)
       this.isSizeModalActive = true
       this.passedSizeData = size
@@ -103,18 +117,43 @@ export default {
     closeCreateModal: function () {
       this.isSizeModalActive = false
     },
-    submitCreateSize: function (model) {
+    createSize: function (model) {
+      this.actionName = 'created'
       fetch('https://rassmin.com/api/Size/CreateSize', {
         method: 'Post',
-        body: model,
+        body: JSON.stringify(model),
         headers: {
           'Content-type': 'application/json;charset=UTF-8',
-          Authorization: `Token ${this.token}`,
+          Authorization: `Bearer ${this.token}`,
         },
       })
         .then((response) => response.json())
-        .then((data) => console.log(data))
+        .then((data) => {
+          console.log(data)
+          if (data.success == true) {
+            this.isSizeModalActive = false
+            this.isActionSuccess = true
+            setTimeout(() => {
+              this.isActionSuccess = false
+            }, 1500)
+          }
+        })
       console.log(this.token)
+    },
+    updateSize: function (model) {
+      console.log('update')
+      console.log(model)
+      //   fetch('https://rassmin.com/api/Size/CreateSize', {
+      //     method: 'Post',
+      //     body: model,
+      //     headers: {
+      //       'Content-type': 'application/json;charset=UTF-8',
+      //       Authorization: `Token ${this.token}`,
+      //     },
+      //   })
+      //     .then((response) => response.json())
+      //     .then((data) => console.log(data))
+      //   console.log(this.token)
     },
   },
   beforeMount() {
