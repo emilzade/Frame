@@ -1,17 +1,26 @@
 <template>
   <div>
     <div class="display-3 dune-rise text-center">Items</div>
-    <CreateItemModal
-      :isVisible="isCreateItemModalActive"
-      @create="submitCreateItem"
-      @closeModal="closeCreateModal"
-    ></CreateItemModal>
-
-    <div class="d-flex justify-content-between px-5">
+    <ItemModal
+      :isVisible="isItemModalActive"
+      :data="passedItemData"
+      @create="createItem"
+      @update="updateItem"
+      @closeModal="closeItemModal"
+    ></ItemModal>
+    <Transition name="fade">
+      <CheckSuccessElement
+        v-if="isActionCompleted"
+        :itemName="'Size'"
+        :actionName="actionName"
+        :isSuccess="isActionSuccess"
+      ></CheckSuccessElement>
+    </Transition>
+    <div class="d-flex justify-content-between px-5 py-4">
       <CButton color="secondary">
         <CIcon :content="cilArrowLeft" />
       </CButton>
-      <CButton @click="createItem" color="success">Create</CButton>
+      <CButton @click="openCreateItemModal" color="success">Create</CButton>
     </div>
     <div>
       <CFormInput class="w-75 m-auto" placeholder="Search Here" type="search" />
@@ -23,20 +32,40 @@
         :key="item.id"
       >
         <div>{{ item.itemName }}</div>
-        <EditButtonGroup :elementType="'Item'" :elementId="item.id" />
+        <CButtonGroup role="group" aria-label="Button Group">
+          <router-link
+            :to="{
+              name: 'Item',
+              params: {
+                id: item.id,
+              },
+            }"
+          >
+            <CButton color="secondary">
+              <CIcon :content="cilInfo" />
+            </CButton>
+          </router-link>
+          <CButton @click="openUpdateItemModal(item)" color="info">
+            <CIcon :content="cilSettings" />
+          </CButton>
+          <CButton color="danger">
+            <CIcon :content="cilTrash" />
+          </CButton>
+        </CButtonGroup>
       </CCol>
     </CRow>
   </div>
 </template>
 <script>
-import EditButtonGroup from '@/components/EditButtonGroup.vue'
-import CreateItemModal from '@/components/CreateItemModal.vue'
-import { cilArrowLeft } from '@coreui/icons'
+import ItemModal from '@/components/ItemModal.vue'
+import { cilArrowLeft, cilInfo, cilTrash, cilSettings } from '@coreui/icons'
+import CheckSuccessElement from '@/components/CheckSuccessElement.vue'
+
 export default {
   name: 'Items',
   components: {
-    EditButtonGroup,
-    CreateItemModal,
+    ItemModal,
+    CheckSuccessElement,
   },
   data() {
     const dbData = {
@@ -46,11 +75,22 @@ export default {
       sort: '',
       data: [],
     }
-    const isCreateItemModalActive = false
+    const isItemModalActive = false
+    const passedItemData = ''
+    const actionName = ''
+    const isActionSuccess = false
+    const isActionCompleted = false
     return {
       dbData,
       cilArrowLeft,
-      isCreateItemModalActive,
+      cilInfo,
+      cilTrash,
+      cilSettings,
+      isItemModalActive,
+      passedItemData,
+      actionName,
+      isActionSuccess,
+      isActionCompleted,
     }
   },
   computed: {
@@ -60,29 +100,33 @@ export default {
   },
   methods: {
     getDbData: function () {
-      fetch(`https://rassmin.com/api/Item/GetItems?sort=asc`)
-        .then((response) => response.json())
-        .then((data) => (this.dbData = data))
-    },
-    createItem: function () {
-      this.isCreateItemModalActive = true
-    },
-    closeCreateModal: function () {
-      this.isCreateItemModalActive = false
-    },
-    submitCreateItem: function (item) {
-      fetch('https://rassmin.com/api/Item/CreateItem', {
-        method: 'Post',
-        body: item,
+      fetch(`https://rassmin.com/api/Item/GetItems?sort=asc`, {
+        method: 'GET',
         headers: {
           'Content-type': 'application/json;charset=UTF-8',
           Authorization: `Bearer ${this.token}`,
         },
       })
         .then((response) => response.json())
-        .then((data) => console.log(data))
+        .then((data) => (this.dbData = data))
+    },
+    openCreateItemModal: function () {
+      this.isItemModalActive = true
+      this.passedItemData = ''
+    },
+    openUpdateItemModal: function (item) {
       console.log(item)
-      console.log(this.token)
+      this.isItemModalActive = true
+      this.passedItemData = item
+    },
+    closeItemModal: function () {
+      this.isItemModalActive = false
+    },
+    createItem: function (model) {
+      console.log(model)
+    },
+    updateItem: function (model) {
+      console.log(model)
     },
   },
   beforeMount() {

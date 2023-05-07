@@ -1,135 +1,224 @@
 <template>
   <div class="border border-dark check-custom-element">
     <div
-      style="border-radius: 15px"
-      class="border d-flex justify-content-center align-items-center flex-column bg-light p-3 shadow"
+      class="check-container d-flex justify-content-center align-items-center border flex-column bg-light p-3"
     >
-      <p class="fs-2 dune-rise">{{ itemName }} {{ actionName }} Successfull</p>
-      <svg
-        width="115px"
-        height="115px"
-        viewBox="0 0 133 133"
-        version="1.1"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-      >
-        <g
-          id="check-group"
-          stroke="none"
-          stroke-width="1"
-          fill="none"
-          fill-rule="evenodd"
+      <div class="fs-1 dune-rise">
+        {{ itemName }} {{ actionName }} <span v-if="isSuccess">successfull</span
+        ><span v-else>failed</span>
+      </div>
+      <div v-if="isSuccess" class="ui-success">
+        <svg
+          viewBox="0 0 87 87"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
         >
-          <circle
-            id="filled-circle"
-            fill="#07b481"
-            cx="66.5"
-            cy="66.5"
-            r="54.5"
-          />
-          <circle
-            id="white-circle"
-            fill="#FFFFFF"
-            cx="66.5"
-            cy="66.5"
-            r="55.5"
-          />
-          <circle
-            id="outline"
-            stroke="#07b481"
-            stroke-width="4"
-            cx="66.5"
-            cy="66.5"
-            r="54.5"
-          />
-          <polyline
-            id="check"
-            stroke="#FFFFFF"
-            stroke-width="5.5"
-            points="41 70 56 85 92 49"
-          />
-        </g>
-      </svg>
+          <g
+            id="Page-1"
+            stroke="none"
+            stroke-width="1"
+            fill="none"
+            fill-rule="evenodd"
+          >
+            <g id="Group-3" transform="translate(2.000000, 2.000000)">
+              <circle
+                id="Oval-2"
+                stroke="rgba(165, 220, 134, 0.2)"
+                stroke-width="4"
+                cx="41.5"
+                cy="41.5"
+                r="41.5"
+              ></circle>
+              <circle
+                class="ui-success-circle"
+                id="Oval-2"
+                stroke="#A5DC86"
+                stroke-width="4"
+                cx="41.5"
+                cy="41.5"
+                r="41.5"
+              ></circle>
+              <polyline
+                class="ui-success-path"
+                id="Path-2"
+                stroke="#A5DC86"
+                stroke-width="4"
+                points="19 38.8036813 31.1020744 54.8046875 63.299221 28"
+              ></polyline>
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <div v-if="!isSuccess" class="ui-error">
+        <svg
+          viewBox="0 0 87 87"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+          <g
+            id="Page-1"
+            stroke="none"
+            stroke-width="1"
+            fill="none"
+            fill-rule="evenodd"
+          >
+            <g id="Group-2" transform="translate(2.000000, 2.000000)">
+              <circle
+                id="Oval-2"
+                stroke="rgba(252, 191, 191, .5)"
+                stroke-width="4"
+                cx="41.5"
+                cy="41.5"
+                r="41.5"
+              ></circle>
+              <circle
+                class="ui-error-circle"
+                stroke="#F74444"
+                stroke-width="4"
+                cx="41.5"
+                cy="41.5"
+                r="41.5"
+              ></circle>
+              <path
+                class="ui-error-line1"
+                d="M22.244224,22 L60.4279902,60.1837662"
+                id="Line"
+                stroke="#F74444"
+                stroke-width="3"
+                stroke-linecap="square"
+              ></path>
+              <path
+                class="ui-error-line2"
+                d="M60.755776,21 L23.244224,59.8443492"
+                id="Line"
+                stroke="#F74444"
+                stroke-width="3"
+                stroke-linecap="square"
+              ></path>
+            </g>
+          </g>
+        </svg>
+      </div>
     </div>
   </div>
 </template>
-<style>
+<style lang="scss">
 .check-custom-element {
-  z-index: 9999;
   position: absolute;
   top: 0;
   left: 0;
-  bottom: 0;
   right: 0;
-  height: 100%;
+  bottom: 0;
   width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-#check-group {
-  animation: 0.32s ease-in-out 1.03s check-group;
-  transform-origin: center;
+.check-container {
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+}
+.ui-success,
+.ui-error {
+  width: 100px;
+  height: 100px;
+  margin: 40px;
+  // border:1px solid #eee;
 }
 
-#check-group #check {
-  animation: 0.34s cubic-bezier(0.65, 0, 1, 1) 0.8s forwards check;
-  stroke-dasharray: 0, 75px;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.ui-success {
+  &-circle {
+    stroke-dasharray: 260.75219024795285px, 260.75219024795285px;
+    stroke-dashoffset: 260.75219024795285px;
+    transform: rotate(220deg);
+    transform-origin: center center;
+    stroke-linecap: round;
+    animation: ani-success-circle 1s ease-in both;
+  }
+  &-path {
+    stroke-dasharray: 60px 64px;
+    stroke-dashoffset: 62px;
+    stroke-linecap: round;
+    animation: ani-success-path 0.4s 1s ease-in both;
+  }
 }
 
-#check-group #outline {
-  animation: 0.38s ease-in outline;
-  transform: rotate(0deg);
-  transform-origin: center;
+@keyframes ani-success-circle {
+  to {
+    stroke-dashoffset: 782.2565707438586px;
+  }
 }
 
-#check-group #white-circle {
-  animation: 0.35s ease-in 0.35s forwards circle;
-  transform: none;
-  transform-origin: center;
+@keyframes ani-success-path {
+  0% {
+    stroke-dashoffset: 62px;
+  }
+  65% {
+    stroke-dashoffset: -5px;
+  }
+  84% {
+    stroke-dashoffset: 4px;
+  }
+  100% {
+    stroke-dashoffset: -2px;
+  }
 }
 
-@keyframes outline {
-  from {
-    stroke-dasharray: 0, 345.576px;
+.ui-error {
+  &-circle {
+    stroke-dasharray: 260.75219024795285px, 260.75219024795285px;
+    stroke-dashoffset: 260.75219024795285px;
+    animation: ani-error-circle 1.2s linear;
   }
-  to {
-    stroke-dasharray: 345.576px, 345.576px;
+  &-line1 {
+    stroke-dasharray: 54px 55px;
+    stroke-dashoffset: 55px;
+    stroke-linecap: round;
+    animation: ani-error-line 0.15s 1.2s linear both;
   }
-}
-@keyframes circle {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(0);
-  }
-}
-@keyframes check {
-  from {
-    stroke-dasharray: 0, 75px;
-  }
-  to {
-    stroke-dasharray: 75px, 75px;
+  &-line2 {
+    stroke-dasharray: 54px 55px;
+    stroke-dashoffset: 55px;
+    stroke-linecap: round;
+    animation: ani-error-line 0.2s 0.9s linear both;
   }
 }
-@keyframes check-group {
-  from {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.09);
-  }
+
+@keyframes ani-error-line {
   to {
-    transform: scale(1);
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes ani-error-circle {
+  0% {
+    stroke-dasharray: 0, 260.75219024795285px;
+    stroke-dashoffset: 0;
+  }
+  35% {
+    stroke-dasharray: 120px, 120px;
+    stroke-dashoffset: -120px;
+  }
+  70% {
+    stroke-dasharray: 0, 260.75219024795285px;
+    stroke-dashoffset: -260.75219024795285px;
+  }
+  100% {
+    stroke-dasharray: 260.75219024795285px, 0;
+    stroke-dashoffset: -260.75219024795285px;
   }
 }
 </style>
 <script>
 export default {
   name: 'CheckSuccessElement',
-  props: ['itemName', 'actionName'],
+  props: ['itemName', 'actionName', 'isSuccess'],
 }
 </script>

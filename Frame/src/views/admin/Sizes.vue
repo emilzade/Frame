@@ -6,16 +6,17 @@
       :data="passedSizeData"
       @create="createSize"
       @update="updateSize"
-      @closeModal="closeCreateModal"
+      @closeModal="closeSizeModal"
     ></SizeModal>
     <Transition name="fade">
       <CheckSuccessElement
-        v-if="isActionSuccess"
+        v-if="isActionCompleted"
         :itemName="'Size'"
         :actionName="actionName"
+        :isSuccess="isActionSuccess"
       ></CheckSuccessElement>
     </Transition>
-    <div class="d-flex justify-content-between px-5">
+    <div class="d-flex justify-content-between px-5 py-4">
       <CButton color="secondary">
         <CIcon :content="cilArrowLeft" />
       </CButton>
@@ -79,6 +80,7 @@ export default {
     const passedSizeData = ''
     const actionName = ''
     const isActionSuccess = false
+    const isActionCompleted = false
     return {
       dbData,
       cilArrowLeft,
@@ -89,6 +91,7 @@ export default {
       passedSizeData,
       actionName,
       isActionSuccess,
+      isActionCompleted,
     }
   },
   computed: {
@@ -98,7 +101,13 @@ export default {
   },
   methods: {
     getDbData: function () {
-      fetch(`https://rassmin.com/api/Size/GetSizes`)
+      fetch(`https://rassmin.com/api/Size/GetSizes`, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8',
+          Authorization: `Bearer E768F514D0C8272B0583B38C82122CD2C7BE0FE185E4441DDE0E69EF228AA72E`,
+        },
+      })
         .then((response) => response.json())
         .then((data) => {
           console.log(data)
@@ -114,11 +123,12 @@ export default {
       this.isSizeModalActive = true
       this.passedSizeData = size
     },
-    closeCreateModal: function () {
+    closeSizeModal: function () {
       this.isSizeModalActive = false
     },
     createSize: function (model) {
-      this.actionName = 'created'
+      console.log(model)
+      this.actionName = 'create'
       fetch('https://rassmin.com/api/Size/CreateSize', {
         method: 'Post',
         body: JSON.stringify(model),
@@ -130,30 +140,40 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           console.log(data)
-          if (data.success == true) {
-            this.isSizeModalActive = false
-            this.isActionSuccess = true
-            setTimeout(() => {
-              this.isActionSuccess = false
-            }, 1500)
-          }
+          this.isSizeModalActive = false
+          this.isActionCompleted = true
+          data.success == true
+            ? (this.isActionSuccess = true)
+            : (this.isActionSuccess = false)
+          setTimeout(() => {
+            this.isActionCompleted = false
+          }, 2000)
         })
       console.log(this.token)
     },
     updateSize: function (model) {
-      console.log('update')
-      console.log(model)
-      //   fetch('https://rassmin.com/api/Size/CreateSize', {
-      //     method: 'Post',
-      //     body: model,
-      //     headers: {
-      //       'Content-type': 'application/json;charset=UTF-8',
-      //       Authorization: `Token ${this.token}`,
-      //     },
-      //   })
-      //     .then((response) => response.json())
-      //     .then((data) => console.log(data))
-      //   console.log(this.token)
+      this.actionName = 'update'
+      fetch('https://rassmin.com/api/Size/UpdateSize', {
+        method: 'POST',
+        body: JSON.stringify(model),
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8',
+          Authorization: `Bearer ${this.token}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data)
+          this.isSizeModalActive = false
+          this.isActionCompleted = true
+          data.success == true
+            ? (this.isActionSuccess = true)
+            : (this.isActionSuccess = false)
+          setTimeout(() => {
+            this.isActionCompleted = false
+          }, 2000)
+        })
+      console.log(this.token)
     },
   },
   beforeMount() {

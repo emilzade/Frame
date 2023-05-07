@@ -72,7 +72,7 @@ export default {
     saveChanges: function () {
       this.data != ''
         ? this.$emit('update', this.passedData)
-        : this.$emit('create', this.passedData)
+        : this.$emit('create', { ...this.passedData, enabled: 1 })
     },
     triggerIsActive: function (a) {
       this.enabled = a.target.checked
