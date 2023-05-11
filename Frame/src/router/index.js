@@ -303,8 +303,10 @@ router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.getItem('isAuthenticated')
   const user = localStorage.getItem('user')
   var role = ''
-  if (user.length > 0) {
-    role = JSON.parse(user).roleName
+  if (user != null) {
+    if (user.length > 0) {
+      role = JSON.parse(user).roleName
+    }
   }
   if (to.meta.authRequired == 'true') {
     if (isAuthenticated == 'true') {

@@ -21,8 +21,8 @@
   "config": {
     "coreui_library_short_version": "4.1"
   },
-  "browser":{
-    "fs":false
+  "browser": {
+    "fs": false
   },
   "dependencies": {
     "@coreui/chartjs": "^3.0.0",
@@ -39,6 +39,7 @@
     "jw-vue-pagination": "^1.0.3",
     "mdb-vue-ui-kit": "^3.2.0",
     "swiper": "^8.4.5",
+    "three": "^0.152.2",
     "v-pagination-3": "^0.1.7",
     "vue": "^3.2.23",
     "vue-composable": "^1.0.0-beta.24",
