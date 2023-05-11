@@ -28,10 +28,10 @@
         <router-link
           v-for="data in sidebarData"
           :key="data.id"
-          :class="{ active: data.isActive }"
           class="nav-item nav-link"
           :to="{ name: data.routeName }"
-          @click="toggleActive(data)"
+          active-class="active"
+          exact
         >
           <i class="fa fa-tachometer-alt me-2"></i>{{ data.title }}
         </router-link>
@@ -61,45 +61,33 @@ export default {
       {
         id: 1,
         title: 'Dashboard',
-        routeName: 'Admin',
-        isActive: true,
+        routeName: 'AdminIndex',
       },
       {
         id: 2,
         title: 'Items',
         routeName: 'Items',
-        isActive: false,
       },
       {
         id: 3,
         title: 'Sizes',
         routeName: 'Sizes',
-        isActive: false,
       },
       {
         id: 4,
         title: 'Orders',
         routeName: 'Orders',
-        isActive: false,
       },
       {
         id: 5,
         title: 'Messages',
         routeName: 'Messages',
-        isActive: false,
       },
     ]
     return {
       sidebarData,
     }
   },
-  methods: {
-    toggleActive: function (data) {
-      this.sidebarData.forEach((data) => {
-        data.isActive = false
-      })
-      data.isActive = !data.isActive
-    },
-  },
+  methods: {},
 }
 </script>

@@ -58,8 +58,10 @@
 </style>
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { inject } from 'vue'
 import router from '@/router'
 import loginBg from '@/assets/images/loginbg.jpg'
+
 export default {
   name: 'Login',
   data() {
@@ -67,14 +69,17 @@ export default {
       email: '',
       password: '',
     }
+    const $cookies = inject('$cookies')
     return {
       payload,
       loginBg,
+      $cookies,
     }
   },
   computed: {
     ...mapGetters('auth', {
       getLoginApiStatus: 'getLoginApiStatus',
+      getToken: 'getToken',
     }),
   },
   methods: {
@@ -82,9 +87,9 @@ export default {
       actionLoginApi: 'loginApi',
     }),
     async login() {
-      console.log(this.payload)
       await this.actionLoginApi(this.payload)
       console.log(this.getLoginApiStatus)
+
       if (this.getLoginApiStatus == 'success') {
         router.push({ name: 'Index' })
       } else {

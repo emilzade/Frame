@@ -27,11 +27,12 @@
       </CInputGroup>
       <div v-if="this.data != ''">
         <CFormLabel>Is Active ?</CFormLabel> <br />
+        <!--eslint-disable vue/no-mutating-props-->
         <switches
-          :value="enabled"
+          :value="data.enabled"
           theme="bootstrap"
           color="info"
-          @click="triggerIsActive"
+          @click="data.enabled = !data.enabled"
           type-bold="true"
         ></switches>
       </div>
@@ -55,14 +56,11 @@ export default {
     }
     return {
       model,
-      enabled: false,
     }
   },
   computed: {
     passedData() {
-      return this.data != ''
-        ? { ...this.data, enabled: this.enabled == false ? 0 : 1 }
-        : this.model
+      return this.data != '' ? this.data : this.model
     },
   },
   methods: {
@@ -71,8 +69,16 @@ export default {
     },
     saveChanges: function () {
       this.data != ''
-        ? this.$emit('update', this.passedData)
-        : this.$emit('create', { ...this.passedData, enabled: 1 })
+        ? this.$emit('update', {
+            id: this.passedData.id,
+            name: this.passedData.name,
+            description: this.passedData.description,
+            enabled: this.passedData.enabled == true ? 1 : 0,
+          })
+        : this.$emit('create', {
+            name: this.passedData.name,
+            description: this.passedData.description,
+          })
     },
     triggerIsActive: function (a) {
       this.enabled = a.target.checked

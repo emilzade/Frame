@@ -89,9 +89,7 @@
             <CIcon :content="cilSearch" />
           </router-link>
         </MDBNavbarItem>
-        <MDBNavbarItem
-          v-if="isAuthenticated == 'true' || getLoginApiStatus == 'success'"
-        >
+        <MDBNavbarItem v-if="isAuthenticated == true || getToken != null">
           <CDropdown
             color="secondary"
             class="shadow-none p-0"
@@ -101,8 +99,14 @@
               ><CIcon :content="cilUser"
             /></CDropdownToggle>
             <CDropdownMenu class="transition-0 m-0">
+              <CDropdownItem
+                class="text-secondary"
+                style="background-color: rgb(240, 240, 240)"
+                >{{ JSON.parse(getUserProfile).email }}</CDropdownItem
+              >
               <CDropdownItem disabled>Profile</CDropdownItem>
-              <CDropdownItem v-if="role == 'admin'"
+              <CDropdownItem
+                v-if="JSON.parse(getUserProfile).roleName == 'admin'"
                 ><router-link :to="{ name: 'Admin' }"
                   >Admin Panel</router-link
                 ></CDropdownItem
@@ -129,7 +133,7 @@
             <router-link
               class="text-decoration-none navbar-item"
               :to="{
-                name: 'Login',
+                name: 'Register',
               }"
             >
               Register
@@ -321,7 +325,6 @@ export default {
   },
 
   data() {
-    const role = localStorage.getItem('role')
     const isBasketHasItem = false
     const limitPosition = 200
     const isScrolled = false
@@ -329,7 +332,6 @@ export default {
 
     const isNavbarCollapse = false
     const isDropdownActive = false
-
     // const navbarItemStyle = {
     //   bgColor: '',
     //   textColor: '',
@@ -341,7 +343,6 @@ export default {
       cilBasket,
       cilUser,
       cilSearch,
-      role,
       isBasketHasItem,
       limitPosition,
       isScrolled,
@@ -355,8 +356,12 @@ export default {
       return this.$store.state.auth.isAuthenticated
     },
     ...mapGetters('auth', {
-      getLoginApiStatus: 'getLoginApiStatus',
+      getToken: 'getToken',
+      getUserProfile: 'getUserProfile',
     }),
+    userProfile: function () {
+      return this.getUserProfile
+    },
   },
   methods: {
     ...mapActions('auth', {
@@ -477,8 +482,13 @@ export default {
   },
   beforeMount() {
     this.$store.commit('setTotalQuantityInBasket')
+    //console.log(this.getUserProfile)
     //window.addEventListener('scroll', this.handleScroll)
-    console.log(this.$store.state.elementCountInBasket)
+    //console.log(this.$store.state.elementCountInBasket)
+
+    // if (this.isAuthenticated == true) {
+    //   location.reload()
+    // }
   },
   beforeUnmount() {
     //window.removeEventListener('scroll', this.handleScroll)

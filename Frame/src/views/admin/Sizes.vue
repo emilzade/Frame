@@ -105,7 +105,7 @@ export default {
         method: 'GET',
         headers: {
           'Content-type': 'application/json;charset=UTF-8',
-          Authorization: `Bearer E768F514D0C8272B0583B38C82122CD2C7BE0FE185E4441DDE0E69EF228AA72E`,
+          Authorization: `Bearer ${this.token}`,
         },
       })
         .then((response) => response.json())
@@ -152,9 +152,10 @@ export default {
       console.log(this.token)
     },
     updateSize: function (model) {
+      console.log(model)
       this.actionName = 'update'
       fetch('https://rassmin.com/api/Size/UpdateSize', {
-        method: 'POST',
+        method: 'PUT',
         body: JSON.stringify(model),
         headers: {
           'Content-type': 'application/json;charset=UTF-8',

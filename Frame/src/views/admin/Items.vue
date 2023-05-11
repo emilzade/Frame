@@ -107,8 +107,17 @@ export default {
           Authorization: `Bearer ${this.token}`,
         },
       })
-        .then((response) => response.json())
+        .then((response) => {
+          if (response.ok) {
+            return response.json()
+          }
+          throw new Error('Something went wrong')
+        })
         .then((data) => (this.dbData = data))
+        .catch(() => {
+          console.log('something happened , trying again...')
+          this.getDbData()
+        })
     },
     openCreateItemModal: function () {
       this.isItemModalActive = true

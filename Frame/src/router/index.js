@@ -73,7 +73,7 @@ const routes = [
         name: 'Collections',
         component: () => import('../views/main/Collections.vue'),
         meta: {
-          authRequired: 'false',
+          authRequired: 'true',
           adminRequired: 'false',
         },
       },
@@ -298,19 +298,21 @@ const router = createRouter({
   },
 })
 router.beforeEach((to, from, next) => {
-  // console.log('hello')
-  // //check page is protected or not
   // console.log('authRequired', to.meta.authRequired)
   // console.log('adminRequired', to.meta.adminRequired)
-
+  const isAuthenticated = localStorage.getItem('isAuthenticated')
+  const user = localStorage.getItem('user')
+  var role = ''
+  if (user.length > 0) {
+    role = JSON.parse(user).roleName
+  }
   if (to.meta.authRequired == 'true') {
-    const role = localStorage.getItem('role')
-    if (role == 'user' || role == 'admin') {
+    if (isAuthenticated == 'true') {
       if (to.meta.adminRequired == 'true') {
         if (role == 'admin') {
           return next()
         } else {
-          alert('Sorry , you need an admin permission for that...')
+          alert('Only admins')
           router.push({
             name: 'Index',
           })
@@ -319,8 +321,9 @@ router.beforeEach((to, from, next) => {
         return next()
       }
     } else {
+      alert('Only users')
       router.push({
-        name: 'Login',
+        name: 'Index',
       })
     }
   } else {

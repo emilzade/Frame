@@ -1,6 +1,6 @@
 <template>
   <!-- HTML !-->
-  <button
+  <div
     :class="{
       'custom-button-light-to-dark': color == 'lightToDark',
       'custom-button-dark-to-light': color == 'darkToLight',
@@ -8,14 +8,14 @@
       'custom-button-dark': color == 'dark',
       'custom-button-light': color == 'light',
     }"
-    class="custom-button"
+    class="custom-button text-center"
     role="button"
   >
     <span class="text" v-if="text">{{ text }}</span>
     <span v-else>See More</span>
     <span v-if="alterText">{{ alterText }}</span>
     <span v-else>See More</span>
-  </button>
+  </div>
 </template>
 <style>
 .custom-button-light-to-dark {

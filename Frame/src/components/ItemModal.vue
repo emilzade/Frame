@@ -47,7 +47,7 @@
       <CInputGroup
         class="mb-3"
         v-for="(item, index) in sizePriceArr"
-        :key="item.sizeId"
+        :key="index"
       >
         <CInputGroupText id="basic-addon1"
           >{{ index + 1 }}: {{ item.name }} -
@@ -101,7 +101,7 @@
         </div>
       </div>
     </CModalBody>
-    <div v-for="(item, index) in sizePriceArr" :key="item.sizeId">
+    <div v-for="(item, index) in sizePriceArr" :key="index">
       {{ item }} {{ index }}
     </div>
     <div @click="salam">salam</div>
@@ -116,7 +116,6 @@ import { ref } from 'vue'
 import { CInputGroup } from '@coreui/vue'
 import VueMultiselect from 'vue-multiselect'
 import 'vue-multiselect/dist/vue-multiselect.css'
-
 export default {
   props: ['isVisible', 'data'],
   components: { CInputGroup, VueMultiselect },
@@ -142,19 +141,14 @@ export default {
       tag,
       dbSizes,
       selectedSize,
-      testPrices: [],
+      createPrices: [],
     }
   },
   computed: {
     passedData() {
       return this.data != ''
         ? {
-            itemName: this.data.itemName,
-            description: this.data.description,
-            images: this.data.images,
-            tags: this.data.tags,
-            createdDate: this.data.createdDate,
-            modifiedDate: this.data.modifiedDate,
+            ...this.data,
             // eslint-disable-next-line no-unused-vars
             prices: this.data.prices.map(({ name, description, ...rest }) => {
               return rest
@@ -163,7 +157,15 @@ export default {
         : this.model
     },
     sizePriceArr() {
-      return this.data != '' ? this.data.prices : this.testPrices
+      return this.data != ''
+        ? this.passedData.prices.map((x) => ({
+            sizeId: x.sizeId,
+            name: this.dbSizes.data.find((a) => a.id == x.sizeId).name,
+            description: this.dbSizes.data.find((a) => a.id == x.sizeId)
+              .description,
+            price: 0,
+          }))
+        : this.createPrices
     },
     // passedSizePriceArray() {
     //   return this.data != ''
@@ -182,6 +184,7 @@ export default {
   },
   methods: {
     closeModal: function () {
+      this.selectedSize = ref()
       this.$emit('closeModal')
     },
     saveChanges: function () {
@@ -198,7 +201,7 @@ export default {
       this.passedData.tags.splice(index, 1)
     },
     salam: function () {
-      console.log(this.data)
+      console.log(this.sizePriceArr)
     },
     selectSize: function (size) {
       var sizePriceObj = {
@@ -212,9 +215,12 @@ export default {
         sizeId: size.id,
         price: 0,
       }
-      var isExist = this.passedData.prices.some((x) => x.sizeId == size.id)
+      //var isExist = this.passedData.prices.some((x) => x.sizeId == size.id)
 
-      if (!isExist) {
+      if (this.data != '') {
+        //eslint-disable-next-line vue/no-mutating-props
+        this.data.prices.push(sizePriceObj)
+      } else {
         this.sizePriceArr.push(sizePriceObj)
         this.passedData.prices.push(tempPriceObj)
       }
@@ -222,10 +228,17 @@ export default {
       console.log(this.sizePriceArr)
     },
     removeSize: function (size) {
-      this.sizePriceArr = this.sizePriceArr.filter((x) => x.sizeId != size.id)
-      // this.passedData.prices = this.passedData.prices.filter(
-      //   (x) => x.sizeId != size.id,
-      // )
+      if (this.data != '') {
+        //eslint-disable-next-line vue/no-mutating-props
+        this.data.prices = this.data.prices.filter((x) => x.sizeId != size.id)
+        this.passedData.prices = this.data.prices.filter(
+          (x) => x.sizeId != size.id,
+        )
+      } else {
+        this.model.prices = this.model.prices.filter((x) => x.sizeId != size.id)
+        this.sizePriceArr = this.sizePriceArr.filter((x) => x.sizeId != size.id)
+        this.createPrices = this.createPrices.filter((x) => x.sizeId != size.id)
+      }
     },
     uploadImage: function (el) {
       for (let i = 0; i < el.target.files.length; i++) {
@@ -243,6 +256,29 @@ export default {
     removeImage: function (index) {
       this.passedData.images.splice(index, 1)
     },
+    getDbData: function () {
+      fetch('https://rassmin.com/api/Size/GetSizes', {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8',
+          Authorization: `Bearer ${this.token}`,
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json()
+          }
+          throw new Error('Something went wrong')
+        })
+        .then((data) => {
+          this.dbSizes = data
+          console.log(data)
+        })
+        .catch(() => {
+          console.log('something happened , trying again...')
+          this.getDbData()
+        })
+    },
   },
   mounted() {},
   beforeMount() {
@@ -251,18 +287,7 @@ export default {
     //     this.passedSizePriceArray.push(this.data.prices[i])
     //   }
     // }
-    fetch('https://rassmin.com/api/Size/GetSizes', {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json;charset=UTF-8',
-        Authorization: `Bearer ${this.token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        this.dbSizes = data
-        console.log(data)
-      })
+    this.getDbData()
   },
 }
 </script>

@@ -1,22 +1,21 @@
 //import axios from 'axios'
 //import jwtInterceptor from '../../shared/jwt.interceptor'
+import VueCookies from 'vue-cookies'
+
 const state = () => ({
   loginApiStatus: '',
-  userProfile: {
-    id: 0,
-    lastName: '',
-    firstName: '',
-    email: '',
-    phone: '',
-  },
+  userProfile: localStorage.getItem('user'),
+  token: VueCookies.get('token'),
   isAuthenticated: false,
   logOut: false,
-  token: localStorage.getItem('token'),
 })
 
 const getters = {
   getLoginApiStatus(state) {
     return state.loginApiStatus
+  },
+  getToken(state) {
+    return state.token
   },
   getUserProfile(state) {
     return state.userProfile
@@ -25,9 +24,9 @@ const getters = {
     return state.logOut
   },
 }
-
 const actions = {
   async loginApi({ commit }, data) {
+    console.log(data)
     const configObject = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -36,48 +35,44 @@ const actions = {
         password: data.password,
       }),
     }
+
     await fetch('https://rassmin.com/api/User/Login', configObject)
       .then((response) => response.json())
-      .then((data) => {
-        console.log(data)
-        if (data.success == true) {
+      .then(async (loginData) => {
+        console.log(loginData)
+        if (loginData.success == true) {
           commit('setLoginApiStatus', 'success')
-          commit('setToken', data.data.token)
-          localStorage.setItem('isAuthenticated', true)
           localStorage.setItem('role', 'admin')
-          localStorage.setItem('token', data.data.token)
+          localStorage.setItem('isAuthenticated', true)
+          commit('setIsAuthenticated', true)
+          VueCookies.set('token', loginData.data.token, '600s')
+
+          await fetch(
+            `https://rassmin.com/api/User/GetUsers?email=${data.email}`,
+            {
+              method: 'GET',
+              headers: {
+                'Content-type': 'application/json;charset=UTF-8',
+                Authorization: `Bearer ${loginData.data.token}`,
+              },
+            },
+          )
+            .then(async (response) => await response.json())
+            .then((userData) => {
+              console.log(userData)
+              localStorage.setItem('user', JSON.stringify(userData.data[0]))
+              commit('setUserProfile', JSON.stringify(userData.data[0]))
+            })
         } else {
           commit('setLoginApiStatus', 'failed')
-          commit('setToken', '')
-          localStorage.setItem('isAuthenticated', false)
           localStorage.setItem('role', '')
-          localStorage.setItem('token', '')
+          localStorage.setItem('isAuthenticated', false)
+          commit('setIsAuthenticated', false)
+          VueCookies.set('token', '', '')
         }
       })
   },
 
-  async userProfile({ commit }) {
-    // const response = await jwtInterceptor
-    //   .get('http://localhost:3000/user-profile', {
-    //     withCredentials: true,
-    //     credentials: 'include',
-    //   })
-    //   .catch((err) => {
-    //     console.log(err)
-    //   })
-
-    // if (response && response.data) {
-    //   commit('setUserProfile', response.data)
-    // }
-    const customUser = {
-      id: 1,
-      lastName: 'Testov',
-      firstName: 'Test',
-      email: 'test@mail.ru',
-      phone: '100',
-    }
-    commit('setUserProfile', customUser)
-  },
   async userLogout({ commit }, token) {
     fetch('https://rassmin.com/api/User/Logout', {
       method: 'Get',
@@ -91,7 +86,8 @@ const actions = {
     commit('setLogout', true)
     localStorage.setItem('isAuthenticated', 'false')
     localStorage.setItem('role', '')
-    localStorage.setItem('token', '')
+    VueCookies.set('token', '', '')
+    localStorage.setItem('user', '')
   },
 }
 
@@ -99,20 +95,15 @@ const mutations = {
   setLoginApiStatus(state, data) {
     state.loginApiStatus = data
   },
+  setIsAuthenticated(state, data) {
+    state.isAuthenticated = data
+  },
   setToken(state, data) {
     state.token = data
   },
   setUserProfile(state, data) {
-    const userProfile = {
-      id: data.id,
-      lastName: data.lastName,
-      firstName: data.firstName,
-      email: data.email,
-      phone: data.phone,
-    }
-    state.userProfile = userProfile
+    state.userProfile = data
   },
-
   setLogout(state, payload) {
     state.logOut = payload
   },
