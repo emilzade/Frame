@@ -2,7 +2,7 @@
   <MDBNavbar
     expand="lg"
     style="z-index: 100; box-shadow: 0 0 0 0"
-    class="navbar-container d-flex"
+    class="navbar-container d-flex p-0"
     :class="{
       'navbar-container-hidden': isScrolled,
       'navbar-container-visible': !isScrolled,
@@ -31,7 +31,7 @@
       id="navbarSupportedContent"
     >
       <MDBNavbarNav
-        class="mb-2 mb-lg-0 p-3 align-items-center px-5 gap-3"
+        class="mb-2 mb-lg-0 p-0 align-items-center px-5 gap-3"
         style="margin: 0px !important"
       >
         <MDBNavbarItem active>
@@ -299,7 +299,7 @@ $orange: #e6ddc4;
 }
 </style>
 <script>
-import logo from '../assets/images/logo.png'
+import logo from '@/assets/images/logos/logo_horizontal_negative.png'
 import { mapActions, mapGetters } from 'vuex'
 //import router from '@/router'
 //import ref from 'vue'

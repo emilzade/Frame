@@ -7,6 +7,7 @@
       @create="createItem"
       @update="updateItem"
       @closeModal="closeItemModal"
+      @sizeLoadFailed="setErrorValue('true', 'Can not load sizes')"
     ></ItemModal>
     <Transition name="fade">
       <CheckSuccessElement
@@ -16,6 +17,7 @@
         :isSuccess="isActionSuccess"
       ></CheckSuccessElement>
     </Transition>
+
     <div class="d-flex justify-content-between px-5 py-4">
       <CButton color="secondary">
         <CIcon :content="cilArrowLeft" />
@@ -25,6 +27,12 @@
     <div>
       <CFormInput class="w-75 m-auto" placeholder="Search Here" type="search" />
     </div>
+
+    <RefreshButton
+      v-if="errorData.isActive"
+      :text="errorData.messages"
+      @refresh="refreshItems"
+    ></RefreshButton>
     <CRow class="w-50 m-auto pt-4">
       <CCol
         class="border rounded col-12 py-3 my-1 d-flex justify-content-between align-items-center"
@@ -60,12 +68,13 @@
 import ItemModal from '@/components/ItemModal.vue'
 import { cilArrowLeft, cilInfo, cilTrash, cilSettings } from '@coreui/icons'
 import CheckSuccessElement from '@/components/CheckSuccessElement.vue'
-
+import RefreshButton from '@/components/RefreshButton.vue'
 export default {
   name: 'Items',
   components: {
     ItemModal,
     CheckSuccessElement,
+    RefreshButton,
   },
   data() {
     const dbData = {
@@ -80,6 +89,11 @@ export default {
     const actionName = ''
     const isActionSuccess = false
     const isActionCompleted = false
+    const errorData = {
+      messages: [],
+      isActive: false,
+      status: 0,
+    }
     return {
       dbData,
       cilArrowLeft,
@@ -91,6 +105,7 @@ export default {
       actionName,
       isActionSuccess,
       isActionCompleted,
+      errorData,
     }
   },
   computed: {
@@ -111,13 +126,31 @@ export default {
           if (response.ok) {
             return response.json()
           }
+          this.errorData.status = response.status
           throw new Error('Something went wrong')
         })
-        .then((data) => (this.dbData = data))
-        .catch(() => {
-          console.log('something happened , trying again...')
-          this.getDbData()
+        .then((data) => {
+          this.errorData.status = 200
+          this.dbData = data
         })
+        .catch(() => {
+          this.setErrorValue(true, 'Can not load items')
+        })
+    },
+    setErrorValue: function (state, message) {
+      this.errorData.isActive = state
+      var isExist = this.errorData.messages.includes(message)
+      if (!isExist) {
+        this.errorData.messages.push(message)
+      }
+    },
+    refreshItems: function () {
+      if (this.errorData.status == 403) {
+        this.$router.push({ name: 'Login' })
+      } else {
+        this.setErrorValue(false, '')
+        this.getDbData()
+      }
     },
     openCreateItemModal: function () {
       this.isItemModalActive = true

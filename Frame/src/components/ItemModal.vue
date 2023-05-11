@@ -275,8 +275,7 @@ export default {
           console.log(data)
         })
         .catch(() => {
-          console.log('something happened , trying again...')
-          this.getDbData()
+          this.$emit('sizeLoadFailed')
         })
     },
   },

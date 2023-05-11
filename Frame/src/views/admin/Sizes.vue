@@ -25,6 +25,11 @@
     <div>
       <CFormInput class="w-75 m-auto" placeholder="Search Here" type="search" />
     </div>
+    <RefreshButton
+      v-if="errorData.isActive"
+      :text="errorData.messages"
+      @refresh="refreshSizes"
+    ></RefreshButton>
     <CRow class="w-50 m-auto pt-4">
       <CCol
         class="border rounded col-12 py-3 my-1 d-flex justify-content-between align-items-center"
@@ -62,12 +67,14 @@
 import SizeModal from '@/components/SizeModal.vue'
 import { cilArrowLeft, cilInfo, cilTrash, cilSettings } from '@coreui/icons'
 import CheckSuccessElement from '@/components/CheckSuccessElement.vue'
+import RefreshButton from '@/components/RefreshButton.vue'
 export default {
   name: 'Sizes',
   components: {
     //EditButtonGroup,
     SizeModal,
     CheckSuccessElement,
+    RefreshButton,
   },
   data() {
     const dbData = {
@@ -81,6 +88,11 @@ export default {
     const actionName = ''
     const isActionSuccess = false
     const isActionCompleted = false
+    const errorData = {
+      messages: [],
+      isActive: false,
+      status: 0,
+    }
     return {
       dbData,
       cilArrowLeft,
@@ -92,6 +104,7 @@ export default {
       actionName,
       isActionSuccess,
       isActionCompleted,
+      errorData,
     }
   },
   computed: {
@@ -108,11 +121,35 @@ export default {
           Authorization: `Bearer ${this.token}`,
         },
       })
-        .then((response) => response.json())
+        .then((response) => {
+          if (response.ok) {
+            return response.json()
+          }
+          this.errorData.status = response.status
+          throw new Error('Something went wrong')
+        })
         .then((data) => {
-          console.log(data)
+          this.errorData.status = 200
           this.dbData = data
         })
+        .catch((err) => {
+          if (this.errorData.status == 403) {
+            this.$router.push({ name: 'Login' })
+          } else {
+            console.log(err)
+            this.setErrorValue(true, 'Can not load sizes')
+          }
+        })
+    },
+    setErrorValue: function (state, message) {
+      this.errorData.isActive = state
+      var isExist = this.errorData.messages.includes(message)
+      if (!isExist) {
+        this.errorData.messages.push(message)
+      }
+    },
+    refreshSizes: function () {
+      this.getDbData()
     },
     openCreateSizeModal: function () {
       this.isSizeModalActive = true

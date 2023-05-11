@@ -1,5 +1,6 @@
 <template>
   <div class="preloader flex-column">
+    <img :src="logo" />
     <h1>
       <span class="let1">W</span>
       <span class="let2">e</span>
@@ -111,7 +112,13 @@
 }
 </style>
 <script>
+import logo from '@/assets/images/logos/logo_horizontal.png'
 export default {
   name: 'PreLoader',
+  data() {
+    return {
+      logo,
+    }
+  },
 }
 </script>
