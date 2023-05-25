@@ -101,8 +101,7 @@
 </style>
 
 <script>
-import $ from 'jquery'
-import 'jquery'
+import { mapGetters } from 'vuex'
 import 'bootstrap'
 export default {
   name: 'AdminNavbar',
@@ -149,10 +148,15 @@ export default {
       notifications,
     }
   },
+  computed: {
+    ...mapGetters('auth', {
+      getToken: 'getToken',
+      getUserProfile: 'getUserProfile',
+    }),
+  },
   methods: {
     sideBarToggle: function () {
-      $('.sidebar, .content').toggleClass('open')
-      return false
+      this.$store.commit('setAdminSideBarActive')
     },
   },
 }

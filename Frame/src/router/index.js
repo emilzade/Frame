@@ -1,5 +1,6 @@
 import { h, resolveComponent } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import VueCookies from 'vue-cookies'
 
 import DefaultLayout from '@/layouts/DefaultLayout'
 import AdminLayout from '@/layouts/AdminLayout'
@@ -301,6 +302,7 @@ router.beforeEach((to, from, next) => {
   // console.log('authRequired', to.meta.authRequired)
   // console.log('adminRequired', to.meta.adminRequired)
   const isAuthenticated = localStorage.getItem('isAuthenticated')
+  const token = VueCookies.get('token')
   const user = localStorage.getItem('user')
   var role = ''
   if (user != null) {
@@ -309,9 +311,9 @@ router.beforeEach((to, from, next) => {
     }
   }
   if (to.meta.authRequired == 'true') {
-    if (isAuthenticated == 'true') {
+    if (isAuthenticated == 'true' && token != null) {
       if (to.meta.adminRequired == 'true') {
-        if (role == 'admin') {
+        if (role == 'admin' && token != null) {
           return next()
         } else {
           alert('Only admins')

@@ -5,6 +5,12 @@ export default createStore({
   state: {
     elementCountInBasket: 0,
     isSearchActive: false,
+    adminSideBarOpen: true,
+  },
+  getters: {
+    getAdminSideBarState(state) {
+      return state.adminSideBarOpen
+    },
   },
   mutations: {
     setTotalQuantityInBasket(state) {
@@ -15,6 +21,9 @@ export default createStore({
           return accumulator + object.quantity
         }, 0)
       }
+    },
+    setAdminSideBarActive(state) {
+      state.adminSideBarOpen = !state.adminSideBarOpen
     },
   },
   actions: {},

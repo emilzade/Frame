@@ -1,6 +1,12 @@
 <template>
   <SideBar />
-  <div class="content">
+  <div
+    :class="{
+      'open ': !this.$store.state.adminSideBarOpen,
+      '': this.$store.state.adminSideBarOpen,
+    }"
+    class="content"
+  >
     <Navbar />
     <div style="min-height: 100vh" class="bg-light">
       <router-view />

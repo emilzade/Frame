@@ -89,7 +89,7 @@ export default {
     }),
     async login() {
       await this.actionLoginApi(this.payload)
-      console.log(this.getLoginApiStatus)
+      //console.log(this.getLoginApiStatus)
 
       if (this.getLoginApiStatus == 'success') {
         router.push({ name: 'Index' })
@@ -227,6 +227,7 @@ export default {
       renderer.render(scene, camera)
     })
   },
+  beforeMount() {},
 }
 </script>
 

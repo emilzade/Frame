@@ -19,9 +19,11 @@
     </Transition>
 
     <div class="d-flex justify-content-between px-5 py-4">
-      <CButton color="secondary">
-        <CIcon :content="cilArrowLeft" />
-      </CButton>
+      <router-link :to="{ name: 'AdminIndex' }">
+        <CButton color="secondary">
+          <CIcon :content="cilArrowLeft" />
+        </CButton>
+      </router-link>
       <CButton @click="openCreateItemModal" color="success">Create</CButton>
     </div>
     <div>
@@ -130,6 +132,7 @@ export default {
           throw new Error('Something went wrong')
         })
         .then((data) => {
+          console.log(data)
           this.errorData.status = 200
           this.dbData = data
         })
@@ -166,6 +169,28 @@ export default {
     },
     createItem: function (model) {
       console.log(model)
+      this.actionName = 'create'
+      fetch('https://rassmin.com/api/Item/CreateItem', {
+        method: 'Post',
+        body: JSON.stringify(model),
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8',
+          Authorization: `Bearer ${this.token}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data)
+          this.isItemModalActive = false
+          this.isActionCompleted = true
+          data.success == true
+            ? (this.isActionSuccess = true)
+            : (this.isActionSuccess = false)
+          setTimeout(() => {
+            this.isActionCompleted = false
+          }, 2000)
+        })
+      console.log(this.token)
     },
     updateItem: function (model) {
       console.log(model)

@@ -101,10 +101,6 @@
         </div>
       </div>
     </CModalBody>
-    <div v-for="(item, index) in sizePriceArr" :key="index">
-      {{ item }} {{ index }}
-    </div>
-    <div @click="salam">salam</div>
     <CModalFooter>
       <CButton color="secondary" @click="closeModal"> Close </CButton>
       <CButton @click="saveChanges" color="primary">Save changes</CButton>
@@ -149,10 +145,12 @@ export default {
       return this.data != ''
         ? {
             ...this.data,
-            // eslint-disable-next-line no-unused-vars
-            prices: this.data.prices.map(({ name, description, ...rest }) => {
-              return rest
-            }),
+            prices: this.data.prices.map(
+              // eslint-disable-next-line no-unused-vars
+              ({ name, description, item_PriceId, ...rest }) => {
+                return rest
+              },
+            ),
           }
         : this.model
     },
@@ -199,9 +197,6 @@ export default {
     },
     removeTag: function (index) {
       this.passedData.tags.splice(index, 1)
-    },
-    salam: function () {
-      console.log(this.sizePriceArr)
     },
     selectSize: function (size) {
       var sizePriceObj = {
@@ -272,7 +267,6 @@ export default {
         })
         .then((data) => {
           this.dbSizes = data
-          console.log(data)
         })
         .catch(() => {
           this.$emit('sizeLoadFailed')

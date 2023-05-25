@@ -120,7 +120,7 @@
                   :placeholder="'Select Size'"
                   label="name"
                   track-by="price"
-                  @select="this.selectedSize = size"
+                  @select="selectSize"
                   class="w-100"
                 />
               </div>
@@ -138,12 +138,20 @@
                   </div>
                 </div></div
             ></CCol>
-            <CCol class="col-12 d-flex align-items-center">
+            <CCol
+              v-if="typeof token == 'string'"
+              class="col-12 d-flex align-items-center"
+            >
               <div
                 @click="addToBasket"
                 class="btn btn-dark my-2 py-2 px-3 text-center"
               >
                 Add To Basket
+              </div>
+            </CCol>
+            <CCol v-else class="col-12 d-flex align-items-center">
+              <div class="btn btn-dark my-2 py-2 px-3 text-center">
+                Login to use basket
               </div>
             </CCol>
           </CRow>
@@ -263,24 +271,42 @@ export default {
       selectedSize,
     }
   },
+  computed: {
+    user() {
+      return JSON.parse(this.$store.state.auth.userProfile)
+    },
+    token() {
+      return this.$store.state.auth.token
+    },
+  },
   methods: {
     addToBasket: function () {
       var payload = {
-        userId: 1,
-        itemId: this.dbData.data[0].id,
+        userId: this.user.id,
+        item_PriceId: this.selectedSize.item_PriceId,
         description: this.dbData.data[0].description,
         itemName: this.dbData.data[0].itemName,
-        imagePath: this.dbData.data[0].images[0],
-        sizeId: this.selectedSize.sizeId,
-        statusId: this.dbData.data[0].statusId,
         count: this.count,
+        imagePath: this.dbData.data[0].images[0],
+        statusId: `${this.dbData.data[0].statusId}`,
       }
+      fetch('https://rassmin.com/api/Cart/AddItemToCart', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8',
+          Authorization: `Bearer ${this.token}`,
+        },
+        body: JSON.stringify(payload),
+      })
+        .then((response) => response.json())
+        .then((data) => console.log(data))
       console.log(payload)
     },
     setThumbsSwiper: function (swiper) {
       this.thumbsSwiper = swiper
     },
     selectSize: function (size) {
+      this.selectedSize = size
       console.log(size)
     },
     minusCount: function () {

@@ -1,11 +1,11 @@
 <template>
   <div
-    class="border border-dark p-3 d-flex flex-column align-items-center align-items-center"
+    class="border rounded p-3 d-flex flex-column align-items-center align-items-center"
   >
     <div
       v-for="(textData, index) in text"
       :key="index"
-      class="border border-dark p-3 text-center"
+      class="border rounded p-3 text-center"
     >
       {{ textData }}
     </div>

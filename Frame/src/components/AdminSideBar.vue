@@ -1,6 +1,12 @@
 <template>
   <!-- Sidebar Start -->
-  <div class="sidebar pb-3">
+  <div
+    :class="{
+      'open ': !this.$store.state.adminSideBarOpen,
+      '': this.$store.state.adminSideBarOpen,
+    }"
+    class="sidebar pb-3"
+  >
     <nav class="navbar bg-light navbar-light">
       <router-link :to="{ name: 'Admin' }" class="navbar-brand mx-4 mb-3">
         <h3 class="text-secondary">

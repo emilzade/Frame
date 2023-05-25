@@ -17,9 +17,11 @@
       ></CheckSuccessElement>
     </Transition>
     <div class="d-flex justify-content-between px-5 py-4">
-      <CButton color="secondary">
-        <CIcon :content="cilArrowLeft" />
-      </CButton>
+      <router-link :to="{ name: 'AdminIndex' }">
+        <CButton color="secondary">
+          <CIcon :content="cilArrowLeft" />
+        </CButton>
+      </router-link>
       <CButton @click="openCreateSizeModal" color="success">Create</CButton>
     </div>
     <div>

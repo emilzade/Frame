@@ -40,12 +40,26 @@ const actions = {
       .then((response) => response.json())
       .then(async (loginData) => {
         console.log(loginData)
+
         if (loginData.success == true) {
           commit('setLoginApiStatus', 'success')
           localStorage.setItem('role', 'admin')
           localStorage.setItem('isAuthenticated', true)
           commit('setIsAuthenticated', true)
-          VueCookies.set('token', loginData.data.token, '600s')
+
+          var slicedDate =
+            loginData.data.expiryDate.slice(0, 10) +
+            ' ' +
+            loginData.data.expiryDate.slice(11, 19)
+
+          var parsedDate = new Date(slicedDate)
+          var addedDate = parsedDate.setTime(
+            parsedDate.getTime() + 2 * 60 * 60 * 1000,
+          )
+          var ceiledDate = Math.ceil((addedDate - new Date()) / 1000)
+
+          VueCookies.set('token', loginData.data.token, `${ceiledDate}s`)
+          commit('setToken', loginData.data.token)
 
           await fetch(
             `https://rassmin.com/api/User/GetUsers?email=${data.email}`,
@@ -69,6 +83,7 @@ const actions = {
           localStorage.setItem('isAuthenticated', false)
           commit('setIsAuthenticated', false)
           VueCookies.set('token', '', '')
+          commit('setToken', '')
         }
       })
   },
@@ -87,6 +102,7 @@ const actions = {
     localStorage.setItem('isAuthenticated', 'false')
     localStorage.setItem('role', '')
     VueCookies.set('token', '', '')
+    commit('setToken', '')
     localStorage.setItem('user', '')
   },
 }
