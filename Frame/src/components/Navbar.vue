@@ -31,7 +31,7 @@
       id="navbarSupportedContent"
     >
       <MDBNavbarNav
-        class="mb-2 mb-lg-0 p-0 align-items-center px-5 gap-3"
+        class="mb-2 mb-lg-0 p-0 align-items-center px-5 gap-3 d-flex"
         style="margin: 0px !important"
       >
         <MDBNavbarItem active>
@@ -52,6 +52,38 @@
             }"
           >
             <span>Collections</span>
+          </router-link>
+        </MDBNavbarItem>
+        <MDBNavbarItem>
+          <router-link
+            class="text-decoration-none"
+            :to="{
+              name: $store.state.isSearchActive ? 'Gallery' : '',
+            }"
+          >
+            <div class="d-flex justify-content-between align-items-center">
+              <input
+                style="height: 30px"
+                class="border d-block search-input"
+                v-model="searchText"
+                @keyup="searchByInput"
+                :class="{
+                  'search-active': $store.state.isSearchActive,
+                  'search-disable': !$store.state.isSearchActive,
+                }"
+              />
+              <div
+                style="width: 30px; height: 30px"
+                @click="changeSearchBarState"
+                :class="{
+                  'bg-light invert-100': $store.state.isSearchActive,
+                  'bg-light': !!$store.state.isSearchActive,
+                }"
+                class="d-flex justify-content-center align-items-center p-2"
+              >
+                <img :src="searchIcon" class="w-100" />
+              </div>
+            </div>
           </router-link>
         </MDBNavbarItem>
         <MDBNavbarItem>
@@ -77,16 +109,6 @@
             <div v-else>
               <CIcon class="text-success" :content="cilBasket" />
             </div>
-          </router-link>
-        </MDBNavbarItem>
-        <MDBNavbarItem>
-          <router-link
-            class="text-decoration-none navbar-item"
-            :to="{
-              name: 'Gallery',
-            }"
-          >
-            <CIcon :content="cilSearch" />
           </router-link>
         </MDBNavbarItem>
         <MDBNavbarItem v-if="isAuthenticated == true || getToken != null">
@@ -228,6 +250,25 @@ $green: #678983;
 $yellow: #f0e9d2;
 $orange: #e6ddc4;
 
+.search-input {
+  &:focus {
+    outline: none;
+    border: 1px solid black;
+  }
+}
+
+.search-active {
+  width: 200px;
+  border: 1px solid black;
+  visibility: visible;
+  padding: 2px;
+  transition: all 0.4s ease-in-out;
+}
+.search-disable {
+  width: 0px;
+  visibility: hidden;
+  transition: all 0.4s ease-in-out;
+}
 .navbar-container {
   display: flex;
   width: 100%;
@@ -281,6 +322,7 @@ $orange: #e6ddc4;
 .logo-div {
   width: 100px;
 }
+
 @media screen and (max-width: 1024px) {
   .navbar-container {
     background-color: #f8f9fa;
@@ -301,6 +343,7 @@ $orange: #e6ddc4;
 <script>
 import logo from '@/assets/images/logos/logo_horizontal_negative.png'
 import { mapActions, mapGetters } from 'vuex'
+import searchIcon from '@/assets/images/icons/search.png'
 //import router from '@/router'
 //import ref from 'vue'
 import { cilHeart, cilBasket, cilUser, cilSearch } from '@coreui/icons'
@@ -332,12 +375,16 @@ export default {
 
     const isNavbarCollapse = false
     const isDropdownActive = false
+
+    const searchText = ''
     // const navbarItemStyle = {
     //   bgColor: '',
     //   textColor: '',
     // }
     return {
       //navbarItemStyle,
+      searchIcon,
+      searchText,
       logo,
       cilHeart,
       cilBasket,
@@ -370,6 +417,12 @@ export default {
     logOut: async function () {
       await this.actionLogOut()
       location.reload()
+    },
+    changeSearchBarState: function () {
+      this.$store.commit('setChangeBarState')
+    },
+    searchByInput: function () {
+      this.$store.commit('setSearchInputData', this.searchText)
     },
     // componentToHex: function (c) {
     //   var hex = c.toString(16)

@@ -6,6 +6,7 @@ export default createStore({
     elementCountInBasket: 0,
     isSearchActive: false,
     adminSideBarOpen: true,
+    searchInputData: '',
   },
   getters: {
     getAdminSideBarState(state) {
@@ -13,6 +14,9 @@ export default createStore({
     },
   },
   mutations: {
+    setSearchInputData(state, data) {
+      state.searchInputData = data
+    },
     setTotalQuantityInBasket(state) {
       if (localStorage.getItem('GalleryItems') != null) {
         state.elementCountInBasket = JSON.parse(
@@ -24,6 +28,9 @@ export default createStore({
     },
     setAdminSideBarActive(state) {
       state.adminSideBarOpen = !state.adminSideBarOpen
+    },
+    setChangeBarState(state) {
+      state.isSearchActive = !state.isSearchActive
     },
   },
   actions: {},

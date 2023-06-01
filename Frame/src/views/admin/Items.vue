@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="position-relative">
     <div class="display-3 dune-rise text-center">Items</div>
     <ItemModal
       :isVisible="isItemModalActive"
@@ -55,6 +55,16 @@
               <CIcon :content="cilInfo" />
             </CButton>
           </router-link>
+          <CButton
+            v-if="item.statusId == 1"
+            @click="updateStatusOfItem(item)"
+            color="success"
+          >
+            <CIcon :content="cilGlobeAlt" />
+          </CButton>
+          <CButton v-else @click="updateStatusOfItem(item)" color="warning">
+            <CIcon :content="cilClock" />
+          </CButton>
           <CButton @click="openUpdateItemModal(item)" color="info">
             <CIcon :content="cilSettings" />
           </CButton>
@@ -68,7 +78,14 @@
 </template>
 <script>
 import ItemModal from '@/components/ItemModal.vue'
-import { cilArrowLeft, cilInfo, cilTrash, cilSettings } from '@coreui/icons'
+import {
+  cilArrowLeft,
+  cilInfo,
+  cilTrash,
+  cilSettings,
+  cilGlobeAlt,
+  cilClock,
+} from '@coreui/icons'
 import CheckSuccessElement from '@/components/CheckSuccessElement.vue'
 import RefreshButton from '@/components/RefreshButton.vue'
 export default {
@@ -102,6 +119,8 @@ export default {
       cilInfo,
       cilTrash,
       cilSettings,
+      cilGlobeAlt,
+      cilClock,
       isItemModalActive,
       passedItemData,
       actionName,
@@ -125,6 +144,7 @@ export default {
         },
       })
         .then((response) => {
+          console.log('response get')
           if (response.ok) {
             return response.json()
           }
@@ -164,6 +184,11 @@ export default {
       this.isItemModalActive = true
       this.passedItemData = item
     },
+    updateStatusOfItem(item) {
+      var statusid = item.statusId != 1 ? 1 : -1
+      item = { ...item, statusId: statusid }
+      this.updateItem(item)
+    },
     closeItemModal: function () {
       this.isItemModalActive = false
     },
@@ -186,6 +211,7 @@ export default {
           data.success == true
             ? (this.isActionSuccess = true)
             : (this.isActionSuccess = false)
+          this.getDbData()
           setTimeout(() => {
             this.isActionCompleted = false
           }, 2000)
@@ -194,6 +220,36 @@ export default {
     },
     updateItem: function (model) {
       console.log(model)
+      delete model.statusName
+      delete model.createdDate
+      model.prices = model.prices.map(
+        // eslint-disable-next-line no-unused-vars
+        ({ description, item_PriceId, name, ...keepAttributes }) =>
+          keepAttributes,
+      )
+      this.actionName = 'update'
+      fetch('https://rassmin.com/api/Item/UpdateItem', {
+        method: 'PUT',
+        body: JSON.stringify(model),
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8',
+          Authorization: `Bearer ${this.token}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data)
+          this.isItemModalActive = false
+          this.isActionCompleted = true
+          data.success == true
+            ? (this.isActionSuccess = true)
+            : (this.isActionSuccess = false)
+          this.getDbData()
+          setTimeout(() => {
+            this.isActionCompleted = false
+          }, 2000)
+        })
+      console.log(this.token)
     },
   },
   beforeMount() {

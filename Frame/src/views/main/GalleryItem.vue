@@ -158,6 +158,7 @@
         </CCol>
       </CRow>
     </div>
+    <FromCollection />
     <LastViewed />
   </div>
 </template>
@@ -232,6 +233,7 @@ import { FreeMode, Thumbs } from 'swiper'
 import VueMultiselect from 'vue-multiselect'
 import { cilPlus, cilMinus } from '@coreui/icons'
 import LastViewed from '../../components/LastViewed.vue'
+import FromCollection from '@/components/FromCollection.vue'
 import 'swiper/css'
 import 'swiper/css/free-mode'
 import 'swiper/css/navigation'
@@ -244,6 +246,7 @@ export default {
     SwiperSlide,
     VueMultiselect,
     LastViewed,
+    FromCollection,
   },
   data() {
     const dbData = {
@@ -284,12 +287,9 @@ export default {
       var payload = {
         userId: this.user.id,
         item_PriceId: this.selectedSize.item_PriceId,
-        description: this.dbData.data[0].description,
-        itemName: this.dbData.data[0].itemName,
         count: this.count,
-        imagePath: this.dbData.data[0].images[0],
-        statusId: `${this.dbData.data[0].statusId}`,
       }
+      console.log(payload)
       fetch('https://rassmin.com/api/Cart/AddItemToCart', {
         method: 'POST',
         headers: {
@@ -300,7 +300,6 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => console.log(data))
-      console.log(payload)
     },
     setThumbsSwiper: function (swiper) {
       this.thumbsSwiper = swiper

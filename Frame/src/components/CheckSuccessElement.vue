@@ -1,7 +1,7 @@
 <template>
-  <div class="border border-dark check-custom-element">
+  <div class="check-custom-element">
     <div
-      class="check-container d-flex justify-content-center align-items-center border flex-column bg-light p-3"
+      class="check-container d-flex justify-content-center align-items-center border flex-column bg-light p-3 shadow"
     >
       <div class="fs-1 dune-rise">
         {{ itemName }} {{ actionName }} <span v-if="isSuccess">successfull</span
@@ -117,6 +117,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 900;
 }
 .check-container {
   height: 300px;

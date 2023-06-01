@@ -981,12 +981,13 @@ export default {
       vm.isInputFocused = false
     },
     submit: function () {
-      const cardInfo = {
-        cardNumber: this.cardNumber,
-        cardMonth: this.cardMonth,
-        cardDate: this.cardDate,
-      }
-      console.log(cardInfo)
+      // const cardInfo = {
+      //   cardNumber: this.cardNumber,
+      //   cardMonth: this.cardMonth,
+      //   cardDate: this.cardDate,
+      // }
+      this.$emit('submitPayment')
+      //console.log(cardInfo)
     },
   },
   mounted() {

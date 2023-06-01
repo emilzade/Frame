@@ -20,6 +20,9 @@ $sizes: (
     }
   }
 }
+.invert-100 {
+  filter: invert(100%);
+}
 .slide-fade-enter-active {
   transition: all 0.3s ease-out;
 }

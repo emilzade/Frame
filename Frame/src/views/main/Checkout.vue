@@ -1,6 +1,6 @@
 <template>
   <div class="pt-5">
-    <div v-if="galleryItems.length == 0" class="pt-5">
+    <div v-if="galleryItems.data.length == 0" class="pt-5">
       <div
         style="height: 80vh"
         class="d-flex flex-column justify-content-center align-items-center munich"
@@ -16,7 +16,7 @@
     <CRow v-else class="pt-5 w-100" style="margin: 0px !important">
       <CCol class="col-md-6 col-12 border-end pt-5">
         <div
-          v-for="item in galleryItems"
+          v-for="item in galleryItems.data"
           :key="item.id"
           class="border p-2 mx-5 my-2 d-flex justify-content-between align-items-center"
         >
@@ -26,7 +26,7 @@
             <div @click="minusQuantity(item.id)" class="btn btn-light">
               <CIcon :content="cilMinus" />
             </div>
-            <div class="user-select-none">{{ item.quantity }}</div>
+            <div class="user-select-none">{{ item.count }}</div>
             <div @click="plusQuantity(item.id)" class="btn btn-light">
               <CIcon :content="cilPlus" />
             </div>
@@ -43,19 +43,23 @@
         </div>
       </CCol>
       <CCol class="col-md-6 col-12 border-start pt-5">
-        <CheckoutCard></CheckoutCard
+        <CheckoutCard @submitPayment="submitPayment"></CheckoutCard
       ></CCol>
     </CRow>
   </div>
 </template>
 <script>
-import { ref } from 'vue'
+//import { ref } from 'vue'
 import { cilPlus, cilMinus, cilX } from '@coreui/icons'
 import CheckoutCard from '@/components/CheckoutCard.vue'
 export default {
   components: { CheckoutCard },
   data() {
-    const galleryItems = ref([])
+    const galleryItems = {
+      data: [],
+      date: '',
+      success: '',
+    }
     const paymentInformation = {
       paymentTypeId: 1,
       firstName: null,
@@ -92,15 +96,15 @@ export default {
       paymentTypes,
     }
   },
-  methods: {
-    setCheckoutElements: function () {
-      this.galleryItems = JSON.parse(localStorage.getItem('GalleryItems'))
+  computed: {
+    token() {
+      return this.$store.state.auth.token
     },
+  },
+  methods: {
     minusQuantity: function (id) {
-      if (this.galleryItems.filter((x) => x.id == id)[0].quantity > 1) {
-        this.galleryItems.filter((x) => x.id == id)[0].quantity--
-        localStorage.setItem('GalleryItems', JSON.stringify(this.galleryItems))
-        this.sum -= this.galleryItems.filter((x) => x.id == id)[0].price
+      if (this.galleryItems.data.find((x) => x.item_priceId == id).count > 1) {
+        this.galleryItems.data.find((x) => x.item_priceId == id).count--
       } else {
         this.galleryItems.splice(
           this.galleryItems.indexOf(
@@ -108,16 +112,12 @@ export default {
           ),
           1,
         )
-        localStorage.setItem('GalleryItems', JSON.stringify(this.galleryItems))
       }
       this.$store.commit('setTotalQuantityInBasket')
     },
     plusQuantity: function (id) {
-      if (this.galleryItems.filter((x) => x.id == id)[0].quantity < 25) {
-        this.galleryItems.filter((x) => x.id == id)[0].quantity++
-        localStorage.setItem('GalleryItems', JSON.stringify(this.galleryItems))
-        this.sum += this.galleryItems.filter((x) => x.id == id)[0].price
-        this.$store.commit('setTotalQuantityInBasket')
+      if (this.galleryItems.data.find((x) => x.id == id).count < 25) {
+        this.galleryItems.data.find((x) => x.id == id).count++
       }
     },
     removeElement: function (id) {
@@ -132,15 +132,7 @@ export default {
         1,
       )
 
-      localStorage.setItem('GalleryItems', JSON.stringify(this.galleryItems))
       this.$store.commit('setTotalQuantityInBasket')
-    },
-    calculateTotalAmount: function () {
-      if (localStorage.getItem('GalleryItems') != null) {
-        for (let i = 0; i < this.galleryItems.length; i++) {
-          this.sum += this.galleryItems[i].price * this.galleryItems[i].quantity
-        }
-      }
     },
     checkPaymentFieldsFilled: function () {
       if (
@@ -161,13 +153,23 @@ export default {
     buy: function () {
       console.log(this.paymentInformation)
     },
+    submitPayment: function () {
+      console.log(this.galleryItems)
+    },
   },
   beforeMount() {
-    this.setCheckoutElements()
-    this.calculateTotalAmount()
-    if (localStorage.getItem('GalleryItems') == null) {
-      this.galleryItems = []
-    }
+    fetch('https://rassmin.com/api/Cart/GetCartItemsByUserId', {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json;charset=UTF-8',
+        Authorization: `Bearer ${this.token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        this.galleryItems = data
+      })
   },
 }
 </script>

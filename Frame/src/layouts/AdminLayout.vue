@@ -22,5 +22,6 @@ export default {
     Navbar,
     SideBar,
   },
+  beforeMount() {},
 }
 </script>

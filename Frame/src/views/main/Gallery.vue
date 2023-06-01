@@ -4,14 +4,6 @@
       class="text-center pt-5 pb-5 gallery-header display-2 position-relative"
     >
       <p>Gallery</p>
-      <Transition>
-        <div
-          style="left: 25%; right: 25%"
-          class="display-2 m-auto position-absolute w-50 bottom-0"
-        >
-          <CFormInput placeholder="Search here..." />
-        </div>
-      </Transition>
     </div>
     <CRow class="pt-2 w-100 mx-0 align-items-start position-relative">
       <CCol class="col-md-2 col-12 pt-5 top-0 p-0"
@@ -35,12 +27,12 @@
             </router-link>
             <div
               v-if="data.isFav"
-              @click="addToFavourites($event, data.id)"
+              @click="addToFavourites(data.id)"
               class="Heart-Animation heart-animation-active"
             ></div>
             <div
               v-else
-              @click="addToFavourites($event, data.id)"
+              @click="addToFavourites(data.id)"
               class="Heart-Animation animate"
             ></div>
             <router-link
@@ -101,6 +93,11 @@ import Pagination from 'v-pagination-3'
 import GallerySideBar from '@/components/GallerySideBar.vue'
 export default {
   components: { LastViewed, Pagination, GallerySideBar },
+  computed: {
+    searchInputData() {
+      return this.$store.state.searchInputData
+    },
+  },
   data() {
     const isCategoriesExpanded = ref(false)
     const dbData = {
@@ -137,7 +134,7 @@ export default {
     }
   },
   methods: {
-    addToFavourites: function (event, id) {
+    addToFavourites: function (id) {
       if (this.favouriteItems == null) {
         this.favouriteItems = []
       }
@@ -184,29 +181,32 @@ export default {
           }
         })
     },
+    getDbData: function () {
+      fetch(
+        `https://rassmin.com/api/Item/GetItems?pageNumber=${this.page}&pageSize=${this.pageSize}&sort=asc`,
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          this.dbData = data
+          this.dbData.data = data.data.map((obj) => ({
+            ...obj,
+            isFav: false,
+          }))
+          let tempFavItems = []
+          if (this.favouriteItems == null) {
+            this.favouriteItems = []
+          }
+          console.log(this.favouriteItems)
+          console.log(this.dbData)
+          for (let i = 0; i < this.favouriteItems.length; i++) {
+            tempFavItems.push(this.dbData.data[0])
+            tempFavItems[i].isFav = true
+          }
+        })
+    },
   },
   beforeMount() {
-    fetch(
-      `https://rassmin.com/api/Item/GetItems?pageNumber=${this.page}&pageSize=${this.pageSize}&sort=asc`,
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        this.dbData = data
-        this.dbData.data = data.data.map((obj) => ({
-          ...obj,
-          isFav: false,
-        }))
-        let tempFavItems = []
-        if (this.favouriteItems == null) {
-          this.favouriteItems = []
-        }
-        console.log(this.favouriteItems)
-        console.log(this.dbData)
-        for (let i = 0; i < this.favouriteItems.length; i++) {
-          tempFavItems.push(this.dbData.data[0])
-          tempFavItems[i].isFav = true
-        }
-      })
+    this.getDbData()
   },
   mounted() {
     // console.log(this.favouriteItems)

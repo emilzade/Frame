@@ -1,11 +1,11 @@
 <template>
   <div>
-    <SizeModal
-      :isVisible="isSizeModalActive"
+    <ItemModal
+      :isVisible="isItemModalActive"
       :data="dbData.data[0]"
-      @update="updateSize"
-      @closeModal="closeSizeModal"
-    ></SizeModal>
+      @update="updateItem"
+      @closeModal="closeItemModal"
+    ></ItemModal>
     <div class="display-3 dune-rise text-center">
       Item {{ $route.params.id }}
     </div>
@@ -15,7 +15,7 @@
           <CIcon :content="cilArrowLeft" />
         </CButton>
       </router-link>
-      <CButton @click="openUpdateSizeModal" color="success">Update</CButton>
+      <CButton @click="openUpdateItemModal" color="success">Update</CButton>
     </div>
     <div v-if="dbData.data.length > 0" class="w-75 m-auto text-center">
       <div class="border p-3 fs-4">
@@ -77,10 +77,10 @@
 </template>
 <script>
 import { cilArrowLeft } from '@coreui/icons'
-import SizeModal from '@/components/SizeModal.vue'
+import ItemModal from '@/components/ItemModal.vue'
 export default {
-  name: 'Size',
-  components: { SizeModal },
+  name: 'Item',
+  components: { ItemModal },
   data() {
     const dbData = {
       success: true,
@@ -88,11 +88,11 @@ export default {
       length: 1,
       data: [],
     }
-    const isSizeModalActive = false
+    const isItemModalActive = false
     return {
       dbData,
       cilArrowLeft,
-      isSizeModalActive,
+      isItemModalActive,
     }
   },
   computed: {
@@ -101,17 +101,24 @@ export default {
     },
   },
   methods: {
-    openUpdateSizeModal: function () {
-      this.isSizeModalActive = true
+    openUpdateItemModal: function () {
+      this.isItemModalActive = true
     },
-    closeSizeModal: function () {
-      this.isSizeModalActive = false
+    closeItemModal: function () {
+      this.isItemModalActive = false
     },
-    updateSize: function (model) {
+    updateItem: function (model) {
       console.log(model)
+      delete model.statusName
+      delete model.createdDate
+      model.prices = model.prices.map(
+        // eslint-disable-next-line no-unused-vars
+        ({ description, item_PriceId, name, ...keepAttributes }) =>
+          keepAttributes,
+      )
       this.actionName = 'update'
-      fetch('https://rassmin.com/api/Size/UpdateSize', {
-        method: 'Post',
+      fetch('https://rassmin.com/api/Item/UpdateItem', {
+        method: 'PUT',
         body: JSON.stringify(model),
         headers: {
           'Content-type': 'application/json;charset=UTF-8',
@@ -121,11 +128,12 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           console.log(data)
-          this.isSizeModalActive = false
+          this.isItemModalActive = false
           this.isActionCompleted = true
           data.success == true
             ? (this.isActionSuccess = true)
             : (this.isActionSuccess = false)
+          this.getDbData()
           setTimeout(() => {
             this.isActionCompleted = false
           }, 2000)

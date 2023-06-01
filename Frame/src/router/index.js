@@ -38,7 +38,7 @@ const routes = [
         name: 'Checkout',
         component: () => import('../views/main/Checkout.vue'),
         meta: {
-          authRequired: 'false',
+          authRequired: 'true',
           adminRequired: 'false',
         },
       },
@@ -74,7 +74,7 @@ const routes = [
         name: 'Collections',
         component: () => import('../views/main/Collections.vue'),
         meta: {
-          authRequired: 'true',
+          authRequired: 'false',
           adminRequired: 'false',
         },
       },
