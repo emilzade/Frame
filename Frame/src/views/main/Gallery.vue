@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-5">
+  <div style="background-color: white" class="pt-5">
     <div
       class="text-center pt-5 pb-5 gallery-header display-2 position-relative"
     >

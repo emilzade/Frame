@@ -1,5 +1,5 @@
 <template>
-  <div class="mini-user-sign-parent mt-4 montserrat-light">
+  <div class="mini-user-sign-parent montserrat-light pt-4">
     <TriangleBorderTop :right="15"></TriangleBorderTop>
     <div class="sign-card" :class="{ ' is-flipped ': isSignInActive }">
       <div class="mini-user-sign sign-in">
@@ -151,13 +151,12 @@
 </template>
 <style lang="scss">
 .mini-user-sign-parent {
-  display: inline-block;
   position: absolute;
   top: 100%;
   right: -20px;
   width: 300px;
-  perspective: 500px;
-  //border: 2px solid red;
+  perspective: 1000px;
+  //border: 1px solid red !important;
 
   .sign-card {
     position: relative;

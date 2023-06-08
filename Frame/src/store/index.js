@@ -20,14 +20,8 @@ export default createStore({
     setSearchInputData(state, data) {
       state.searchInputData = data
     },
-    setTotalQuantityInBasket(state) {
-      if (localStorage.getItem('GalleryItems') != null) {
-        state.elementCountInBasket = JSON.parse(
-          localStorage.getItem('GalleryItems'),
-        ).reduce((accumulator, object) => {
-          return accumulator + object.quantity
-        }, 0)
-      }
+    setTotalQuantityInBasket(state, data) {
+      state.elementCountInBasket = data
     },
     setAdminSideBarActive(state) {
       state.adminSideBarOpen = !state.adminSideBarOpen

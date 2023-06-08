@@ -11,6 +11,7 @@
     top: -17px;
     width: 22px;
     height: 17px;
+
     border-left-width: 3px;
     border-left-style: solid;
     border-left-color: transparent;
@@ -26,6 +27,7 @@
     border-bottom-width: 3px;
     border-bottom-style: solid;
     border-bottom-color: transparent;
+    transition: all 0.4s ease-in-out;
     &:before {
       content: '';
       display: block;
@@ -33,6 +35,7 @@
       left: -2px;
       bottom: -13px;
       transform: rotate(45deg) skew(10deg, 10deg);
+      transition: all 0.4s ease-in-out;
 
       border-left-width: 3px;
       border-left-style: solid;

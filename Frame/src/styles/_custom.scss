@@ -33,6 +33,9 @@ $sizes: (
 .invert-100 {
   filter: invert(100%);
 }
+.list-style-none {
+  list-style: none;
+}
 .slide-fade-enter-active {
   transition: all 0.3s ease-out;
 }

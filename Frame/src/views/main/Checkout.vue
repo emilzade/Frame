@@ -1,6 +1,6 @@
 <template>
   <div class="pt-5">
-    <div v-if="galleryItems.data.length == 0" class="pt-5">
+    <div v-if="basketItems.data.length == 0" class="pt-5">
       <div
         style="height: 80vh"
         class="d-flex flex-column justify-content-center align-items-center montserrat-medium"
@@ -16,29 +16,38 @@
     <CRow v-else class="pt-5 w-100" style="margin: 0px !important">
       <CCol class="col-md-6 col-12 border-end pt-5">
         <div
-          v-for="item in galleryItems.data"
+          v-for="(item, index) in basketItems.data"
           :key="item.id"
           class="border p-2 mx-5 my-2 d-flex justify-content-between align-items-center"
         >
+          <div>{{ index }}.</div>
           <img style="width: 100px" src="../../assets/images/carousel-1.jpg" />
-          <p>{{ item.name }}</p>
+          <div>{{ item.itemName }}</div>
           <div class="border d-flex align-items-center gap-2">
-            <div @click="minusQuantity(item.id)" class="btn btn-light">
+            <div @click="minusQuantity(item)" class="btn btn-light">
               <CIcon :content="cilMinus" />
             </div>
             <div class="user-select-none">{{ item.count }}</div>
-            <div @click="plusQuantity(item.id)" class="btn btn-light">
+            <div @click="plusQuantity(item)" class="btn btn-light">
               <CIcon :content="cilPlus" />
             </div>
           </div>
-          <div>{{ (item.price * item.quantity).toFixed(2) }} ₼</div>
+          <div>{{ item.price * item.count }} ₼</div>
           <div @click="removeElement(item.id)" class="btn btn-light">
             <CIcon :content="cilX" />
           </div>
         </div>
         <div class="d-flex justify-content-end mx-5 p-2 my-2">
           <div class="d-flex fs-4 gap-2">
-            <span>TOTAL:</span><span>{{ sum.toFixed(2) }} ₼</span>
+            <span>TOTAL:</span
+            ><span
+              >{{
+                basketItems.data.reduce((a, b) => {
+                  return a.count * a.price + b.count * b.price
+                })
+              }}
+              ₼</span
+            >
           </div>
         </div>
       </CCol>
@@ -277,7 +286,7 @@ import CheckoutCard from '@/components/CheckoutCard.vue'
 export default {
   components: { CheckoutCard },
   data() {
-    const galleryItems = {
+    const basketItems = {
       data: [],
       date: '',
       success: '',
@@ -312,7 +321,7 @@ export default {
       cilPlus,
       cilMinus,
       cilX,
-      galleryItems,
+      basketItems,
       sum: 0,
       isAccepted: false,
       paymentInformation,
@@ -330,37 +339,30 @@ export default {
       this.selectedPaymentTypeId = data.id
       console.log(this.selectedPaymentTypeId)
     },
-    minusQuantity: function (id) {
-      if (this.galleryItems.data.find((x) => x.item_priceId == id).count > 1) {
-        this.galleryItems.data.find((x) => x.item_priceId == id).count--
-      } else {
-        this.galleryItems.splice(
-          this.galleryItems.indexOf(
-            this.galleryItems.filter((x) => x.id == id)[0],
-          ),
-          1,
-        )
+    minusQuantity: function (item) {
+      if (item.count > 0) {
+        item.count--
       }
-      this.$store.commit('setTotalQuantityInBasket')
     },
-    plusQuantity: function (id) {
-      if (this.galleryItems.data.find((x) => x.id == id).count < 25) {
-        this.galleryItems.data.find((x) => x.id == id).count++
+    plusQuantity: function (item) {
+      if (item.count < 25) {
+        item.count++
       }
     },
     removeElement: function (id) {
       this.sum -=
-        this.galleryItems.filter((x) => x.id == id)[0].price *
-        this.galleryItems.filter((x) => x.id == id)[0].quantity
+        this.basketItems.filter((x) => x.id == id)[0].price *
+        this.basketItems.filter((x) => x.id == id)[0].quantity
 
-      this.galleryItems.splice(
-        this.galleryItems.indexOf(
-          this.galleryItems.filter((x) => x.id == id)[0],
-        ),
+      this.basketItems.splice(
+        this.basketItems.indexOf(this.basketItems.filter((x) => x.id == id)[0]),
         1,
       )
 
-      this.$store.commit('setTotalQuantityInBasket')
+      this.$store.commit(
+        'setTotalQuantityInBasket',
+        this.basketItems.data.length,
+      )
     },
     checkPaymentFieldsFilled: function () {
       if (
@@ -382,7 +384,7 @@ export default {
       console.log(this.paymentInformation)
     },
     submitPayment: function () {
-      console.log(this.galleryItems)
+      console.log(this.basketItems)
     },
   },
   beforeMount() {
@@ -396,7 +398,7 @@ export default {
       .then((response) => response.json())
       .then((data) => {
         console.log(data)
-        this.galleryItems = data
+        this.basketItems = data
       })
   },
 }

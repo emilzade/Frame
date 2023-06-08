@@ -34,19 +34,26 @@
         class="mb-2 mb-lg-0 p-0 align-items-center px-5 gap-4 d-flex"
         style="margin: 0px !important"
       >
-        <MDBNavbarItem active>
+        <MDBNavbarItem active class="gallery-nav-text">
           <router-link
             class="text-decoration-none navbar-item"
             :to="{
               name: 'Gallery',
             }"
           >
-            <span class="p-2 rounded">Gallery</span>
+            <span
+              @mouseover="isGalleryHoverMenuActive = true"
+              class="p-2 rounded"
+              >Gallery</span
+            >
           </router-link>
+          <GalleryHoverMenu
+            :right="$store.state.isSearchActive ? 610 : 410"
+          ></GalleryHoverMenu>
         </MDBNavbarItem>
         <MDBNavbarItem>
           <router-link
-            class="text-decoration-none navbar-item"
+            class="text-decoration-none navbar-item me-4"
             :to="{
               name: 'Collections',
             }"
@@ -89,31 +96,46 @@
             <CIcon :content="cilHeart" />
           </router-link>
         </MDBNavbarItem>
-        <MDBNavbarItem>
-          <router-link
-            class="text-decoration-none navbar-item"
-            :to="{
-              name: 'Checkout',
-            }"
-          >
-            <div v-if="$store.state.elementCountInBasket == 0">
+        <MDBNavbarItem v-if="$store.state.elementCountInBasket == 0">
+          <div class="nav-item">
+            <router-link :to="{ name: 'Checkout' }">
               <CIcon :content="cilBasket" />
+            </router-link>
+          </div>
+        </MDBNavbarItem>
+        <MDBNavbarItem v-else class="checkout-nav-icon">
+          <div class="nav-item position-relative">
+            <CIcon class="text-success" :content="cilBasket" />
+            <div
+              class="bg-danger text-light px-1 rounded-circle"
+              style="
+                font-size: 12px;
+                transform: translate(10px, 10px);
+                position: absolute;
+                top: 0;
+              "
+            >
+              {{ $store.state.elementCountInBasket }}
             </div>
-            <div v-else>
-              <CIcon class="text-success" :content="cilBasket" />
-            </div>
-          </router-link>
+          </div>
+          <MiniCheckout
+            :basketData="basketData"
+            :token="getToken"
+            :right="75"
+          ></MiniCheckout>
         </MDBNavbarItem>
         <MDBNavbarItem v-if="isAuthenticated == true || getToken != null">
           <CDropdown
             color="secondary"
-            class="shadow-none p-0 w-100"
-            direction="left"
+            class="shadow-none px-0 m-0 w-100 offset-4"
           >
             <CDropdownToggle class="p-0"
               ><CIcon :content="cilUser"
             /></CDropdownToggle>
-            <CDropdownMenu style="width: 300px" class="transition-0 mx-0 mt-4">
+            <CDropdownMenu
+              class="transition-0 m-0"
+              style="width: 300px; padding-top: 30px"
+            >
               <TriangleBorderTop :right="5"></TriangleBorderTop>
               <CDropdownItem>{{
                 JSON.parse(getUserProfile).email
@@ -332,7 +354,14 @@ $orange: #e6ddc4;
 .logo-div {
   width: 100px;
 }
-
+.gallery-nav-text:hover .gallery-hover-menu {
+  visibility: visible;
+  opacity: 1;
+}
+.checkout-nav-icon:hover .mini-checkout-parent {
+  visibility: visible;
+  opacity: 1;
+}
 @media screen and (max-width: 1024px) {
   .navbar-container {
     background-color: #f8f9fa;
@@ -354,6 +383,8 @@ $orange: #e6ddc4;
 import logo from '@/assets/images/logos/logo_horizontal_negative.png'
 import TriangleBorderTop from './TriangleBorderTop.vue'
 import MiniUserSign from './MiniUserSign.vue'
+import MiniCheckout from '@/components/MiniCheckout.vue'
+import GalleryHoverMenu from './GalleryHoverMenu.vue'
 import { mapActions, mapGetters } from 'vuex'
 import searchIcon from '@/assets/images/icons/search.png'
 //import router from '@/router'
@@ -384,11 +415,17 @@ export default {
     MDBNavbarItem,
     MDBCollapse,
     MiniUserSign,
+    MiniCheckout,
     TriangleBorderTop,
+    GalleryHoverMenu,
   },
 
   data() {
-    const isBasketHasItem = false
+    const basketData = {
+      data: [],
+      date: '',
+      success: '',
+    }
     const limitPosition = 200
     const isScrolled = false
     const lastPosition = 0
@@ -396,6 +433,7 @@ export default {
     const isNavbarCollapse = false
     const isDropdownActive = false
 
+    const isGalleryHoverMenuActive = false
     const isMiniSignActive = false
 
     const searchText = ''
@@ -405,6 +443,7 @@ export default {
     // }
     return {
       //navbarItemStyle,
+      basketData,
       searchIcon,
       searchText,
       logo,
@@ -415,13 +454,12 @@ export default {
       cilAddressBook,
       cilSearch,
 
-      isBasketHasItem,
       limitPosition,
       isScrolled,
       lastPosition,
       isNavbarCollapse,
       isDropdownActive,
-
+      isGalleryHoverMenuActive,
       isMiniSignActive,
     }
   },
@@ -565,6 +603,21 @@ export default {
   },
   beforeMount() {
     this.$store.commit('setTotalQuantityInBasket')
+
+    fetch('https://rassmin.com/api/Cart/GetCartItems', {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json;charset=UTF-8',
+        Authorization: `Bearer ${this.getToken}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        this.$store.commit('setTotalQuantityInBasket', data.data.length)
+        this.basketData = data
+      })
+
     //console.log(this.getUserProfile)
     //window.addEventListener('scroll', this.handleScroll)
     //console.log(this.$store.state.elementCountInBasket)
