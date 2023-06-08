@@ -31,7 +31,7 @@
       id="navbarSupportedContent"
     >
       <MDBNavbarNav
-        class="mb-2 mb-lg-0 p-0 align-items-center px-5 gap-3 d-flex"
+        class="mb-2 mb-lg-0 p-0 align-items-center px-5 gap-4 d-flex"
         style="margin: 0px !important"
       >
         <MDBNavbarItem active>
@@ -55,36 +55,29 @@
           </router-link>
         </MDBNavbarItem>
         <MDBNavbarItem>
-          <router-link
-            class="text-decoration-none"
-            :to="{
-              name: $store.state.isSearchActive ? 'Gallery' : '',
-            }"
-          >
-            <div class="d-flex justify-content-between align-items-center">
-              <input
-                style="height: 30px"
-                class="border d-block search-input"
-                v-model="searchText"
-                @keyup="searchByInput"
-                :class="{
-                  'search-active': $store.state.isSearchActive,
-                  'search-disable': !$store.state.isSearchActive,
-                }"
-              />
-              <div
-                style="width: 30px; height: 30px"
-                @click="changeSearchBarState"
-                :class="{
-                  'bg-light invert-100': $store.state.isSearchActive,
-                  'bg-light': !!$store.state.isSearchActive,
-                }"
-                class="d-flex justify-content-center align-items-center p-2"
-              >
-                <img :src="searchIcon" class="w-100" />
-              </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <input
+              style="height: 30px"
+              class="border d-block search-input"
+              v-model="searchText"
+              @keyup="searchByInput"
+              :class="{
+                'search-active': $store.state.isSearchActive,
+                'search-disable': !$store.state.isSearchActive,
+              }"
+            />
+            <div
+              style="width: 30px; height: 30px"
+              @click="search"
+              :class="{
+                'bg-light invert-100': $store.state.isSearchActive,
+                'bg-light': !!$store.state.isSearchActive,
+              }"
+              class="d-flex justify-content-center align-items-center p-2"
+            >
+              <img :src="searchIcon" class="w-100" />
             </div>
-          </router-link>
+          </div>
         </MDBNavbarItem>
         <MDBNavbarItem>
           <router-link
@@ -114,18 +107,17 @@
         <MDBNavbarItem v-if="isAuthenticated == true || getToken != null">
           <CDropdown
             color="secondary"
-            class="shadow-none p-0"
-            direction="center"
+            class="shadow-none p-0 w-100"
+            direction="left"
           >
             <CDropdownToggle class="p-0"
               ><CIcon :content="cilUser"
             /></CDropdownToggle>
-            <CDropdownMenu class="transition-0 m-0">
-              <CDropdownItem
-                class="text-secondary"
-                style="background-color: rgb(240, 240, 240)"
-                >{{ JSON.parse(getUserProfile).email }}</CDropdownItem
-              >
+            <CDropdownMenu style="width: 300px" class="transition-0 mx-0 mt-4">
+              <TriangleBorderTop :right="5"></TriangleBorderTop>
+              <CDropdownItem>{{
+                JSON.parse(getUserProfile).email
+              }}</CDropdownItem>
               <CDropdownItem disabled>Profile</CDropdownItem>
               <CDropdownItem
                 v-if="JSON.parse(getUserProfile).roleName == 'admin'"
@@ -140,7 +132,24 @@
             </CDropdownMenu>
           </CDropdown>
         </MDBNavbarItem>
-        <template v-else>
+        <MDBNavbarItem v-else>
+          <div class="position-relative user-select-none">
+            <CIcon
+              class="cursor-pointer"
+              @click="isMiniSignActive = !isMiniSignActive"
+              :content="cilUser"
+            />
+            <div
+              v-if="isMiniSignActive"
+              class="overlay-full"
+              @click="isMiniSignActive = !isMiniSignActive"
+            ></div>
+            <Transition name="fade">
+              <MiniUserSign v-if="isMiniSignActive"></MiniUserSign>
+            </Transition>
+          </div>
+        </MDBNavbarItem>
+        <!-- <template v-else>
           <MDBNavbarItem>
             <router-link
               class="text-decoration-none navbar-item"
@@ -161,7 +170,7 @@
               Register
             </router-link>
           </MDBNavbarItem>
-        </template>
+        </template> -->
       </MDBNavbarNav>
       <!-- Search form -->
     </MDBCollapse>
@@ -292,6 +301,7 @@ $orange: #e6ddc4;
   transition: 0.2s;
 }
 .navbar-item {
+  font-family: montserrat-light;
   z-index: 1;
   position: relative;
   transition: 0.2s;
@@ -342,11 +352,19 @@ $orange: #e6ddc4;
 </style>
 <script>
 import logo from '@/assets/images/logos/logo_horizontal_negative.png'
+import TriangleBorderTop from './TriangleBorderTop.vue'
+import MiniUserSign from './MiniUserSign.vue'
 import { mapActions, mapGetters } from 'vuex'
 import searchIcon from '@/assets/images/icons/search.png'
 //import router from '@/router'
 //import ref from 'vue'
-import { cilHeart, cilBasket, cilUser, cilSearch } from '@coreui/icons'
+import {
+  cilHeart,
+  cilBasket,
+  cilUser,
+  cilSearch,
+  cilAddressBook,
+} from '@coreui/icons'
 import 'mdb-vue-ui-kit/css/mdb.min.css'
 import {
   MDBNavbar,
@@ -365,6 +383,8 @@ export default {
     MDBNavbarNav,
     MDBNavbarItem,
     MDBCollapse,
+    MiniUserSign,
+    TriangleBorderTop,
   },
 
   data() {
@@ -376,6 +396,8 @@ export default {
     const isNavbarCollapse = false
     const isDropdownActive = false
 
+    const isMiniSignActive = false
+
     const searchText = ''
     // const navbarItemStyle = {
     //   bgColor: '',
@@ -386,16 +408,21 @@ export default {
       searchIcon,
       searchText,
       logo,
+
       cilHeart,
       cilBasket,
       cilUser,
+      cilAddressBook,
       cilSearch,
+
       isBasketHasItem,
       limitPosition,
       isScrolled,
       lastPosition,
       isNavbarCollapse,
       isDropdownActive,
+
+      isMiniSignActive,
     }
   },
   computed: {
@@ -418,8 +445,11 @@ export default {
       await this.actionLogOut()
       location.reload()
     },
-    changeSearchBarState: function () {
+    search: function () {
       this.$store.commit('setChangeBarState')
+      if (!this.$store.state.isSearchActive && this.searchText.length > 0) {
+        this.$router.push({ name: 'Gallery' })
+      }
     },
     searchByInput: function () {
       this.$store.commit('setSearchInputData', this.searchText)

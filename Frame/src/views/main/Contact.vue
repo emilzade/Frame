@@ -1,8 +1,8 @@
 <template>
   <div class="w-75 m-auto pt-5">
     <div class="text-center py-5">
-      <h1 class="text-dark roboto-regular">Contact Us</h1>
-      <p class="text-secondary roboto-regular">
+      <h1 class="text-dark montserrat-regular">Contact Us</h1>
+      <p class="text-secondary montserrat-regular">
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto
         praesentium, impedit saepe perspiciatis culpa, eos aut, voluptate ut
         possimus id quos quasi provident vero. Optio blanditiis nesciunt saepe
@@ -61,7 +61,7 @@
       </CCol>
     </CRow>
     <div class="py-4">
-      <h2 class="text-secondary roboto-thin text-center">Message Us</h2>
+      <h2 class="text-secondary montserrat-thin text-center">Message Us</h2>
       <CForm class="border border-secondary my-5 rounded p-5">
         <CRow>
           <CCol class="col-sm-6 col-12">

@@ -4,12 +4,13 @@
       class="text-center pt-5 pb-5 gallery-header display-2 position-relative"
     >
       <p>Gallery</p>
+      <CFormInput
+        class="w-75 m-auto"
+        placeholder="Enter name, tag or anything..."
+      />
     </div>
     <CRow class="pt-2 w-100 mx-0 align-items-start position-relative">
-      <CCol class="col-md-2 col-12 pt-5 top-0 p-0"
-        ><GallerySideBar></GallerySideBar>
-      </CCol>
-      <CCol class="col-md-10 col-12 p-5">
+      <CCol class="col-12 p-5">
         <CRow class="">
           <div
             v-for="data in dbData.data"
@@ -23,7 +24,7 @@
                   id: data.id,
                 },
               }"
-              ><img class="w-100 rounded" :src="img" />
+              ><img style="border: 3px solid black" class="w-100" :src="img" />
             </router-link>
             <div
               v-if="data.isFav"
@@ -90,14 +91,9 @@ import img from '../../assets/images/carousel-2.jpg'
 import { cilHeart, cilMenu } from '@coreui/icons'
 import LastViewed from '../../components/LastViewed.vue'
 import Pagination from 'v-pagination-3'
-import GallerySideBar from '@/components/GallerySideBar.vue'
 export default {
-  components: { LastViewed, Pagination, GallerySideBar },
-  computed: {
-    searchInputData() {
-      return this.$store.state.searchInputData
-    },
-  },
+  components: { LastViewed, Pagination },
+
   data() {
     const isCategoriesExpanded = ref(false)
     const dbData = {
@@ -113,9 +109,6 @@ export default {
       },
       data: [],
     }
-
-    const favouriteItems = JSON.parse(localStorage.getItem('FavouriteItems'))
-
     const page = 1
     const totalElementCount = 0
     const pageSize = 4
@@ -125,13 +118,21 @@ export default {
       cilMenu,
       isCategoriesExpanded,
       dbData,
-      favouriteItems,
       page,
       totalElementCount,
       pageSize,
       isPreLoaderActive: false,
       //pageCount: 10,
     }
+  },
+  computed: {
+    searchInputData() {
+      return this.$store.state.searchInputData
+    },
+    dynamicSearchQuery() {
+      return (pageId) =>
+        `https://rassmin.com/api/Item/GetItems?pageNumber=${pageId}&pageSize=${this.pageSize}&sort=asc`
+    },
   },
   methods: {
     addToFavourites: function (id) {
@@ -158,57 +159,23 @@ export default {
       }
     },
     pageSelected: function (pageId) {
-      this.page = pageId
-      fetch(
-        `https://rassmin.com/api/Item/GetItems?pageNumber=${pageId}&pageSize=${this.pageSize}&sort=asc`,
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          this.dbData = data
-          this.dbData.data = data.data.map((obj) => ({
-            ...obj,
-            isFav: false,
-          }))
-          let tempFavItems = []
-          if (this.favouriteItems == null) {
-            this.favouriteItems = []
-          }
-          console.log(this.favouriteItems)
-          console.log(this.dbData)
-          for (let i = 0; i < this.favouriteItems.length; i++) {
-            tempFavItems.push(this.dbData.data[0])
-            tempFavItems[i].isFav = true
-          }
-        })
+      this.getDbData(pageId)
     },
-    getDbData: function () {
-      fetch(
-        `https://rassmin.com/api/Item/GetItems?pageNumber=${this.page}&pageSize=${this.pageSize}&sort=asc`,
-      )
+    getDbData: function (pageId) {
+      console.log(this.dynamicSearchQuery(pageId))
+      fetch(this.dynamicSearchQuery(pageId))
         .then((response) => response.json())
         .then((data) => {
           this.dbData = data
-          this.dbData.data = data.data.map((obj) => ({
-            ...obj,
-            isFav: false,
-          }))
-          let tempFavItems = []
-          if (this.favouriteItems == null) {
-            this.favouriteItems = []
-          }
-          console.log(this.favouriteItems)
           console.log(this.dbData)
-          for (let i = 0; i < this.favouriteItems.length; i++) {
-            tempFavItems.push(this.dbData.data[0])
-            tempFavItems[i].isFav = true
-          }
         })
     },
   },
   beforeMount() {
-    this.getDbData()
+    this.getDbData(1)
   },
   mounted() {
+    console.log(this.$store.state.searchInputData)
     // console.log(this.favouriteItems)
     // console.log(this.dbData)
     // console.log(tempFavItems)

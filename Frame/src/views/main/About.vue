@@ -2,8 +2,8 @@
   <div>
     <div class="w-75 m-auto pt-5">
       <div class="text-center py-5">
-        <h1 class="text-dark roboto-regular">About RASMIN</h1>
-        <p class="text-secondary roboto-regular">
+        <h1 class="text-dark montserrat-regular">About RASMIN</h1>
+        <p class="text-secondary montserrat-regular">
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto
           praesentium, impedit saepe perspiciatis culpa, eos aut, voluptate ut
           possimus id quos quasi provident vero. Optio blanditiis nesciunt saepe
@@ -14,7 +14,7 @@
       </div>
       <hr width="20%" style="margin: auto" />
       <div class="text-center text-secondary py-5">
-        <p class="text-secondary roboto-regular">
+        <p class="text-secondary montserrat-regular">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt,
           magnam? Nulla ea cum eligendi ipsa debitis quis excepturi quidem
           delectus pariatur fuga deserunt in illo, earum aut temporibus sit
@@ -29,7 +29,7 @@
         </p>
       </div>
       <div class="text-center my-4">
-        <h3 class="roboto-thin">ABOUT OUR PRODUCTS</h3>
+        <h3 class="montserrat-thin">ABOUT OUR PRODUCTS</h3>
         <p class="text-secondary">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse, fugiat
           quod a, perferendis ratione exercitationem necessitatibus ullam alias
@@ -69,7 +69,9 @@
         </CAccordion>
       </div>
       <div class="py-4">
-        <h2 class="text-secondary text-center roboto-thin py-4">OUR TEAM</h2>
+        <h2 class="text-secondary text-center montserrat-thin py-4">
+          OUR TEAM
+        </h2>
         <div class="d-flex justify-content-around align-items-center">
           <div
             v-for="member in members"

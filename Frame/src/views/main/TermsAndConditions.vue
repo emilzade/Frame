@@ -1,8 +1,8 @@
 <template>
   <div class="w-75 m-auto pt-5">
     <div class="text-center py-5">
-      <h1 class="text-dark roboto-bold">Terms And Conditions</h1>
-      <p class="text-secondary roboto-regular">
+      <h1 class="text-dark montserrat-bold">Terms And Conditions</h1>
+      <p class="text-secondary montserrat-regular">
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto
         praesentium, impedit saepe perspiciatis culpa, eos aut, voluptate ut
         possimus id quos quasi provident vero. Optio blanditiis nesciunt saepe
@@ -13,8 +13,8 @@
     </div>
     <hr width="20%" style="margin: auto" />
     <div class="text-center py-4">
-      <h2 class="text-dark roboto-bold">Background</h2>
-      <p class="text-secondary roboto-regular">
+      <h2 class="text-dark montserrat-bold">Background</h2>
+      <p class="text-secondary montserrat-regular">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt,
         magnam? Nulla ea cum eligendi ipsa debitis quis excepturi quidem
         delectus pariatur fuga deserunt in illo, earum aut temporibus sit
@@ -29,8 +29,8 @@
       </p>
     </div>
     <div class="text-center py-4">
-      <h2 class="text-dark roboto-bold">Contacts and Orders</h2>
-      <p class="text-secondary roboto-regular">
+      <h2 class="text-dark montserrat-bold">Contacts and Orders</h2>
+      <p class="text-secondary montserrat-regular">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt,
         magnam? Nulla ea cum eligendi ipsa debitis quis excepturi quidem
         delectus pariatur fuga deserunt in illo, earum aut temporibus sit
@@ -51,8 +51,8 @@
       </ol>
     </div>
     <div class="text-center py-4">
-      <h2 class="text-dark roboto-bold">Background</h2>
-      <p class="text-secondary roboto-regular">
+      <h2 class="text-dark montserrat-bold">Background</h2>
+      <p class="text-secondary montserrat-regular">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt,
         magnam? Nulla ea cum eligendi ipsa debitis quis excepturi quidem
         delectus pariatur fuga deserunt in illo, earum aut temporibus sit

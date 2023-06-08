@@ -6,7 +6,7 @@
       @update="updateSize"
       @closeModal="closeSizeModal"
     ></SizeModal>
-    <div class="display-3 dune-rise text-center">
+    <div class="display-3 montserrat-medium text-center">
       Size {{ $route.params.id }}
     </div>
     <div class="d-flex justify-content-between px-5 py-4">

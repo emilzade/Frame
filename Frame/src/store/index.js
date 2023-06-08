@@ -12,6 +12,9 @@ export default createStore({
     getAdminSideBarState(state) {
       return state.adminSideBarOpen
     },
+    getSearchInputData(state) {
+      return state.searchInputData
+    },
   },
   mutations: {
     setSearchInputData(state, data) {

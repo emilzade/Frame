@@ -100,7 +100,7 @@
             {{ dbData.data[0].itemName }}
           </h1>
           <h3 class="">{{ dbData.data[0].description }}</h3>
-          <CRow class="py-5">
+          <CRow class="py-5 justify-content-end">
             <CCol class="col-sm-3 col-4 fs-4 pt-1 fs-5">Price </CCol>
             <CCol class="col-sm-9 col-8 fs-4 pb-1"
               >{{ selectedSize.price }} ₼
@@ -118,47 +118,57 @@
                   :preserve-search="true"
                   :allow-empty="false"
                   :placeholder="'Select Size'"
+                  :selectLabel="''"
+                  :deselectLabel="''"
                   label="name"
                   track-by="price"
                   @select="selectSize"
-                  class="w-100"
+                  class="w-100 vue-m-select"
                 />
               </div>
             </CCol>
             <CCol class="col-sm-3 col-12 fs-4 pt-1 fs-5">Count</CCol>
-            <CCol class="col-sm-9 col-12 fs-4 pb-1"
-              ><div class="d-flex py-2 gap-1">
-                <CFormInput class="w-50 border" :value="count" />
-                <div class="d-flex w-50">
-                  <div @click="minusCount" class="btn btn-light border w-50">
-                    <CIcon :content="cilMinus" />
-                  </div>
-                  <div @click="plusCount" class="btn btn-light border w-50">
-                    <CIcon :content="cilPlus" />
-                  </div>
-                </div></div
-            ></CCol>
+            <CCol class="col-sm-9 col-12 fs-4 pb-1">
+              <div class="w-100 d-flex border">
+                <CButton
+                  @click="minusCount"
+                  class="m-0"
+                  style="border-radius: 3px 0px 0px 3px; box-shadow: none"
+                >
+                  <CIcon :content="cilMinus" />
+                </CButton>
+                <CFormInput style="border-radius: 0px; border: 0" type="text" />
+                <CButton
+                  @click="plusCount"
+                  class="m-0"
+                  style="border-radius: 0px 3px 3px 0px; box-shadow: none"
+                >
+                  <CIcon :content="cilPlus" />
+                </CButton>
+              </div>
+            </CCol>
             <CCol
               v-if="typeof token == 'string'"
-              class="col-12 d-flex align-items-center"
+              class="col-sm-9 col-12 d-flex align-items-center"
             >
               <div
                 @click="addToBasket"
-                class="btn btn-dark my-2 py-2 px-3 text-center"
+                class="bg-dark text-light w-100 my-2 py-2 px-3 text-center"
               >
                 Add To Basket
               </div>
             </CCol>
-            <CCol v-else class="col-12 d-flex align-items-center">
-              <div class="btn btn-dark my-2 py-2 px-3 text-center">
-                Login to use basket
-              </div>
+            <CCol v-else class="col-sm-9 col-12 d-flex align-items-center">
+              <router-link class="w-100" :to="{ name: 'Login' }">
+                <div class="bg-dark text-light my-2 py-2 px-3 text-center">
+                  Login to use basket
+                </div>
+              </router-link>
             </CCol>
           </CRow>
         </CCol>
       </CRow>
     </div>
-    <FromCollection />
     <LastViewed />
   </div>
 </template>
@@ -168,6 +178,10 @@ $darkgreen: #1b4645;
 $green: #276967;
 $yellow: #f9bd24;
 $orange: #f68800;
+.vue-m-select > * {
+  border-radius: 0px !important;
+  background-color: white;
+}
 .add-basket-btn {
   background-color: $dark;
   color: white;
@@ -233,7 +247,6 @@ import { FreeMode, Thumbs } from 'swiper'
 import VueMultiselect from 'vue-multiselect'
 import { cilPlus, cilMinus } from '@coreui/icons'
 import LastViewed from '../../components/LastViewed.vue'
-import FromCollection from '@/components/FromCollection.vue'
 import 'swiper/css'
 import 'swiper/css/free-mode'
 import 'swiper/css/navigation'
@@ -246,7 +259,6 @@ export default {
     SwiperSlide,
     VueMultiselect,
     LastViewed,
-    FromCollection,
   },
   data() {
     const dbData = {

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="dune-rise d-flex flex-wrap justify-content-center align-items-center my-3 py-3 px-5 bg-dark text-light"
+    class="montserrat-medium d-flex flex-wrap justify-content-center align-items-center my-3 py-3 px-5 bg-dark text-light"
   >
     <div
       class="d-flex flex-column align-items-center justify-content-center text-center gap-2 w-75"

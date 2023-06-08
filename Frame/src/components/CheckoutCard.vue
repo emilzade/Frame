@@ -190,7 +190,7 @@
           </div>
         </div>
       </div>
-      <div class="card-form__inner">
+      <div class="card-form__inner border">
         <div class="card-input">
           <label for="cardNumber" class="card-input__label">Card Number</label>
           <input

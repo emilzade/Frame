@@ -20,6 +20,16 @@ $sizes: (
     }
   }
 }
+.overlay-full {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
 .invert-100 {
   filter: invert(100%);
 }
@@ -94,7 +104,7 @@ $sizes: (
   position: relative;
   .form-label {
     position: absolute;
-    top: 15px;
+    top: 20px;
     left: 30px;
     transition: 0.3s;
     color: gray;
@@ -154,20 +164,20 @@ $sizes: (
 .overlay-gallery-menu {
   z-index: 9990;
 }
-.dune-rise {
-  font-family: dune-rise;
+.montserrat-medium {
+  font-family: montserrat-medium;
 }
-.munich {
-  font-family: munich;
+.montserrat-medium {
+  font-family: montserrat-medium;
 }
-.roboto-thin {
-  font-family: roboto-thin;
+.montserrat-thin {
+  font-family: montserrat-thin;
 }
-.roboto-regular {
-  font-family: roboto-regular;
+.montserrat-regular {
+  font-family: montserrat-regular;
 }
-.roboto-bold {
-  font-family: roboto-bold;
+.montserrat-bold {
+  font-family: montserrat-bold;
 }
 $dark: #041721;
 $darkgreen: #1b4645;
@@ -312,10 +322,10 @@ $orange: #f68800;
   }
 }
 .gallery-header {
-  font-family: munich;
+  font-family: montserrat-medium;
 }
 .gallery-filter-element {
-  font-family: dune-rise;
+  font-family: montserrat-medium;
   font-size: 0.8rem;
   cursor: pointer;
   transition: 0.2s;

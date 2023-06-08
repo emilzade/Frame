@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="display-3 dune-rise text-center">Orders</div>
+    <div class="display-3 montserrat-medium text-center">Orders</div>
     <div class="d-flex justify-content-between px-5">
       <CButton color="secondary">
         <CIcon :content="cilArrowLeft" />

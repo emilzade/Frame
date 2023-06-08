@@ -3,7 +3,7 @@
     <div
       class="check-container d-flex justify-content-center align-items-center border flex-column bg-light p-3 shadow"
     >
-      <div class="fs-1 dune-rise">
+      <div class="fs-1 montserrat-medium">
         {{ itemName }} {{ actionName }} <span v-if="isSuccess">successfull</span
         ><span v-else>failed</span>
       </div>

@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="pt-5 collections-container">
-      <div class="py-5 display-3 text-center collections-header dune-rise">
+      <div
+        class="py-5 display-3 text-center collections-header montserrat-medium"
+      >
         Collections
       </div>
       <p class="w-75 m-auto py-3 lh-lg text-secondary">
@@ -30,15 +32,15 @@
             class="border rounded w-100 h-100 collection-item position-relative"
           >
             <img class="w-100" src="../../assets/images/mercedes.png" />
-            <h1 class="munich position-absolute top-0 start-0 p-4">
+            <h1 class="montserrat-medium position-absolute top-0 start-0 p-4">
               I Love winter
             </h1>
             <div
               class="collection-hovered-label rounded position-absolute p-4 d-flex flex-column justify-content-between"
             >
-              <h1 class="munich">I Love winter</h1>
+              <h1 class="montserrat-medium">I Love winter</h1>
               <div class="pb-5 w-75">
-                <p class="munich">
+                <p class="montserrat-medium">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Beatae, ipsa! Lorem ipsum dolor sit amet.
                 </p>
@@ -50,7 +52,7 @@
                     },
                   }"
                 >
-                  <p class="munich btn btn-light">Buy Now!</p>
+                  <p class="montserrat-medium btn btn-light">Buy Now!</p>
                 </router-link>
               </div>
             </div>
@@ -70,15 +72,15 @@
             class="border rounded w-100 h-100 collection-item position-relative"
           >
             <img class="w-100" src="../../assets/images/mercedes.png" />
-            <h1 class="munich position-absolute top-0 start-0 p-4">
+            <h1 class="montserrat-medium position-absolute top-0 start-0 p-4">
               I Love winter
             </h1>
             <div
               class="collection-hovered-label rounded position-absolute p-4 d-flex flex-column justify-content-between"
             >
-              <h1 class="munich">I Love winter</h1>
+              <h1 class="montserrat-medium">I Love winter</h1>
               <div class="pb-5 w-75">
-                <p class="munich">
+                <p class="montserrat-medium">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Beatae, ipsa! Lorem ipsum dolor sit amet.
                 </p>
@@ -90,7 +92,7 @@
                     },
                   }"
                 >
-                  <p class="munich btn btn-light">Buy Now!</p>
+                  <p class="montserrat-medium btn btn-light">Buy Now!</p>
                 </router-link>
               </div>
             </div>
@@ -110,15 +112,15 @@
             class="border rounded w-100 h-100 collection-item position-relative"
           >
             <img class="w-100" src="../../assets/images/mercedes.png" />
-            <h1 class="munich position-absolute top-0 start-0 p-4">
+            <h1 class="montserrat-medium position-absolute top-0 start-0 p-4">
               I Love winter
             </h1>
             <div
               class="collection-hovered-label rounded position-absolute p-4 d-flex flex-column justify-content-between"
             >
-              <h1 class="munich">I Love winter</h1>
+              <h1 class="montserrat-medium">I Love winter</h1>
               <div class="pb-5 w-75">
-                <p class="munich">
+                <p class="montserrat-medium">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Beatae, ipsa! Lorem ipsum dolor sit amet.
                 </p>
@@ -130,7 +132,7 @@
                     },
                   }"
                 >
-                  <p class="munich btn btn-light">Buy Now!</p>
+                  <p class="montserrat-medium btn btn-light">Buy Now!</p>
                 </router-link>
               </div>
             </div>

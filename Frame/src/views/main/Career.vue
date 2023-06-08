@@ -1,8 +1,8 @@
 <template>
   <div class="w-75 m-auto pt-5">
     <div class="text-center py-5">
-      <h1 class="text-dark roboto-bold">Careers</h1>
-      <p class="text-secondary roboto-regular">
+      <h1 class="text-dark montserrat-bold">Careers</h1>
+      <p class="text-secondary montserrat-regular">
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto
         praesentium, impedit saepe perspiciatis culpa, eos aut, voluptate ut
         possimus id quos quasi provident vero. Optio blanditiis nesciunt saepe
@@ -13,8 +13,8 @@
     </div>
     <hr width="20%" style="margin: auto" />
     <div class="text-center py-4">
-      <h2 class="text-dark roboto-bold">Why Rassmin</h2>
-      <p class="text-secondary roboto-regular">
+      <h2 class="text-dark montserrat-bold">Why Rassmin</h2>
+      <p class="text-secondary montserrat-regular">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt,
         magnam? Nulla ea cum eligendi ipsa debitis quis excepturi quidem
         delectus pariatur fuga deserunt in illo, earum aut temporibus sit
@@ -98,7 +98,7 @@
       </CAccordion>
     </div>
     <div class="py-5">
-      <h3 class="roboto-bold text-dark text-center">How to apply?</h3>
+      <h3 class="montserrat-bold text-dark text-center">How to apply?</h3>
       <p class="text-center">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum,
         suscipit.

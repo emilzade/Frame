@@ -6,7 +6,7 @@
       @update="updateItem"
       @closeModal="closeItemModal"
     ></ItemModal>
-    <div class="display-3 dune-rise text-center">
+    <div class="display-3 montserrat-medium text-center">
       Item {{ $route.params.id }}
     </div>
     <div class="d-flex justify-content-between px-5 py-4">

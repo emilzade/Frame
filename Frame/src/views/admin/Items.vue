@@ -1,6 +1,6 @@
 <template>
   <div class="position-relative">
-    <div class="display-3 dune-rise text-center">Items</div>
+    <div class="display-3 montserrat-medium text-center">Items</div>
     <ItemModal
       :isVisible="isItemModalActive"
       :data="passedItemData"

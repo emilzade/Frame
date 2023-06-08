@@ -2,7 +2,7 @@
   <div class="landing-page transition-05">
     <!--big slider start-->
     <swiper
-      class="landing-carousel dune-rise bg-light"
+      class="landing-carousel montserrat-medium bg-light"
       :modules="modules"
       :slides-per-view="1"
       :space-between="0"
@@ -30,7 +30,7 @@
           <div
             class="d-flex flex-column align-items-center justify-content-end"
           >
-            <h6 class="w-50 munich text-center">
+            <h6 class="w-50 montserrat-medium text-center">
               {{ item.overview }}
             </h6>
             <div
@@ -51,7 +51,7 @@
 
     <!--small slider 1 start-->
     <div class="py-5">
-      <div class="fs-3 roboto-regular px-5 py-3 d-flex justify-content-between">
+      <div class="fs-3 montserrat-regular px-5 py-3 d-flex justify-content-between">
         <div>Newly Added</div>
         <router-link :to="{ name: 'Gallery' }">
           <Button
@@ -109,7 +109,7 @@
 
     <!--small slider 2 start-->
     <div class="py-5">
-      <div class="fs-3 roboto-regular px-5 py-3 d-flex justify-content-between">
+      <div class="fs-3 montserrat-regular px-5 py-3 d-flex justify-content-between">
         <div>Popular Items</div>
         <router-link :to="{ name: 'Gallery' }">
           <Button

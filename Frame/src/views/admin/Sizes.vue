@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="display-3 dune-rise text-center">Sizes</div>
+    <div class="display-3 montserrat-medium text-center">Sizes</div>
     <SizeModal
       :isVisible="isSizeModalActive"
       :data="passedSizeData"

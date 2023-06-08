@@ -1,10 +1,10 @@
 <template>
-  <div class="">
+  <div style="background-color: white !important" class="">
     <Transition name="slide">
       <PreLoader v-if="isPreLoaderActive" />
     </Transition>
     <Navbar></Navbar>
-    <div class="d-flex flex-column bg-light w-100">
+    <div class="d-flex flex-column w-100">
       <RouterView v-slot="{ Component }">
         <transition name="slide-fade" mode="out-in">
           <component :key="$route.path" :is="Component" />
@@ -33,32 +33,32 @@ export default {
   },
   methods: {},
   mounted() {
-    this.isPreLoaderActive = true
-    setTimeout(() => {
-      this.isPreLoaderActive = false
-    }, 100)
+    // this.isPreLoaderActive = true
+    // setTimeout(() => {
+    //   this.isPreLoaderActive = false
+    // }, 100)
   },
 }
 </script>
 <style>
 @font-face {
-  font-family: 'munich';
-  src: url(../styles/fonts/MunichRegular-Y8x4.ttf);
+  font-family: 'montserrat-thin';
+  src: url(../styles/fonts/Montserrat-Thin.ttf);
 }
 @font-face {
-  font-family: 'dune-rise';
-  src: url(../styles/fonts/Dune_Rise.otf);
+  font-family: 'montserrat-light';
+  src: url(../styles/fonts/Montserrat-Regular.ttf);
 }
 @font-face {
-  font-family: 'roboto-thin';
-  src: url(../styles/fonts/Roboto-Thin.ttf);
+  font-family: 'montserrat-regular';
+  src: url(../styles/fonts/Montserrat-Light.ttf);
 }
 @font-face {
-  font-family: 'roboto-regular';
-  src: url(../styles/fonts/Roboto-Regular.ttf);
+  font-family: 'montserrat-medium';
+  src: url(../styles/fonts/Montserrat-Medium.ttf);
 }
 @font-face {
-  font-family: 'roboto-bold';
-  src: url(../styles/fonts/Roboto-Bold.ttf);
+  font-family: 'montserrat-bold';
+  src: url(../styles/fonts/Montserrat-Bold.ttf);
 }
 </style>

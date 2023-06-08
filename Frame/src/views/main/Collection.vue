@@ -1,8 +1,12 @@
 <template>
   <div>
     <div class="pt-5 w-75 m-auto">
-      <h1 class="dune-rise pt-5 display-4 text-center">Winter Collection</h1>
-      <h3 class="dune-rise text-center">Collection - {{ $route.params.id }}</h3>
+      <h1 class="montserrat-medium pt-5 display-4 text-center">
+        Winter Collection
+      </h1>
+      <h3 class="montserrat-medium text-center">
+        Collection - {{ $route.params.id }}
+      </h3>
       <p class="text-secondary lh-lg py-5">
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim molestiae
         veniam officia porro? Quo odio itaque quia autem excepturi deleniti, sit
@@ -56,7 +60,7 @@
           </div>
           <div class="p-2 bg-light border rounded">
             <CForm>
-              <CRow class="px-3 roboto-thin">
+              <CRow class="px-3 montserrat-thin">
                 <div
                   class="col-12 p-2 form-group-custom d-flex justify-content-around"
                 >
@@ -253,14 +257,14 @@
                   <input
                     @click="buy"
                     type="button"
-                    class="btn btn-dark w-100 roboto-regular"
+                    class="btn btn-dark w-100 montserrat-regular"
                     value="Pay"
                   />
                 </div>
                 <div v-else class="col-12 p-2 form-group-custom">
                   <input
                     type="button"
-                    class="btn btn-dark w-100 roboto-regular"
+                    class="btn btn-dark w-100 montserrat-regular"
                     value="Pay"
                     disabled
                   />

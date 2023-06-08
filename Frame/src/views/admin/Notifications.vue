@@ -6,7 +6,7 @@
       class="border border-secondary rounded p-2 my-2"
     >
       <router-link :to="{ name: 'Notification', params: { id: item.id } }">
-        <p class="fs-5 roboto-regular m-0 p-0">Test Testov</p>
+        <p class="fs-5 montserrat-regular m-0 p-0">Test Testov</p>
         <p>
           This is the page that opens on
           <strong>/notification/{{ $route.params.id }}</strong> route
