@@ -119,50 +119,17 @@
             "
           ></MiniCheckout>
         </MDBNavbarItem>
-        <MDBNavbarItem v-if="isAuthenticated == true || getToken != null">
-          <CDropdown
-            color="secondary"
-            class="shadow-none px-0 m-0 w-100 offset-4"
-          >
-            <CDropdownToggle class="p-0"
-              ><CIcon :content="cilUser"
-            /></CDropdownToggle>
-            <CDropdownMenu
-              class="transition-0 m-0"
-              style="width: 300px; padding-top: 30px"
-            >
-              <TriangleBorderTop :right="5"></TriangleBorderTop>
-              <CDropdownItem>{{
-                JSON.parse(getUserProfile).email
-              }}</CDropdownItem>
-              <CDropdownItem disabled>Profile</CDropdownItem>
-              <CDropdownItem
-                v-if="JSON.parse(getUserProfile).roleName == 'admin'"
-                ><router-link :to="{ name: 'Admin' }"
-                  >Admin Panel</router-link
-                ></CDropdownItem
-              >
-              <CDropdownItem disabled>Events</CDropdownItem>
-              <CDropdownItem class="cursor-pointer" @click="logOut"
-                >Log out</CDropdownItem
-              >
-            </CDropdownMenu>
-          </CDropdown>
-        </MDBNavbarItem>
-        <MDBNavbarItem v-else>
+        <MDBNavbarItem class="user-nav-icon">
           <div class="position-relative user-select-none">
-            <CIcon
-              class="cursor-pointer"
-              @click="isMiniSignActive = !isMiniSignActive"
-              :content="cilUser"
-            />
-            <div
-              v-if="isMiniSignActive"
-              class="overlay-full"
-              @click="isMiniSignActive = !isMiniSignActive"
-            ></div>
+            <CIcon class="cursor-pointer" :content="cilUser" />
             <Transition name="fade">
-              <MiniUserSign v-if="isMiniSignActive"></MiniUserSign>
+              <MiniUserSign
+                :userData="getUserProfile"
+                :isAuthenticated="
+                  isAuthenticated || getToken != null ? true : false
+                "
+                @logout="logOut"
+              ></MiniUserSign>
             </Transition>
           </div>
         </MDBNavbarItem>
@@ -357,6 +324,10 @@ $orange: #e6ddc4;
   visibility: visible;
   opacity: 1;
 }
+.user-nav-icon:hover .mini-user-sign-parent {
+  visibility: visible;
+  opacity: 1;
+}
 @media screen and (max-width: 1024px) {
   .navbar-container {
     background-color: #f8f9fa;
@@ -376,7 +347,6 @@ $orange: #e6ddc4;
 </style>
 <script>
 import logo from '@/assets/images/logos/logo_horizontal_negative.png'
-import TriangleBorderTop from './TriangleBorderTop.vue'
 import MiniUserSign from './MiniUserSign.vue'
 import MiniCheckout from '@/components/MiniCheckout.vue'
 import GalleryHoverMenu from './GalleryHoverMenu.vue'
@@ -411,7 +381,6 @@ export default {
     MDBCollapse,
     MiniUserSign,
     MiniCheckout,
-    TriangleBorderTop,
     GalleryHoverMenu,
   },
 
@@ -429,7 +398,6 @@ export default {
     const isDropdownActive = false
 
     const isGalleryHoverMenuActive = false
-    const isMiniSignActive = false
 
     const searchText = ''
     // const navbarItemStyle = {
@@ -455,7 +423,6 @@ export default {
       isNavbarCollapse,
       isDropdownActive,
       isGalleryHoverMenuActive,
-      isMiniSignActive,
     }
   },
   computed: {

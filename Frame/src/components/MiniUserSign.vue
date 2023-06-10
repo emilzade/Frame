@@ -1,7 +1,30 @@
 <template>
   <div class="mini-user-sign-parent montserrat-light pt-4">
     <TriangleBorderTop :right="15"></TriangleBorderTop>
-    <div class="sign-card" :class="{ ' is-flipped ': isSignInActive }">
+    <div v-if="isAuthenticated" class="shadow signed-card pt-3">
+      <div class="p-2 text-center text-dark cursor-pointer hovered-gray">
+        {{ JSON.parse(userData).email }}
+      </div>
+      <div class="p-2 text-center text-dark cursor-pointer hovered-gray">
+        Profile
+      </div>
+      <div
+        class="p-2 text-center cursor-pointer hovered-gray"
+        v-if="JSON.parse(userData).roleName == 'admin'"
+      >
+        <router-link :to="{ name: 'Admin' }" class="text-dark"
+          >Admin Panel</router-link
+        >
+      </div>
+      <div
+        class="p-2 text-center text-dark cursor-pointer hovered-gray"
+        @click="logout"
+      >
+        Log out
+      </div>
+    </div>
+
+    <div v-else class="sign-card" :class="{ ' is-flipped ': isSignInActive }">
       <div class="mini-user-sign sign-in">
         <div class="element-container shadow p-1">
           <div class="px-4 pt-4 form-group-custom">
@@ -150,12 +173,18 @@
   </div>
 </template>
 <style lang="scss">
+.hovered-gray:hover {
+  background-color: rgb(233, 233, 233);
+}
 .mini-user-sign-parent {
+  transition: 0.4s;
   position: absolute;
   top: 100%;
   right: -20px;
   width: 300px;
   perspective: 1000px;
+  visibility: hidden;
+  opacity: 0;
   //border: 1px solid red !important;
 
   .sign-card {
@@ -200,6 +229,9 @@
       transform: rotateY(180deg);
     }
   }
+  .signed-card {
+    background-color: white;
+  }
   .is-flipped {
     transform: translateX(-100%) rotateY(-180deg);
   }
@@ -210,6 +242,7 @@ import TriangleBorderTop from './TriangleBorderTop.vue'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'MiniUserSign',
+  props: ['isAuthenticated', 'userData'],
   components: { TriangleBorderTop },
   data() {
     const loginData = {
@@ -250,6 +283,9 @@ export default {
       }
 
       location.reload()
+    },
+    logout: function () {
+      this.$emit('logout')
     },
   },
 }
