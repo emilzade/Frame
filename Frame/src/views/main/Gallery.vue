@@ -10,7 +10,11 @@
       />
     </div>
     <CRow class="pt-2 w-100 mx-0 align-items-start position-relative">
-      <CCol class="col-12 p-5">
+      <CCol v-if="isGalleryDataLoading">
+        <ComponentLoader></ComponentLoader>
+      </CCol>
+
+      <CCol v-else class="col-12 p-5">
         <CRow class="">
           <div
             v-for="data in dbData.data"
@@ -91,11 +95,13 @@ import img from '../../assets/images/carousel-2.jpg'
 import { cilHeart, cilMenu } from '@coreui/icons'
 import LastViewed from '../../components/LastViewed.vue'
 import Pagination from 'v-pagination-3'
+import ComponentLoader from '@/components/ComponentLoader.vue'
 export default {
-  components: { LastViewed, Pagination },
+  components: { LastViewed, Pagination, ComponentLoader },
 
   data() {
     const isCategoriesExpanded = ref(false)
+    const isGalleryDataLoading = false
     const dbData = {
       success: true,
       date: '',
@@ -121,7 +127,7 @@ export default {
       page,
       totalElementCount,
       pageSize,
-      isPreLoaderActive: false,
+      isGalleryDataLoading,
       //pageCount: 10,
     }
   },
@@ -162,11 +168,13 @@ export default {
       this.getDbData(pageId)
     },
     getDbData: function (pageId) {
+      this.isGalleryDataLoading = true
       console.log(this.dynamicSearchQuery(pageId))
       fetch(this.dynamicSearchQuery(pageId))
         .then((response) => response.json())
         .then((data) => {
           this.dbData = data
+          this.isGalleryDataLoading = false
           console.log(this.dbData)
         })
     },

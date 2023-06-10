@@ -1,7 +1,8 @@
 <template>
   <div class="pt-5">
     <div class="pt-5">
-      <CRow class="pt-5 w-75 m-auto">
+      <ComponentLoader v-if="isGalleryItemDataLoading"></ComponentLoader>
+      <CRow v-else class="pt-5 w-75 m-auto">
         <CCol class="col-md-4 col-12 user-select-none">
           <swiper
             :loop="true"
@@ -137,7 +138,11 @@
                 >
                   <CIcon :content="cilMinus" />
                 </CButton>
-                <CFormInput style="border-radius: 0px; border: 0" type="text" />
+                <CFormInput
+                  style="border-radius: 0px; border: 0"
+                  type="text"
+                  :value="count"
+                />
                 <CButton
                   @click="plusCount"
                   class="m-0"
@@ -178,6 +183,13 @@ $darkgreen: #1b4645;
 $green: #276967;
 $yellow: #f9bd24;
 $orange: #f68800;
+.multiselect__option--highlight {
+  background-color: rgb(234, 234, 234) !important;
+  color: black;
+}
+.multiselect__option--selected.multiselect__option--highlight {
+  background-color: rgb(186, 186, 186) !important;
+}
 .vue-m-select > * {
   border-radius: 0px !important;
   background-color: white;
@@ -247,6 +259,7 @@ import { FreeMode, Thumbs } from 'swiper'
 import VueMultiselect from 'vue-multiselect'
 import { cilPlus, cilMinus } from '@coreui/icons'
 import LastViewed from '../../components/LastViewed.vue'
+import ComponentLoader from '@/components/ComponentLoader.vue'
 import 'swiper/css'
 import 'swiper/css/free-mode'
 import 'swiper/css/navigation'
@@ -259,6 +272,7 @@ export default {
     SwiperSlide,
     VueMultiselect,
     LastViewed,
+    ComponentLoader,
   },
   data() {
     const dbData = {
@@ -271,6 +285,7 @@ export default {
       sort: null,
       data: [],
     }
+    const isGalleryItemDataLoading = false
     const dbSize = {}
     const count = 1
     const thumbsSwiper = null
@@ -284,6 +299,7 @@ export default {
       cilPlus,
       cilMinus,
       selectedSize,
+      isGalleryItemDataLoading,
     }
   },
   computed: {
@@ -330,17 +346,22 @@ export default {
         this.count++
       }
     },
+    getDbData() {
+      this.isGalleryItemDataLoading = true
+      fetch(
+        `https://rassmin.com/api/Item/GetItems?id=${this.$route.params.id}&sort=asc`,
+      )
+        .then(async (response) => await response.json())
+        .then(async (data) => {
+          this.dbData = data
+          console.log(this.dbData)
+          this.selectedSize = this.dbData.data[0].prices[0]
+          this.isGalleryItemDataLoading = false
+        })
+    },
   },
   beforeMount() {
-    fetch(
-      `https://rassmin.com/api/Item/GetItems?id=${this.$route.params.id}&sort=asc`,
-    )
-      .then(async (response) => await response.json())
-      .then(async (data) => {
-        this.dbData = data
-        console.log(this.dbData)
-        this.selectedSize = this.dbData.data[0].prices[0]
-      })
+    this.getDbData()
     //this.createNewModel()
   },
 }

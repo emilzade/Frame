@@ -96,14 +96,7 @@
             <CIcon :content="cilHeart" />
           </router-link>
         </MDBNavbarItem>
-        <MDBNavbarItem v-if="$store.state.elementCountInBasket == 0">
-          <div class="nav-item">
-            <router-link :to="{ name: 'Checkout' }">
-              <CIcon :content="cilBasket" />
-            </router-link>
-          </div>
-        </MDBNavbarItem>
-        <MDBNavbarItem v-else class="checkout-nav-icon">
+        <MDBNavbarItem class="checkout-nav-icon">
           <div class="nav-item position-relative">
             <CIcon class="text-success" :content="cilBasket" />
             <div
@@ -120,8 +113,10 @@
           </div>
           <MiniCheckout
             :basketData="basketData"
-            :token="getToken"
-            :right="75"
+            :right="65"
+            :isAuthenticated="
+              isAuthenticated || getToken != null ? true : false
+            "
           ></MiniCheckout>
         </MDBNavbarItem>
         <MDBNavbarItem v-if="isAuthenticated == true || getToken != null">
@@ -600,28 +595,31 @@ export default {
     searchClicked: function () {
       this.$router.push({ name: 'Gallery' })
     },
+    getBasketData() {
+      if (this.isAuthenticated == true || this.getToken != null) {
+        this.$store.commit('setTotalQuantityInBasket')
+
+        fetch('https://rassmin.com/api/Cart/GetCartItems', {
+          method: 'GET',
+          headers: {
+            'Content-type': 'application/json;charset=UTF-8',
+            Authorization: `Bearer ${this.getToken}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data)
+            this.$store.commit('setTotalQuantityInBasket', data.data.length)
+            this.basketData = data
+          })
+      }
+    },
   },
   beforeMount() {
-    this.$store.commit('setTotalQuantityInBasket')
-
-    fetch('https://rassmin.com/api/Cart/GetCartItems', {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json;charset=UTF-8',
-        Authorization: `Bearer ${this.getToken}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data)
-        this.$store.commit('setTotalQuantityInBasket', data.data.length)
-        this.basketData = data
-      })
-
+    this.getBasketData()
     //console.log(this.getUserProfile)
     //window.addEventListener('scroll', this.handleScroll)
     //console.log(this.$store.state.elementCountInBasket)
-
     // if (this.isAuthenticated == true) {
     //   location.reload()
     // }

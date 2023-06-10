@@ -1,7 +1,7 @@
 <template>
-  <div class="shadow mini-checkout-parent pt-4" style="background-color: white">
+  <div class="mini-checkout-parent pt-4" style="background-color: white">
     <TriangleBorderTop :right="right"></TriangleBorderTop>
-    <div class="mini-checkout mx-3 py-2">
+    <div class="mini-checkout py-2 pt-3 shadow">
       <div
         v-for="item in basketData.data"
         :key="item.item_PriceId"
@@ -15,9 +15,14 @@
         </div>
         <div class="border border-dark p-2">x</div>
       </div>
-      <router-link :to="{ name: 'Checkout' }">
-        <div class="bg-dark text-light w-100 py-2 px-3 text-center">
+      <router-link v-if="isAuthenticated" :to="{ name: 'Checkout' }">
+        <div class="bg-dark text-light w-75 m-auto py-2 px-3 text-center">
           Checkout
+        </div>
+      </router-link>
+      <router-link v-else :to="{ name: 'Login' }">
+        <div class="bg-dark text-light w-75 m-auto py-2 px-3 text-center">
+          Login to use checkout
         </div>
       </router-link>
     </div>
@@ -38,7 +43,7 @@
 import TriangleBorderTop from './TriangleBorderTop.vue'
 export default {
   name: 'MiniCheckout',
-  props: ['basketData', 'right'],
+  props: ['basketData', 'right', 'isAuthenticated'],
   components: { TriangleBorderTop },
   beforeMount() {},
 }
