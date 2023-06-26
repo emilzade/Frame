@@ -91,6 +91,7 @@
 </style>
 <script>
 import { ref } from 'vue'
+import { mapGetters } from 'vuex'
 import img from '../../assets/images/carousel-2.jpg'
 import { cilHeart, cilMenu } from '@coreui/icons'
 import LastViewed from '../../components/LastViewed.vue'
@@ -132,6 +133,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('auth', {
+      getToken: 'getToken',
+      getUserProfile: 'getUserProfile',
+    }),
     searchInputData() {
       return this.$store.state.searchInputData
     },
@@ -141,29 +146,7 @@ export default {
     },
   },
   methods: {
-    addToFavourites: function (id) {
-      if (this.favouriteItems == null) {
-        this.favouriteItems = []
-      }
-      if (this.favouriteItems.some((element) => element.id == id)) {
-        this.dbData.data.filter((x) => x.id == id)[0].isFav = false
-        this.favouriteItems.splice(
-          this.favouriteItems.findIndex((el) => el.id == id),
-          1,
-        )
-        localStorage.setItem(
-          'FavouriteItems',
-          JSON.stringify(this.favouriteItems),
-        )
-      } else {
-        this.dbData.data.filter((x) => x.id == id)[0].isFav = true
-        this.favouriteItems.push(this.dbData.data.filter((x) => x.id == id)[0])
-        localStorage.setItem(
-          'FavouriteItems',
-          JSON.stringify(this.favouriteItems),
-        )
-      }
-    },
+    addToFavourites: function () {},
     pageSelected: function (pageId) {
       this.getDbData(pageId)
     },
@@ -184,7 +167,6 @@ export default {
   },
   mounted() {
     console.log(this.$store.state.searchInputData)
-    // console.log(this.favouriteItems)
     // console.log(this.dbData)
     // console.log(tempFavItems)
   },

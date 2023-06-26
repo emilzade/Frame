@@ -1,20 +1,22 @@
 <template>
   <div>
-    <div class="display-3 montserrat-medium text-center">Orders</div>
+    <div class="text-center display-5 montserrat-regular py-3">Orders</div>
     <div class="d-flex justify-content-between px-5">
-      <CButton color="secondary">
-        <CIcon :content="cilArrowLeft" />
-      </CButton>
+      <router-link :to="{ name: 'AdminIndex' }">
+        <CButton color="secondary">
+          <CIcon :content="cilArrowLeft" />
+        </CButton>
+      </router-link>
       <CButton color="success">Create</CButton>
     </div>
     <CRow class="w-50 m-auto pt-4">
       <CCol
         class="border rounded col-12 py-3 my-1 d-flex justify-content-between"
-        v-for="order in dbData"
+        v-for="order in dbData.data"
         :key="order.id"
       >
-        <div>{{ order.name }}</div>
-        <EditButtonGroup />
+        <div>{{ order.orderNumber }}</div>
+        <EditButtonGroup :elementType="'Order'" :elementId="order.id" />
       </CCol>
     </CRow>
   </div>
@@ -28,36 +30,37 @@ export default {
     EditButtonGroup,
   },
   data() {
-    const dbData = []
+    const dbData = {
+      success: true,
+      date: '2023-06-26T09:59:30.2793659+02:00',
+      length: 0,
+      sort: 'asc',
+      data: [],
+    }
     return {
       dbData,
       cilArrowLeft,
     }
   },
+  computed: {
+    token() {
+      return this.$store.state.auth.token
+    },
+  },
   methods: {
     getDbData() {
-      this.dbData = [
-        {
-          id: 1,
-          name: 'Order1',
-          price: 10,
+      this.dbData = fetch(`https://rassmin.com/api/Order/GetOrders`, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${this.token}`,
         },
-        {
-          id: 2,
-          name: 'Order2',
-          price: 20,
-        },
-        {
-          id: 3,
-          name: 'Order3',
-          price: 30,
-        },
-        {
-          id: 4,
-          name: 'Order4',
-          price: 40,
-        },
-      ]
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data)
+          this.dbData = data
+        })
     },
   },
   beforeMount() {

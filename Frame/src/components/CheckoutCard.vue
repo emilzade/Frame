@@ -278,7 +278,12 @@
           </div>
         </div>
 
-        <button @click="submit" class="card-form__button">Submit</button>
+        <button
+          @click="submit"
+          class="w-100 bg-black p-2 montserrat-regular text-light"
+        >
+          Submit
+        </button>
       </div>
     </div>
   </div>

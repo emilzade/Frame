@@ -31,10 +31,10 @@
       id="navbarSupportedContent"
     >
       <MDBNavbarNav
-        class="mb-2 mb-lg-0 p-0 align-items-center px-5 gap-4 d-flex"
+        class="mb-2 mb-lg-0 p-0 align-items-center px-5 gap-1 d-flex"
         style="margin: 0px !important"
       >
-        <MDBNavbarItem active class="gallery-nav-text">
+        <MDBNavbarItem active class="gallery-nav-text p-3">
           <router-link
             class="text-decoration-none navbar-item"
             :to="{
@@ -48,12 +48,12 @@
             >
           </router-link>
           <GalleryHoverMenu
-            :right="$store.state.isSearchActive ? 610 : 410"
+            :right="$store.state.isSearchActive ? 655 : 455"
           ></GalleryHoverMenu>
         </MDBNavbarItem>
-        <MDBNavbarItem>
+        <MDBNavbarItem class="p-3">
           <router-link
-            class="text-decoration-none navbar-item me-4"
+            class="text-decoration-none navbar-item"
             :to="{
               name: 'Collections',
             }"
@@ -61,7 +61,7 @@
             <span>Collections</span>
           </router-link>
         </MDBNavbarItem>
-        <MDBNavbarItem>
+        <MDBNavbarItem class="p-3">
           <div class="d-flex justify-content-between align-items-center">
             <input
               style="height: 30px"
@@ -86,7 +86,7 @@
             </div>
           </div>
         </MDBNavbarItem>
-        <MDBNavbarItem>
+        <MDBNavbarItem class="p-3">
           <router-link
             class="text-decoration-none navbar-item"
             :to="{
@@ -96,7 +96,7 @@
             <CIcon :content="cilHeart" />
           </router-link>
         </MDBNavbarItem>
-        <MDBNavbarItem class="checkout-nav-icon">
+        <MDBNavbarItem class="checkout-nav-icon p-3">
           <div class="nav-item position-relative">
             <CIcon class="text-success" :content="cilBasket" />
             <div
@@ -113,13 +113,13 @@
           </div>
           <MiniCheckout
             :basketData="basketData"
-            :right="65"
+            :right="95"
             :isAuthenticated="
               isAuthenticated || getToken != null ? true : false
             "
           ></MiniCheckout>
         </MDBNavbarItem>
-        <MDBNavbarItem class="user-nav-icon">
+        <MDBNavbarItem class="user-nav-icon p-3">
           <div class="position-relative user-select-none">
             <CIcon class="cursor-pointer" :content="cilUser" />
             <Transition name="fade">
@@ -575,7 +575,7 @@ export default {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log(data)
+            //console.log(data)
             this.$store.commit('setTotalQuantityInBasket', data.data.length)
             this.basketData = data
           })

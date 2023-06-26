@@ -6,7 +6,7 @@
       Favourites
     </h1>
     <div
-      v-if="favouriteItems.length == 0"
+      v-if="favouriteItems.data.length == 0"
       class="text-center pt-5 pb-5 gallery-header"
     >
       <p class="text-muted">
@@ -82,10 +82,15 @@ import img from '../../assets/images/carousel-2.jpg'
 import VueMultiselect from 'vue-multiselect'
 import 'vue-multiselect/dist/vue-multiselect.css'
 import { cilBasket } from '@coreui/icons'
+import { mapGetters } from 'vuex'
 export default {
   components: { VueMultiselect },
   data() {
-    const favouriteItems = null
+    const favouriteItems = {
+      data: [],
+      date: '',
+      success: false,
+    }
     const selectedSize = ref()
     return {
       favouriteItems,
@@ -94,53 +99,30 @@ export default {
       selectedSize,
     }
   },
+  computed: {
+    ...mapGetters('auth', {
+      getToken: 'getToken',
+    }),
+  },
   methods: {
     addSize: function (size) {
-      this.favouriteItems.selectedSize = size
       console.log(size)
     },
-    addToBasket: function (id) {
-      let galleryItems = JSON.parse(localStorage.getItem('GalleryItems'))
-      if (galleryItems == null) {
-        galleryItems = []
-      }
-      if (galleryItems.some((x) => x.id == id)) {
-        galleryItems.find((x) => x.id == id).quantity++
-        localStorage.setItem('GalleryItems', JSON.stringify(galleryItems))
-        console.log(galleryItems)
-        console.log('quantity++', id)
-      } else {
-        galleryItems.push(this.favouriteItems.find((x) => x.id == id))
-        localStorage.setItem('GalleryItems', JSON.stringify(galleryItems))
-        console.log(galleryItems)
-        console.log('push', id)
-      }
-      this.$store.commit('setTotalQuantityInBasket')
-    },
-    removeFromFavourites: function (event, id) {
-      this.favouriteItems.splice(
-        this.favouriteItems.indexOf(
-          this.favouriteItems.find((x) => x.id == id),
-        ),
-        1,
-      )
-      localStorage.setItem(
-        'FavouriteItems',
-        JSON.stringify(this.favouriteItems),
-      )
-    },
+    addToBasket: function () {},
+    removeFromFavourites: function () {},
   },
   beforeMount() {
-    this.favouriteItems = JSON.parse(localStorage.getItem('FavouriteItems'))
-    if (localStorage.getItem('FavouriteItems') == null) {
-      this.favouriteItems = []
-    }
-    this.favouriteItems = this.favouriteItems.map((obj) => ({
-      ...obj,
-      quantity: 1,
-      selectedSize: obj.prices[0],
-    }))
-    console.log(this.favouriteItems)
+    fetch(`https://rassmin.com/api/Favorite/GetFavorites`, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json;charset=UTF-8',
+        Authorization: `Bearer ${this.getToken}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+      })
   },
 }
 </script>

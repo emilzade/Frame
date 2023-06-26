@@ -16,12 +16,12 @@
         <div class="border border-dark p-2">x</div>
       </div>
       <router-link v-if="isAuthenticated" :to="{ name: 'Checkout' }">
-        <div class="bg-dark text-light w-75 m-auto py-2 px-3 text-center">
+        <div class="bg-black text-light w-75 m-auto py-2 px-3 text-center">
           Checkout
         </div>
       </router-link>
       <router-link v-else :to="{ name: 'Login' }">
-        <div class="bg-dark text-light w-75 m-auto py-2 px-3 text-center">
+        <div class="bg-black text-light w-75 m-auto py-2 px-3 text-center">
           Login to use checkout
         </div>
       </router-link>

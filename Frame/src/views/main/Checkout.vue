@@ -20,20 +20,20 @@
           :key="item.id"
           class="border p-2 mx-5 my-2 d-flex justify-content-between align-items-center"
         >
-          <div>{{ index }}.</div>
+          <div>{{ index + 1 }}.</div>
           <img style="width: 100px" src="../../assets/images/carousel-1.jpg" />
           <div>{{ item.itemName }}</div>
           <div class="border d-flex align-items-center gap-2">
-            <div @click="minusQuantity(item)" class="btn btn-light">
+            <div @click="minusQuantity(item)" class="p-2">
               <CIcon :content="cilMinus" />
             </div>
             <div class="user-select-none">{{ item.count }}</div>
-            <div @click="plusQuantity(item)" class="btn btn-light">
+            <div @click="plusQuantity(item)" class="p-2">
               <CIcon :content="cilPlus" />
             </div>
           </div>
           <div>{{ item.price * item.count }} ₼</div>
-          <div @click="removeElement(item.id)" class="btn btn-light">
+          <div class="btn btn-light">
             <CIcon :content="cilX" />
           </div>
         </div>
@@ -256,14 +256,14 @@
               <input
                 @click="buy"
                 type="button"
-                class="btn btn-dark w-100 montserrat-regular"
+                class="bg-black text-light p-2 w-100 montserrat-regular"
                 value="Buy"
               />
             </div>
             <div v-else class="col-12 p-2 form-group-custom">
               <input
                 type="button"
-                class="btn btn-dark w-100 montserrat-regular"
+                class="bg-black text-light p-2 w-100 montserrat-regular"
                 value="Buy"
                 disabled
               />
@@ -283,6 +283,7 @@
 //import { ref } from 'vue'
 import { cilPlus, cilMinus, cilX } from '@coreui/icons'
 import CheckoutCard from '@/components/CheckoutCard.vue'
+import { mapGetters } from 'vuex'
 export default {
   components: { CheckoutCard },
   data() {
@@ -330,6 +331,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('auth', {
+      getToken: 'getToken',
+      getUserProfile: 'getUserProfile',
+    }),
     token() {
       return this.$store.state.auth.token
     },
@@ -385,6 +390,32 @@ export default {
     },
     submitPayment: function () {
       console.log(this.basketItems)
+      var model = {
+        userId: JSON.parse(this.getUserProfile).id,
+        paymentTypeId: 1,
+        ordererFullName:
+          JSON.parse(this.getUserProfile).name +
+          ' ' +
+          JSON.parse(this.getUserProfile).surname,
+        ordererAddress: JSON.parse(this.getUserProfile).address,
+        ordererEmail: JSON.parse(this.getUserProfile).email,
+        ordererPhone: JSON.parse(this.getUserProfile).phone,
+        orderItems: this.basketItems.data.map((item) => ({
+          item_PriceId: item.item_PriceId,
+          quantity: item.count,
+        })),
+      }
+      console.log(model)
+      fetch(`https://rassmin.com/api/Order/CreateOrder`, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${this.token}`,
+        },
+        body: JSON.stringify(model),
+      })
+        .then((response) => response.json())
+        .then((data) => console.log(data))
     },
   },
   beforeMount() {
@@ -399,6 +430,30 @@ export default {
       .then((data) => {
         console.log(data)
         this.basketItems = data
+      })
+
+    fetch(`https://rassmin.com/api/Order/GetOrders`, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json;charset=UTF-8',
+        Authorization: `Bearer ${this.token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+      })
+
+    fetch(`https://rassmin.com/api/OrderItem/GetOrderItems`, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json;charset=UTF-8',
+        Authorization: `Bearer ${this.token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
       })
   },
 }
