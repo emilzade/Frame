@@ -11,41 +11,16 @@
             :modules="modules"
             style="
               width: 100%;
-              height: 300px;
+              height: 400px;
               margin-left: auto;
               margin-right: auto;
             "
             class="galleryItemSwiper2"
           >
             <swiper-slide
-              ><img
-                src="https://swiperjs.com/demos/images/nature-1.jpg" /></swiper-slide
-            ><swiper-slide
-              ><img
-                src="https://swiperjs.com/demos/images/nature-2.jpg" /></swiper-slide
-            ><swiper-slide
-              ><img
-                src="https://swiperjs.com/demos/images/nature-3.jpg" /></swiper-slide
-            ><swiper-slide
-              ><img
-                src="https://swiperjs.com/demos/images/nature-4.jpg" /></swiper-slide
-            ><swiper-slide
-              ><img
-                src="https://swiperjs.com/demos/images/nature-5.jpg" /></swiper-slide
-            ><swiper-slide
-              ><img
-                src="https://swiperjs.com/demos/images/nature-6.jpg" /></swiper-slide
-            ><swiper-slide
-              ><img
-                src="https://swiperjs.com/demos/images/nature-7.jpg" /></swiper-slide
-            ><swiper-slide
-              ><img
-                src="https://swiperjs.com/demos/images/nature-8.jpg" /></swiper-slide
-            ><swiper-slide
-              ><img
-                src="https://swiperjs.com/demos/images/nature-9.jpg" /></swiper-slide
-            ><swiper-slide
-              ><img src="https://swiperjs.com/demos/images/nature-10.jpg"
+              v-for="(image, index) in dbData.data[0].images"
+              :key="index"
+              ><img :src="image"
             /></swiper-slide>
           </swiper>
           <swiper
@@ -65,34 +40,9 @@
             "
           >
             <swiper-slide
-              ><img
-                src="https://swiperjs.com/demos/images/nature-1.jpg" /></swiper-slide
-            ><swiper-slide
-              ><img
-                src="https://swiperjs.com/demos/images/nature-2.jpg" /></swiper-slide
-            ><swiper-slide
-              ><img
-                src="https://swiperjs.com/demos/images/nature-3.jpg" /></swiper-slide
-            ><swiper-slide
-              ><img
-                src="https://swiperjs.com/demos/images/nature-4.jpg" /></swiper-slide
-            ><swiper-slide
-              ><img
-                src="https://swiperjs.com/demos/images/nature-5.jpg" /></swiper-slide
-            ><swiper-slide
-              ><img
-                src="https://swiperjs.com/demos/images/nature-6.jpg" /></swiper-slide
-            ><swiper-slide
-              ><img
-                src="https://swiperjs.com/demos/images/nature-7.jpg" /></swiper-slide
-            ><swiper-slide
-              ><img
-                src="https://swiperjs.com/demos/images/nature-8.jpg" /></swiper-slide
-            ><swiper-slide
-              ><img
-                src="https://swiperjs.com/demos/images/nature-9.jpg" /></swiper-slide
-            ><swiper-slide
-              ><img src="https://swiperjs.com/demos/images/nature-10.jpg"
+              v-for="(image, index) in dbData.data[0].images"
+              :key="index"
+              ><img :src="image"
             /></swiper-slide>
           </swiper>
         </CCol>
