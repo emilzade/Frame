@@ -32,36 +32,41 @@
       :text="errorData.messages"
       @refresh="refreshSizes"
     ></RefreshButton>
-    <CRow class="w-50 m-auto pt-4">
-      <CCol
-        class="border rounded col-12 py-3 my-1 d-flex justify-content-between align-items-center"
-        v-for="size in dbData.data"
-        :key="size.id"
-      >
-        <div>{{ size.name }}</div>
-        <CButtonGroup role="group" aria-label="Button Group">
-          <router-link
-            :to="{
-              name: 'Size',
-              params: {
-                id: size.id,
-              },
-            }"
-          >
-            <CButton color="secondary">
-              <CIcon :content="cilInfo" />
-            </CButton>
-          </router-link>
-          <CButton @click="openUpdateSizeModal(size)" color="info">
-            <CIcon :content="cilSettings" />
-          </CButton>
-          <CButton color="danger">
-            <CIcon :content="cilTrash" />
-          </CButton>
-        </CButtonGroup>
-        <!-- <EditButtonGroup :elementType="'Size'" :elementId="size.id" /> -->
-      </CCol>
-    </CRow>
+    <CTable align="middle" responsive class="w-50 m-auto text-center">
+      <CTableHead>
+        <CTableRow>
+          <CTableHeaderCell>Name</CTableHeaderCell>
+          <CTableHeaderCell>Operations</CTableHeaderCell>
+        </CTableRow>
+      </CTableHead>
+      <CTableBody>
+        <CTableRow v-for="item in dbData.data" :key="item.id">
+          <CTableDataCell>{{ item.name }} </CTableDataCell>
+          <CTableDataCell>
+            <CButtonGroup role="group" aria-label="Button Group">
+              <router-link
+                :to="{
+                  name: 'Size',
+                  params: {
+                    id: item.id,
+                  },
+                }"
+              >
+                <CButton color="secondary">
+                  <CIcon :content="cilInfo" />
+                </CButton>
+              </router-link>
+              <CButton @click="openUpdateSizeModal(item)" color="info">
+                <CIcon :content="cilSettings" />
+              </CButton>
+              <CButton color="danger">
+                <CIcon :content="cilTrash" />
+              </CButton>
+            </CButtonGroup>
+          </CTableDataCell>
+        </CTableRow>
+      </CTableBody>
+    </CTable>
   </div>
 </template>
 <script>
@@ -133,6 +138,7 @@ export default {
         .then((data) => {
           this.errorData.status = 200
           this.dbData = data
+          console.log(data)
         })
         .catch((err) => {
           if (this.errorData.status == 403) {

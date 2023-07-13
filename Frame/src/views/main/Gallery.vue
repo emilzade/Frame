@@ -9,7 +9,7 @@
         placeholder="Enter name, tag or anything..."
       />
     </div>
-    <CRow class="pt-2 w-100 mx-0 align-items-start position-relative">
+    <CRow class="pt-2 container m-auto align-items-start position-relative">
       <CCol v-if="isGalleryDataLoading">
         <ComponentLoader></ComponentLoader>
       </CCol>
@@ -47,7 +47,9 @@
                   id: data.id,
                 },
               }"
-              ><p>{{ data.itemName }}</p></router-link
+              ><p class="text-secondary">
+                <em>{{ data.itemName }}</em>
+              </p></router-link
             >
             <p>{{ data.prices[0].price }} ₼</p>
           </div>

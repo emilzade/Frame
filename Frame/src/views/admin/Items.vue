@@ -35,45 +35,60 @@
       :text="errorData.messages"
       @refresh="refreshItems"
     ></RefreshButton>
-    <CRow class="w-50 m-auto pt-4">
-      <CCol
-        class="border rounded col-12 py-3 my-1 d-flex justify-content-between align-items-center"
-        v-for="item in dbData.data"
-        :key="item.id"
-      >
-        <div>{{ item.itemName }}</div>
-        <CButtonGroup role="group" aria-label="Button Group">
-          <router-link
-            :to="{
-              name: 'Item',
-              params: {
-                id: item.id,
-              },
-            }"
-          >
-            <CButton color="secondary">
-              <CIcon :content="cilInfo" />
-            </CButton>
-          </router-link>
-          <CButton
-            v-if="item.statusId == 1"
-            @click="updateStatusOfItem(item)"
-            color="success"
-          >
-            <CIcon :content="cilGlobeAlt" />
-          </CButton>
-          <CButton v-else @click="updateStatusOfItem(item)" color="warning">
-            <CIcon :content="cilClock" />
-          </CButton>
-          <CButton @click="openUpdateItemModal(item)" color="info">
-            <CIcon :content="cilSettings" />
-          </CButton>
-          <CButton color="danger">
-            <CIcon :content="cilTrash" />
-          </CButton>
-        </CButtonGroup>
-      </CCol>
-    </CRow>
+    <CTable align="middle" responsive class="w-50 m-auto text-center">
+      <CTableHead>
+        <CTableRow>
+          <CTableHeaderCell>Name</CTableHeaderCell>
+          <CTableHeaderCell>Operations</CTableHeaderCell>
+        </CTableRow>
+      </CTableHead>
+      <CTableBody>
+        <CTableRow v-for="item in dbData.data" :key="item.id">
+          <CTableDataCell>{{ item.itemName }} </CTableDataCell>
+          <CTableDataCell>
+            <CButtonGroup role="group" aria-label="Button Group">
+              <router-link
+                :to="{
+                  name: 'Item',
+                  params: {
+                    id: item.id,
+                  },
+                }"
+              >
+                <CButton color="secondary">
+                  <CIcon :content="cilInfo" />
+                </CButton>
+              </router-link>
+              <CButton
+                v-if="item.statusId == 1"
+                @click="updateStatusOfItem(item)"
+                color="success"
+              >
+                <CIcon :content="cilGlobeAlt" />
+              </CButton>
+              <CButton v-else @click="updateStatusOfItem(item)" color="warning">
+                <CIcon :content="cilClock" />
+              </CButton>
+              <CButton @click="openUpdateItemModal(item)" color="info">
+                <CIcon :content="cilSettings" />
+              </CButton>
+              <CButton color="danger">
+                <CIcon :content="cilTrash" />
+              </CButton>
+            </CButtonGroup>
+          </CTableDataCell>
+        </CTableRow>
+      </CTableBody>
+    </CTable>
+    <div class="d-flex justify-content-center text-center pt-3">
+      <pagination
+        v-model="currentPage"
+        :records="dbData.length"
+        :per-page="perPageElementCount"
+        @paginate="pageSelected"
+        :options="{ chunk: 8 }"
+      />
+    </div>
   </div>
 </template>
 <script>
@@ -86,11 +101,13 @@ import {
   cilGlobeAlt,
   cilClock,
 } from '@coreui/icons'
+import Pagination from 'v-pagination-3'
 import CheckSuccessElement from '@/components/CheckSuccessElement.vue'
 import RefreshButton from '@/components/RefreshButton.vue'
 export default {
   name: 'Items',
   components: {
+    Pagination,
     ItemModal,
     CheckSuccessElement,
     RefreshButton,
@@ -113,6 +130,8 @@ export default {
       isActive: false,
       status: 0,
     }
+    const perPageElementCount = 10
+    const currentPage = 1
     return {
       dbData,
       cilArrowLeft,
@@ -127,6 +146,9 @@ export default {
       isActionSuccess,
       isActionCompleted,
       errorData,
+
+      perPageElementCount,
+      currentPage,
     }
   },
   computed: {
@@ -135,14 +157,17 @@ export default {
     },
   },
   methods: {
-    getDbData: function () {
-      fetch(`https://rassmin.com/api/Item/GetItems?sort=asc`, {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json;charset=UTF-8',
-          Authorization: `Bearer ${this.token}`,
+    getDbData: function (pageId) {
+      fetch(
+        `https://rassmin.com/api/Item/GetItems?sort=asc&pageSize=${this.perPageElementCount}&pageNumber=${pageId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-type': 'application/json;charset=UTF-8',
+            Authorization: `Bearer ${this.token}`,
+          },
         },
-      })
+      )
         .then((response) => {
           console.log('response get')
           if (response.ok) {
@@ -160,6 +185,9 @@ export default {
           this.setErrorValue(true, 'Can not load items')
         })
     },
+    pageSelected: function (pageId) {
+      this.getDbData(pageId)
+    },
     setErrorValue: function (state, message) {
       this.errorData.isActive = state
       var isExist = this.errorData.messages.includes(message)
@@ -172,7 +200,7 @@ export default {
         this.$router.push({ name: 'Login' })
       } else {
         this.setErrorValue(false, '')
-        this.getDbData()
+        this.getDbData(1)
       }
     },
     openCreateItemModal: function () {
@@ -211,7 +239,7 @@ export default {
           data.success == true
             ? (this.isActionSuccess = true)
             : (this.isActionSuccess = false)
-          this.getDbData()
+          this.getDbData(1)
           setTimeout(() => {
             this.isActionCompleted = false
           }, 2000)
@@ -244,7 +272,7 @@ export default {
           data.success == true
             ? (this.isActionSuccess = true)
             : (this.isActionSuccess = false)
-          this.getDbData()
+          this.getDbData(1)
           setTimeout(() => {
             this.isActionCompleted = false
           }, 2000)
@@ -253,7 +281,7 @@ export default {
     },
   },
   beforeMount() {
-    this.getDbData()
+    this.getDbData(1)
   },
 }
 </script>

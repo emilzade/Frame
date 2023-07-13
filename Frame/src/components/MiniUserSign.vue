@@ -5,9 +5,11 @@
       <div class="p-2 text-center text-dark cursor-pointer hovered-gray">
         {{ JSON.parse(userData).email }}
       </div>
-      <div class="p-2 text-center text-dark cursor-pointer hovered-gray">
-        Profile
-      </div>
+      <router-link :to="{ name: 'User' }">
+        <div class="p-2 text-center text-dark cursor-pointer hovered-gray">
+          Profile
+        </div>
+      </router-link>
       <div
         class="p-2 text-center cursor-pointer hovered-gray"
         v-if="JSON.parse(userData).roleName == 'admin'"

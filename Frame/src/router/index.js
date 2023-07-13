@@ -25,6 +25,36 @@ const routes = [
         },
       },
       {
+        path: '/user',
+        name: 'User',
+        component: () => import('@/views/main/User.vue'),
+        redirect: '/user/account',
+        meta: {
+          authRequired: 'true',
+          adminRequired: 'false',
+        },
+        children: [
+          {
+            path: '/user/account',
+            name: 'UserAccount',
+            component: () => import('@/components/UserProfile/UserAccount'),
+            meta: {
+              authRequired: 'true',
+              adminRequired: 'false',
+            },
+          },
+          {
+            path: '/user/orders',
+            name: 'UserOrders',
+            component: () => import('@/components/UserProfile/UserOrders'),
+            meta: {
+              authRequired: 'true',
+              adminRequired: 'false',
+            },
+          },
+        ],
+      },
+      {
         path: '/gallery',
         name: 'Gallery',
         component: () => import('../views/main/Gallery.vue'),

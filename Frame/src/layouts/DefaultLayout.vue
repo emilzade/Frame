@@ -5,11 +5,7 @@
     </Transition>
     <Navbar></Navbar>
     <div class="d-flex flex-column w-100">
-      <RouterView v-slot="{ Component }">
-        <transition name="slide-fade" mode="out-in">
-          <component :key="$route.path" :is="Component" />
-        </transition>
-      </RouterView>
+      <RouterView></RouterView>
     </div>
     <Footer></Footer>
   </div>

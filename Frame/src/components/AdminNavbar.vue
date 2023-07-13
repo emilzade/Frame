@@ -88,7 +88,9 @@
         >
           <a href="#" class="dropdown-item">My Profile</a>
           <a href="#" class="dropdown-item">Settings</a>
-          <a href="#" class="dropdown-item">Log Out</a>
+          <div class="dropdown-item cursor-pointer" @click="logOut">
+            Log Out
+          </div>
         </div>
       </div>
     </div>
@@ -101,7 +103,7 @@
 </style>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import 'bootstrap'
 export default {
   name: 'AdminNavbar',
@@ -155,8 +157,15 @@ export default {
     }),
   },
   methods: {
+    ...mapActions('auth', {
+      actionLogOut: 'userLogout',
+    }),
     sideBarToggle: function () {
       this.$store.commit('setAdminSideBarActive')
+    },
+    logOut: async function () {
+      await this.actionLogOut()
+      location.reload()
     },
   },
 }
