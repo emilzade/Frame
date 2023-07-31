@@ -14,7 +14,7 @@
       </div>
     </div>
     <CRow v-else class="pt-5 w-100" style="margin: 0px !important">
-      <CCol class="col-md-6 col-12 border-end pt-5">
+      <CCol class="col-lg-6 col-12 border-end pt-5">
         <div
           v-for="(item, index) in basketItems.data"
           :key="item.id"
@@ -51,7 +51,7 @@
           </div>
         </div>
       </CCol>
-      <CCol class="col-md-6 col-12 border-start pt-5">
+      <CCol class="col-lg-6 col-12 border-start pt-5">
         <div class="col-12 p-2 form-group-custom d-flex justify-content-around">
           <p class="w-50">Payment type</p>
           <label

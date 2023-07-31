@@ -82,7 +82,7 @@
               }"
               class="d-flex justify-content-center align-items-center p-2"
             >
-              <img :src="searchIcon" class="w-100" />
+              <img :src="searchIcon" style="width: 1rem" />
             </div>
           </div>
         </MDBNavbarItem>
@@ -93,12 +93,25 @@
               name: 'Favourites',
             }"
           >
-            <CIcon :content="cilHeart" />
+            <img
+              class="d-none d-lg-block"
+              style="width: 1rem"
+              :src="favoritesIcon"
+            />
+            <p class="d-lg-none">Favorites</p>
           </router-link>
         </MDBNavbarItem>
-        <MDBNavbarItem class="checkout-nav-icon p-3">
-          <div class="nav-item position-relative">
-            <CIcon class="text-success" :content="cilBasket" />
+        <MDBNavbarItem class="p-3 checkout-nav-icon">
+          <router-link
+            class="text-decoration-none navbar-item"
+            :to="{
+              name: 'Checkout',
+            }"
+          >
+            <p class="d-lg-none">Checkout</p>
+          </router-link>
+          <div class="nav-item position-relative d-none d-lg-block">
+            <img :src="shopIcon" style="width: 1rem" />
             <div
               class="bg-danger text-light px-1 rounded-circle"
               style="
@@ -120,18 +133,26 @@
           ></MiniCheckout>
         </MDBNavbarItem>
         <MDBNavbarItem class="user-nav-icon p-3">
-          <div class="position-relative user-select-none">
-            <CIcon class="cursor-pointer" :content="cilUser" />
-            <Transition name="fade">
-              <MiniUserSign
-                :userData="getUserProfile"
-                :isAuthenticated="
-                  isAuthenticated || getToken != null ? true : false
-                "
-                @logout="logOut"
-              ></MiniUserSign>
-            </Transition>
+          <router-link
+            class="text-decoration-none navbar-item d-lg-none"
+            :to="{
+              name:
+                isAuthenticated || getToken != null ? 'UserAccount' : 'Login',
+            }"
+          >
+            <p v-if="isAuthenticated || getToken != null">Profile</p>
+            <p v-else>Login</p>
+          </router-link>
+          <div class="position-relative user-select-none d-none d-lg-block">
+            <img :src="profileIcon" style="width: 1.2rem" />
           </div>
+          <MiniUserSign
+            :userData="getUserProfile"
+            :isAuthenticated="
+              isAuthenticated || getToken != null ? true : false
+            "
+            @logout="logOut"
+          ></MiniUserSign>
         </MDBNavbarItem>
         <!-- <template v-else>
           <MDBNavbarItem>
@@ -159,82 +180,6 @@
       <!-- Search form -->
     </MDBCollapse>
   </MDBNavbar>
-  <!-- <div
-    class="w-100 align-items-center justify-content-between px-5 navbar-container border border-dark"
-    :class="{
-      'navbar-container-hidden': isScrolled,
-      'navbar-container-visible': !isScrolled,
-    }"
-  >
-    <router-link
-      :to="{
-        name: 'Index',
-      }"
-    >
-      <div class="logo-div">
-        <img class="w-100" :src="logo" />
-      </div>
-    </router-link>
-    <div class="w-25 d-flex justify-content-between navbar-items-container">
-      <router-link
-        class="text-decoration-none navbar-item"
-        :to="{
-          name: 'Gallery',
-        }"
-      >
-        <span>Gallery</span>
-      </router-link>
-      <router-link
-        class="text-decoration-none navbar-item"
-        :to="{
-          name: 'Collections',
-        }"
-      >
-        <span>Collections</span>
-      </router-link>
-      <router-link
-        class="text-decoration-none navbar-item"
-        :to="{
-          name: 'Gallery',
-        }"
-      >
-        <CIcon
-          @click="this.$store.commit('changeSearchActiveState')"
-          :content="cilSearch"
-        />
-      </router-link>
-      <router-link
-        class="text-decoration-none navbar-item"
-        :to="{
-          name: 'Favourites',
-        }"
-      >
-        <CIcon :content="cilHeart" />
-      </router-link>
-      <router-link
-        class="text-decoration-none navbar-item"
-        :to="{
-          name: 'Checkout',
-        }"
-      >
-        <div v-if="$store.state.elementCountInBasket == 0">
-          <CIcon :content="cilBasket" />
-        </div>
-        <div v-else>
-          <CIcon class="text-success" :content="cilBasket" />
-        </div>
-      </router-link>
-      <router-link
-        v-if="role == 'admin'"
-        class="text-decoration-none navbar-item"
-        :to="{
-          name: 'AdminIndex',
-        }"
-      >
-        <CIcon :content="cilUser" />
-      </router-link>
-    </div>
-  </div> -->
 </template>
 <style lang="scss">
 $dark: #181d31;
@@ -351,16 +296,13 @@ import MiniUserSign from './MiniUserSign.vue'
 import MiniCheckout from '@/components/MiniCheckout.vue'
 import GalleryHoverMenu from './GalleryHoverMenu.vue'
 import { mapActions, mapGetters } from 'vuex'
-import searchIcon from '@/assets/images/icons/search.png'
+import favoritesIcon from '@/assets/icons/favorites.svg'
+import searchIcon from '@/assets/icons/search.svg'
+import shopIcon from '@/assets/icons/shop.svg'
+import profileIcon from '@/assets/icons/contact.svg'
 //import router from '@/router'
 //import ref from 'vue'
-import {
-  cilHeart,
-  cilBasket,
-  cilUser,
-  cilSearch,
-  cilAddressBook,
-} from '@coreui/icons'
+import { cilBasket, cilUser, cilAddressBook } from '@coreui/icons'
 import 'mdb-vue-ui-kit/css/mdb.min.css'
 import {
   MDBNavbar,
@@ -408,14 +350,15 @@ export default {
       //navbarItemStyle,
       basketData,
       searchIcon,
+      favoritesIcon,
+      shopIcon,
+      profileIcon,
       searchText,
       logo,
 
-      cilHeart,
       cilBasket,
       cilUser,
       cilAddressBook,
-      cilSearch,
 
       limitPosition,
       isScrolled,

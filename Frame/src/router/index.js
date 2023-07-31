@@ -91,6 +91,53 @@ const routes = [
         },
       },
       {
+        path: '/FAQ',
+        name: 'Faq',
+        component: () => import('../views/main/Faq.vue'),
+        meta: {
+          authRequired: 'false',
+          adminRequired: 'false',
+        },
+        children: [
+          {
+            path: '/FAQ/selection',
+            name: 'FaqSelection',
+            component: () => import('@/components/FAQ/Selection'),
+            meta: {
+              authRequired: 'false',
+              adminRequired: 'false',
+            },
+          },
+          {
+            path: '/FAQ/shipping',
+            name: 'FaqShipping',
+            component: () => import('@/components/FAQ/Shipping'),
+            meta: {
+              authRequired: 'false',
+              adminRequired: 'false',
+            },
+          },
+          {
+            path: '/FAQ/collections',
+            name: 'FaqCollections',
+            component: () => import('@/components/FAQ/Collections'),
+            meta: {
+              authRequired: 'false',
+              adminRequired: 'false',
+            },
+          },
+          {
+            path: '/FAQ/campaigns',
+            name: 'FaqCampaigns',
+            component: () => import('@/components/FAQ/Campaigns'),
+            meta: {
+              authRequired: 'false',
+              adminRequired: 'false',
+            },
+          },
+        ],
+      },
+      {
         path: '/gallery/item/:id',
         name: 'GalleryItem',
         component: () => import('../views/main/GalleryItem.vue'),

@@ -18,6 +18,7 @@
 </style>
 <script>
 export default {
+  name: 'UserSideBar',
   data() {
     const sidebarData = [
       {

@@ -1,6 +1,6 @@
 <template>
   <div class="mini-user-sign-parent montserrat-light pt-4">
-    <TriangleBorderTop :right="15"></TriangleBorderTop>
+    <TriangleBorderTop :right="70"></TriangleBorderTop>
     <div v-if="isAuthenticated" class="shadow signed-card pt-3">
       <div class="p-2 text-center text-dark cursor-pointer hovered-gray">
         {{ JSON.parse(userData).email }}
@@ -181,8 +181,8 @@
 .mini-user-sign-parent {
   transition: 0.4s;
   position: absolute;
-  top: 100%;
-  right: -20px;
+  top: 72px;
+  right: 0px;
   width: 300px;
   perspective: 1000px;
   visibility: hidden;

@@ -34,7 +34,7 @@
       position: absolute;
       left: -2px;
       bottom: -13px;
-      transform: rotate(45deg) skew(10deg, 10deg);
+      transform: rotate(45deg) skew(5deg, 5deg);
       transition: all 0.4s ease-in-out;
 
       border-left-width: 3px;
